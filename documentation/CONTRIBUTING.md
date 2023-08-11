@@ -1,9 +1,2 @@
-
-
-1. S'initier a Python, libre.
-
-* possibilité de tester les projets en p2p sans correction.
-
-3. Créer un groupe autour d'une fonctionnalité du robot.
-
-4. Faire une branche sur le projet avec le nom de la fonctionnalité.
+* Chaque groupe autour d'un module se verra attribué une branche de type <nom_du_module>. 
+* Ne pas tenter de merge sur la branche <main> mais de passer par un merge request.

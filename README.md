@@ -8,12 +8,13 @@ documentation/hackathon.pdf
 ## Planning
 
 ### HACKATHON
-* Starting date : 16 Août 2023
-* End date : 17 Août 2023
-
+* Starting date : 16 Août 2023 - 9h
+* 1st Meeting : 16 Août 2023 - 9h
+* End date : 17 Août 2023 - 18h
+* 2nd Meeting : 17 Août 2023 - 16h
 
 ## Objectifs
-* Une présentation de chaque module ici :
+* Une présentation de chaque module se trouve dans le pdf :
     * Module microphone
     * Module speaker
     * Module camera
@@ -21,7 +22,6 @@ documentation/hackathon.pdf
     * Module web app
     * Module openia
     * Un autre module proposé ?
-
 
 ## Setup environnement dev python
 ```
