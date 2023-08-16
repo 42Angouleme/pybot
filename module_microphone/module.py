@@ -2,9 +2,10 @@ import os
 import openai
 import sounddevice as sd
 import wavio
+import tempfile
 
 
-def record_audio(filename="output.wav", duration=5):
+def record_audio(filename, duration):
     """Record audio at `filename` for the specified `duration`"""
     sample_rate = 44100  # Samples per second (Hz)
 
@@ -29,13 +30,13 @@ def openai_setup():
     openai.Model.list()
 
 
-def openai_speech_to_text(audio_file_path: str) -> str:
+def openai_speech_to_text(audio_filepath: str) -> str:
     """
     Transcribe the audio file at path `audio_file_path` into text using OpenAI
     """
 
     print("Opening audio file")
-    with open(audio_file_path, "rb") as audio_file:
+    with open(audio_filepath, "rb") as audio_file:
         print("Requesting OpenAI speech to text")
         response = openai.Audio.transcribe("whisper-1", audio_file, language="fr")
 
@@ -49,7 +50,8 @@ def run():
 
     openai_setup()
 
-    audio_filepath = "/tmp/output.wav"
+    extension = ".wav"
+    audio_filepath = tempfile.NamedTemporaryFile(suffix=extension).name
     record_audio(filename=audio_filepath, duration=10)
-    txt = openai_speech_to_text(audio_filepath)
-    print(f"Transcribed text {txt}")
+    transcribed_txt = openai_speech_to_text(audio_filepath)
+    print(f"Transcribed text {transcribed_txt}")
