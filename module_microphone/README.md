@@ -10,9 +10,10 @@ $ sudo apt-get install portaudio19-dev
 
 ```
 
-### OpenAi API configuration
+### OpenAi API configuration [paid option]
 
 - Create an account on https://platform.openai.com/account/
+- Setup a billing account, the charge is 0,006 ct per minute. That is 0,36 ct per hour of recording.
 - Generate an API key, copy the API key
 - in a terminal 
 
