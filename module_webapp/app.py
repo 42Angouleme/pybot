@@ -13,10 +13,6 @@ def get_db_connection():
 def index():
     return render_template("index.html")
 
-@app.route('/search')
-def search_page():
-    return render_template("search.html")
-
 @app.route('/list')
 def list_page():
     connection = get_db_connection()
@@ -25,11 +21,33 @@ def list_page():
     connection.close()
     return render_template("list.html", posts=posts, image="placeholder")
 
+@app.route('/result', methods=('GET', 'POST'))
+def result_page():
+    con = get_db_connection()
+    truc = con.cursor()
+    truc = con.execute("SELECT * FROM name where name LIKE ?", ("élève1", )).fetchone()
+    con.close()
+    return render_template("result.html", truc=truc)
+
+@app.route('/search', methods=('GET', 'POST'))
+def search_page():
+    con = get_db_connection()
+    res = con.execute('SELECT * FROM name').fetchall()
+    con.commit()
+    if request.method == 'POST':
+        names = request.form['name']
+        if names:
+            res = con.execute("SELECT firstname FROM name WHERE name LIKE ?", (names, )).fetchall()
+            con.commit()
+            con.close()
+            return redirect(url_for('result_page'))
+
+    return render_template("search.html")
+
 @app.route('/add', methods=('GET', 'POST'))
 def add_page():
     connection = get_db_connection()
     posts = connection.execute('SELECT * FROM name').fetchall()
-    connection.commit()
     if request.method == 'POST':
         name = request.form['name']
         surname = request.form['firstname']
