@@ -1,6 +1,7 @@
 # Module microphone
 
 This module exposes function to record audio and perform speech-to-text.
+Speech-to-text uses Whisper API solution (by OpenAI) and requires a billing account.
 
 ## Setup
 
@@ -19,7 +20,7 @@ $ brew install portaudio
 then `cd` at the root of the project and run:
 
 ```sh
-$ pip install -r requirement.txt
+$ pip install -r requirements.txt
 ```
 
 ### Whisper API (OpenAi) configuration [paid option]

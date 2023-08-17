@@ -8,3 +8,4 @@ Werkzeug==2.3.6
 PyAudio==0.2.13
 sounddevice==0.4.6
 wavio==0.0.7
+openai==0.27.8
