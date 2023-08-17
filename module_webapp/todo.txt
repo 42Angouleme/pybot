@@ -1,0 +1,10 @@
+main page where we can access different other page
+
+add a student
+	- ID and Image (Nom / prénom)
+modify data of a student
+
+see all the students
+
+delete a student
+
