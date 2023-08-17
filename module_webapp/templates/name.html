@@ -7,10 +7,10 @@
 <body>
 	{% block content %}
 	<p>Profil de {{name}} {{surname}}</p>
+	<form action="/{{name}}/delete" method="post">
+    	<button class='button1' name="deleteUser" type="submit">Supprimer un utilisateur</button>
+	</form>
     <img src="{{ url_for('static', filename=image) }}" alt="motif eleve" width="200" height="200">
-	{% for student in posts %}
-		<p> name : {{ student['name'] }} ||||| first name : {{ student['firstname'] }} </p>
-	{% endfor %}
-{% endblock %}
+    {% endblock %}
 </body>
 </html>

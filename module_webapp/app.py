@@ -9,15 +9,21 @@ def get_db_connection():
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
     return  connection
-@app.route('/',  methods=('GET', 'POST'))
-def login_page():
+@app.route('/')
+def index():
     return render_template("index.html")
-
-
 
 @app.route('/search')
 def search_page():
     return render_template("search.html")
+
+@app.route('/list')
+def list_page():
+    connection = get_db_connection()
+    posts = connection.execute('SELECT * FROM name').fetchall()
+    connection.commit()
+    connection.close()
+    return render_template("list.html", posts=posts, image="placeholder")
 
 @app.route('/add', methods=('GET', 'POST'))
 def add_page():
@@ -43,6 +49,7 @@ def record_audio(time):
         #relevant code for registering audio
         return ('recording...')
     return ('Invalid arguments')
+
 @app.route('/<name>')
 def profile_page(name):
     connection = get_db_connection()
@@ -50,6 +57,11 @@ def profile_page(name):
     connection.commit()
     connection.close()
     return render_template("name.html", posts=posts, image="test.jpg", name=name)
+
+@app.route('/<name>/delete', methods=('POST', 'DELETE'))
+def delete_user(name):
+    #delete user code
+    return 'delete user'
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8181)

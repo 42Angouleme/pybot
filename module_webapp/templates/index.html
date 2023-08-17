@@ -4,11 +4,18 @@
 <head>
 
     <style>
+    body{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        text-align: center;
+    }
     a.button1{
         display:inline-block;
         padding:0.35em 1.2em;
         border:0.1em solid #000000;
-        margin:0 0.3em 0.3em 0;
+        margin:0 1.3em 0.3em 0;
         border-radius:0.12em;
         box-sizing: border-box;
         text-decoration:none;
@@ -21,20 +28,15 @@
     a.button1:hover{
         color:#000000;
         background-color:#F0F055;
-        transform: scale(1.1);
-    }
-    @media all and (max-width:30em){
-        a.button1{
-        display:block;
-        margin:0.4em auto;
+        transform: scale(1.2);
     }
     </style>
     <title>Menu</title>
 </head>
 
 <body>
-    <p>Menu</p>
+    <h1 class="title">Projet Robot</h1>
     <a href="add" class="button1">Ajouter un eleve</a>
+    <a href="search" class="button1">Chercher un eleve</a>
+    <a href="list" class="button1">Liste de tout les eleves</a>
 </body>
-
-</html>

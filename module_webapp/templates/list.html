@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{name}}</title>
+</head>
+<body>
+	{% block content %}
+    {% for student in posts %}
+        <a href={{student['name']}} class="button1">Nom : {{ student['name'] }} Prenom : {{ student['firstname'] }}</a>
+        <br />
+	{% endfor %}
+    {% endblock %}
+</body>
+</html>
