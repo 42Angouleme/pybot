@@ -3,21 +3,20 @@
 from skimage.metrics import structural_similarity as ssim
 import cv2
 
-def _ssi(image1, image2_path):
+
+def _ssi(image1, image2):
     """Compare two images
 
     Arguments:
-        image1_path {str} -- Path to the first image
-        image2_path {str} -- Path to the second image
+        image1 {numpy.ndarray} -- First image
+        image2 {numpy.ndarray} -- Second image
 
     Returns:
         float -- Similarity between the two images
     """
 
-    # Import images
-    image2 = cv2.imread(image2_path, cv2.IMREAD_COLOR)
     if image1 is None or image2 is None:
-        raise Exception("One or both images could not be found. Check input.")
+        raise ValueError("One of the images is None")
 
     # Convert the images to grayscale
     gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
@@ -32,7 +31,6 @@ def _ssi(image1, image2_path):
     elif image1_height * image1_width < image2_height * image2_width:
         gray2 = cv2.resize(gray2, (image1_width, image1_height))
 
-
     return ssim(gray1, gray2)
 
 
@@ -41,6 +39,7 @@ def run():
     cam = cv2.VideoCapture(0)
     cv2.namedWindow("normal")
 
+    card = cv2.imread("card.png", cv2.IMREAD_COLOR)
     while True:
         ret, frame = cam.read()
         if not ret:
@@ -48,14 +47,15 @@ def run():
         cv2.imshow("normal", frame)
 
         frame = cv2.resize(frame, (32, 24))
-        similarity = _ssi(frame, "./test.png")
+        similarity = _ssi(frame, card)
         print(f"Similarity: {similarity:.2%}")
 
         key = cv2.waitKey(1)
         if key == ord("q"):
             break
-        elif key == ord("s"):
-            cv2.imwrite("test.png", frame)
+        if key == ord("s"):
+            cv2.imwrite("card.png", frame)
+            card = frame
 
     cam.release()
     cv2.destroyAllWindows()
