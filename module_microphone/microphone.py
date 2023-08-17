@@ -3,6 +3,7 @@ import wavio
 from .filepath_timestamp import FilepathTimestamp
 import sounddevice as sd
 import logging
+import asyncio
 
 # When running the programme in DEBUG mode, every debug message of this module will be preffixed with this string
 logger_name: str = "microphone"
@@ -75,6 +76,33 @@ class Microphone(FilepathTimestamp):
             filepath = self.stop()
         debug("Recording finished.")
         return filepath
+
+    def _record(self, duration, filepath=None) -> str | None:
+        """
+        Use the microphone to record an audio file. The recording starts immediatly and last for `duration` secondes. The file is stored at path `filepath`.
+
+        Args:
+            filepath (str): The path where to save the audio file
+            duration (int): The duration is sec of the recording
+        """
+        if filepath is None:
+            filepath = self.filepath
+        self.last_timestamp = datetime.datetime.now()
+        debug("Recording audio...")
+        self.playing = True
+        self.recording = sd.rec(
+            int(self.sample_rate * duration), samplerate=self.sample_rate, channels=1
+        )  # Start recording
+
+    async def _async_record(self, *args):
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, self._record, *args)
+
+    def async_record(self, *args):
+        if self.playing:
+            debug("Recording already in progress, cannot start a new recording")
+            return
+        asyncio.create_task(self._async_record(*args))
 
     def _save_recording(self) -> str:
         """Save the recording. Ensure to stop the recording before calling this function."""
