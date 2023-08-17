@@ -7,7 +7,7 @@
 <body>
 	{% block content %}
     {% for student in posts %}
-        <a href={{student['name']}} class="button1">Nom : {{ student['name'] }} Prenom : {{ student['firstname'] }}</a>
+        <a href={{student['name']}}_{{student['firstname']}} class="button1">Nom : {{ student['name'] }} Prenom : {{ student['firstname'] }}</a>
         <br />
 	{% endfor %}
     {% endblock %}

@@ -50,13 +50,13 @@ def record_audio(time):
         return ('recording...')
     return ('Invalid arguments')
 
-@app.route('/<name>')
-def profile_page(name):
+@app.route('/<name>_<surname>')
+def profile_page(name, surname):
     connection = get_db_connection()
     posts = connection.execute('SELECT * FROM name').fetchall()
     connection.commit()
     connection.close()
-    return render_template("name.html", posts=posts, image="test.jpg", name=name)
+    return render_template("name.html", posts=posts, image="test.jpg", name=name, surname=surname)
 
 @app.route('/<name>/delete', methods=('POST', 'DELETE'))
 def delete_user(name):
