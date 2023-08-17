@@ -15,8 +15,18 @@ debug = stt_logger.debug
 
 
 class Microphone(FilepathTimestamp):
+    """
+    Microphone recorder.
+
+    Attributes:
+        playing (bool): True while recording is in progress.
+        recording : TODO doc
+        filepath (str): The path where to save the file. Extension should match an audio type. A timestamp suffix might be automatically added.
+        use_ts_suffix (bool): Whether to use timestamp suffix or not.
+
+    """
+
     playing = False
-    recording = None
     sample_rate = 44100  # Samples per second (Hz)
 
     def __init__(
@@ -32,6 +42,7 @@ class Microphone(FilepathTimestamp):
         )
 
     def stop(self) -> str | None:
+        """Stop the recording and save it."""
         filepath = None
         if self.playing:
             sd.stop()
@@ -47,8 +58,8 @@ class Microphone(FilepathTimestamp):
         Use the microphone to record an audio file. The recording starts immediatly and last for `duration` secondes. The file is stored at path `filepath`.
 
         Args:
-        filepath (str): The path where to save the audio file
-        duration (int): The duration is sec of the recording
+            filepath (str): The path where to save the audio file
+            duration (int): The duration is sec of the recording
         """
         if filepath is None:
             filepath = self.filepath
@@ -66,6 +77,7 @@ class Microphone(FilepathTimestamp):
         return filepath
 
     def _save_recording(self) -> str:
+        """Save the recording. Ensure to stop the recording before calling this function."""
         wavio.write(
             self.filepath, self.recording, self.sample_rate, sampwidth=2
         )  # Save the audio file

@@ -1,13 +1,25 @@
 # Module microphone
 
+This module exposes function to record audio and perform speech-to-text.
+
 ## Setup
 
 ### Dependencies
 
-```sh
-# For pyaudio
-$ sudo apt-get install portaudio19-dev
+First install pyaudio dependencies:
 
+```sh
+# For Linux
+$ sudo apt-get install portaudio19-dev
+# For Macos
+$ brew install portaudio
+
+```
+
+then `cd` at the root of the project and run:
+
+```sh
+$ pip install -r requirement.txt
 ```
 
 ### Whisper API (OpenAi) configuration [paid option]
@@ -22,19 +34,72 @@ $ export OPENAI_ORG_ID=replace_with_your_organisation_id
 
 # Find your organisation ID at https://platform.openai.com/account/org-settings
 ```
+
 #### Price
 
 The charge is 0,006 ct per minute. That is 0,36 ct per hour of recording.
 
 
+### Usage
+
+The higher level function is `speech_to_text`. It records audio and give you back a string.
+
+``` py
+from module_microphone import speech_to_text
+
+text = speech_to_text(10) # give the duration in second
+print(text)
+```
+The Microphone class let you start recording audio and stop it. A timestamp suffix is added to the filepath you provide.
+
+``` py
+mic = Microphone(filepath="/tmp/myaudio.wav")
+audio_filepath = mic.record(duration=10)
+# The recording automatically stop after 10 sec
+print(audio_filepath)
+# The file is saved at path `/tmp/myaudio_2023-08-17_12h35m10s.wav`
+
+```
+
+#### No timestamp
+
+``` py
+mic = Microphone(filepath="/tmp/myaudio.wav", use_ts_suffix=False)
+audio_filepath = mic.record() # default to 5 sec of recording
+print(audio_filepath) # The file is saved at path `/tmp/myaudio.wav`
+
+```
+
+#### Customize timestamp
+
+``` py
+mic = Microphone(filepath="/tmp/myaudio.wav", filename_ts_suffix_format = "_at_%H-%M")
+audio_filepath = mic.record() # default to 5 sec of recording
+print(audio_filepath) # The file is saved at path `/tmp/myaudio_at_12-36.wav`
+
+```
+
+#### Debug
+
+``` py
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+mic = Microphone(filepath="/tmp/myaudio.wav")
+audio_filepath = mic.record()
+
+# Will print debug message when the recording start, stop...
+```
+
 ## Info
 
-These dependencies are in `../requirement.txt`
+The following dependencies are included in `../requirement.txt`
 ```
-PyAudio==0.2.13
 PyAudio==0.2.13
 sounddevice==0.4.6
 wavio==0.0.7
+openai==0.27.8
 ```
 
 
