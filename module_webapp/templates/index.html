@@ -2,26 +2,39 @@
 <html>
 
 <head>
+
+    <style>
+    a.button1{
+        display:inline-block;
+        padding:0.35em 1.2em;
+        border:0.1em solid #000000;
+        margin:0 0.3em 0.3em 0;
+        border-radius:0.12em;
+        box-sizing: border-box;
+        text-decoration:none;
+        font-family:'Roboto',sans-serif;
+        font-weight:300;
+        color:#111155;
+        transition: all 0.2s;
+        text-align:center;
+    }
+    a.button1:hover{
+        color:#000000;
+        background-color:#F0F055;
+        transform: scale(1.1);
+    }
+    @media all and (max-width:30em){
+        a.button1{
+        display:block;
+        margin:0.4em auto;
+    }
+    </style>
     <title>Menu</title>
 </head>
 
 <body>
     <p>Menu</p>
-    <h3>Bienvenue</h3>
-    <form action="" method="get" class="form-example">
-        <div class="form-example">
-            <label for="name">Enter your name: </label>
-            <input type="text" name="name" id="name" required />
-        </div>
-        <div class="form-example">
-            <label for="email">Enter your email: </label>
-            <input type="email" name="email" id="email" required />
-        </div>
-        <div class="form-example">
-            <input type="submit" value="Subscribe!" />
-        </div>
-    </form>
-
+    <a href="add" class="button1">Ajouter un eleve</a>
 </body>
 
 </html>

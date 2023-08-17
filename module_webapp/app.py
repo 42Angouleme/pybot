@@ -3,40 +3,17 @@ from flask import Flask, Blueprint, render_template, request, url_for, flash, re
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret'
-
-auth = Blueprint('auth', __name__)
+app.secret_key = 'secret'
 
 def get_db_connection():
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
     return  connection
-
-@auth.route('/login')
-def login():
-    return 'Login'
-
-@auth.route('/signup')
-def signup():
-    return 'Signup'
-
-@auth.route('/logout')
-def logout():
-    return 'Logout'
-@app.route('/')
+@app.route('/',  methods=('GET', 'POST'))
 def login_page():
-    return render_template("login.html", name="")
+    return render_template("index.html")
 
-@app.route('/index')
-def index_page():
-    return render_template("index.html", name="")
 
-@app.route('/name')
-def profile_page():
-    connection = get_db_connection()
-    posts = connection.execute('SELECT * FROM name').fetchall()
-    connection.commit()
-    connection.close()
-    return render_template("name.html", posts=posts, image="test.jpg")
 
 @app.route('/search')
 def search_page():
@@ -50,14 +27,29 @@ def add_page():
     if request.method == 'POST':
         name = request.form['name']
         surname = request.form['firstname']
+        image = ''
         if name and surname:
             posts = connection.execute('SELECT * FROM name').fetchall()
             connection.execute('INSERT INTO name(name, firstname) VALUES (?, ?)', (name, surname))
             connection.commit()
             connection.close()
-            return redirect(url_for('profile_page'))
+            return render_template('name.html', name=name, surname=surname, image=image)
 
     return render_template("add.html", posts=posts)
+
+@app.route('/record/<time>')
+def record_audio(time):
+    if (time.isdigit()):
+        #relevant code for registering audio
+        return ('recording...')
+    return ('Invalid arguments')
+@app.route('/<name>')
+def profile_page(name):
+    connection = get_db_connection()
+    posts = connection.execute('SELECT * FROM name').fetchall()
+    connection.commit()
+    connection.close()
+    return render_template("name.html", posts=posts, image="test.jpg", name=name)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8181)

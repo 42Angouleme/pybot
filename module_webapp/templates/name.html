@@ -6,7 +6,7 @@
 </head>
 <body>
 	{% block content %}
-	<!-- <p>Profil de {{name}}</p> --!>
+	<p>Profil de {{name}} {{surname}}</p>
     <img src="{{ url_for('static', filename=image) }}" alt="motif eleve" width="200" height="200">
 	{% for student in posts %}
 		<p> name : {{ student['name'] }} ||||| first name : {{ student['firstname'] }} </p>
