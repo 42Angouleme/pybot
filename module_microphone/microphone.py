@@ -77,7 +77,7 @@ class Microphone(FilepathTimestamp):
         debug("Recording finished.")
         return filepath
 
-    def _record(self, duration, filepath=None) -> str | None:
+    def start_record(self, duration, filepath=None) -> str | None:
         """
         Use the microphone to record an audio file. The recording starts immediatly and last for `duration` secondes. The file is stored at path `filepath`.
 
@@ -96,7 +96,7 @@ class Microphone(FilepathTimestamp):
 
     async def _async_record(self, *args):
         loop = asyncio.get_event_loop()
-        await loop.run_in_executor(None, self._record, *args)
+        await loop.run_in_executor(None, self.start_record, *args)
 
     def async_record(self, *args):
         if self.playing:
