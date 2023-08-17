@@ -30,3 +30,13 @@ reponse = openai.ChatCompletion.create(
 )
 
 print(reponse["choices"][0]["message"]["content"])
+
+
+
+"""def read_file(filename):
+    try:
+        with open(filename, 'r') as file:
+            content = file.read()
+            return content
+    except FileNotFoundError:
+        print(f"Le fichier '{filename}' est introuvable.")"""
