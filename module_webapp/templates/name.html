@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>{{name}}</title>
+	<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
 </head>
 <body>
 	{% block content %}
@@ -12,5 +13,7 @@
 	</form>
     <img src="{{ url_for('static', filename=image) }}" alt="motif eleve" width="200" height="200">
     {% endblock %}
+	</br>
+    <a href="/" class="buttonMenu">MENU</a>
 </body>
 </html>

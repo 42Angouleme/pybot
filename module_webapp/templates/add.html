@@ -3,6 +3,7 @@
 
 <head>
     <title>FlaskTest {{name}}</title>
+	<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
 </head>
 
 <body>
@@ -24,6 +25,7 @@
     </form>
 
 {% endblock %}
+    <a href="/" class="buttonMenu">MENU</a>
 </body>
 
 </html>
