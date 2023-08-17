@@ -21,7 +21,7 @@ def run(txt="Bonjour et Bienvenue dans le projet ROBOTECH!"):
     # Select language and track type:
     voices = engine.getProperty('voices')
     engine.setProperty('voice', 'mb-fr1')
-    engine.setProperty('voice', 'fr')
+    # engine.setProperty('voice', 'fr')
 
     # Print the message:
     engine.say(txt)
