@@ -1,1 +1,3 @@
-from .server import Server, ServerType
+
+from server import Server, ServerType
+from log import log

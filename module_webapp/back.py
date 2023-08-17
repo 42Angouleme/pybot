@@ -1,4 +1,6 @@
-from module_webapp import Server
+#!/usr/bin/env python3.10
+
+from .server import Server, ServerType
 
 class BackServer(Server):
 	def __init__(self, port = 3000):
