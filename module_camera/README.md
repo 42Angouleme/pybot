@@ -20,6 +20,7 @@ Détecter et reconnaitre les dessins des collégiens.
 ### Impératif
 
 - La caméra doit être fixe.
+- Avoir un éclairage constant.
 - Le modèle de carte doit respecter un format standard.
 - 1 dessin ne peut être changé, on ne peut pas rajouter de la couleur.
 - 1 dessin = 1 personne (les couleurs ne se différencient pas suffisement avec notre algorithme).
@@ -28,6 +29,7 @@ Détecter et reconnaitre les dessins des collégiens.
 ### Suggestions
 
 - La caméra doit être en plongée.
+- Utiliser des leds pour avoir un éclairge constant
 - Utiliser un support bordé pour mettre la carte à une place fixe.
 - Les cartes peuvent avoir le format des cartes de visite.
 - Possibilité de rajouter une fontion pour retourner la carte à 360 degré
