@@ -1,15 +1,17 @@
 
-def read_input():
-    print("")
+def read_file(filename):
+    try:
+        with open(filename, 'r') as file:
+            content = file.read()
+            return content
+    except FileNotFoundError:
+        print(f"Le fichier '{filename}' est introuvable.")
 
 def parse():
     print("")
 
-def check_API():
-    print("")
-
-def check_interaction():
-    print("")
+# def check_API():
+#     print("")
 
 def transmit_to_API():
     print("")
@@ -17,22 +19,20 @@ def transmit_to_API():
 def receive_from_API():
     print("")
 
-def check_before_delivery():
-    print("")
-
-def deliver_answer():
-    print("")
 
 def run():
     # print("Hello Module (open)IA")
-    read_input()
-    parse()
-    check_API()
-    check_interaction()
+    filename = "test.txt"
+    content = read_file(filename)
+    try:
+        parse(content) != True
+    except WrongString: errrrrrrror
+            print ()
+    # check_API()
     transmit_to_API()
     receive_from_API()
-    check_before_delivery()
-    deliver_answer()
+    return None
+    # modifier None par reponse fournie par chatGPT
 
 # input
 # parsing
