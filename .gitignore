@@ -2,3 +2,6 @@
 .vscode
 __pycache__
 venv
+
+# Ignore Jupyter notebook backup files
+*-checkpoint.ipynb
