@@ -52,7 +52,7 @@ chmod +x main.py
 ## Lancer les démos interractives
 
 ``` sh
-jupyter lab notebooks/summary.ipynb
+jupyter lab notebooks/sommaire.ipynb
 ```
 
 > Les notebooks [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/index.html) combinent descriptions Markdown et sections de code interractif.
