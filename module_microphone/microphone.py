@@ -1,6 +1,6 @@
 import datetime
 import wavio
-from .filepath_timestamp import FilepathTimestamp
+from .filepath_schema import FilepathSchema
 import sounddevice as sd
 import logging
 import asyncio
@@ -15,7 +15,7 @@ stt_logger = logging.getLogger(logger_name)
 debug = stt_logger.debug
 
 
-class Microphone(FilepathTimestamp):
+class Microphone(FilepathSchema):
     """
     Microphone recorder.
 
@@ -23,8 +23,6 @@ class Microphone(FilepathTimestamp):
         playing (bool): True while recording is in progress.
         recording : TODO doc
         filepath (str): The path where to save the file. Extension should match an audio type. A timestamp suffix might be automatically added.
-        use_ts_suffix (bool): Whether to use timestamp suffix or not.
-
     """
 
     playing = False
@@ -33,12 +31,10 @@ class Microphone(FilepathTimestamp):
     def __init__(
         self,
         filepath="./recording.wav",
-        use_ts_suffix=True,
         allowed_extensions=[".wav"],
     ) -> None:
         super().__init__(
             filepath=filepath,
-            use_ts_suffix=use_ts_suffix,
             allowed_extensions=allowed_extensions,
         )
 
@@ -111,3 +107,28 @@ class Microphone(FilepathTimestamp):
         )  # Save the audio file
         debug(f"Audio saved as {self.filepath}")
         return self.filepath
+
+    # listen.for(duration=5)
+    # print(txt)
+
+    # openai_setup()
+    # r = sr.Recognizer()
+    # r.energy_threshold = 4000
+
+    # with sr.Microphone() as source:
+    #    print("Listening...")
+    #    r.pause_threshold = 1
+    #    audio = r.listen(source, timeout=2)
+
+    # print("OK...")
+
+    # try:
+    #    query = r.recognize_whisper_api(audio)
+    #    print(f"U said:{query}")
+    # except Exception as e:
+    #    print(e)
+
+    # print("Hello Module Microphone")
+    # using_high_level_function()
+    # using_low_level_function()
+    # asyncio.run(async_recording())
