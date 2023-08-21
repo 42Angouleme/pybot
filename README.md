@@ -1,5 +1,7 @@
 # PROJET ROBOT PYTHON
 
+[![Python Check](https://github.com/42Angouleme/robot-python/actions/workflows/python-app.yml/badge.svg)](https://github.com/42Angouleme/robot-python/actions/workflows/python-app.yml)
+
 * Une présentation complète du projet ici :
 ```
 documentation/hackathon.pdf
