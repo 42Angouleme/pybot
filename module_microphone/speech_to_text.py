@@ -1,13 +1,10 @@
-# from .openai_stt import openai_setup
-# from .microphone import Microphone
-
 from speech_recognition import Microphone, Recognizer, AudioData
 import logging
 from datetime import datetime
 import dateparser
-from .filepath_schema import FilepathSchema
 
 from typing import Callable
+from .audio_processor import AudioProcessor
 
 
 # When running the programme in DEBUG mode, every debug message of this module will be preffixed with this string
@@ -34,7 +31,7 @@ def get_default_recognizer() -> Recognizer:
     return r
 
 
-def _textual_duration_to_seconds(textual_duration: str) -> float:
+def textual_duration_to_seconds(textual_duration: str) -> float:
     """
     Convert a textual duration such as "1min and 42 seconds" into seconds.
 
@@ -60,61 +57,6 @@ def _textual_duration_to_seconds(textual_duration: str) -> float:
     return duration_sec
 
 
-class AudioProcessor(FilepathSchema):
-    """
-    Performs action on an audio file such as saving to file, speech to text.
-
-    Attributes:
-        recording (AudioData): Input audio data.
-        filepath (str): The default path where to save the file.
-        start_time (datetime|None): The time when the recording started.
-        recognizer (Recognizer): An instance of the speech recognizer class.
-    """
-
-    def __init__(
-        self,
-        recording: AudioData,
-        filepath: str = "/tmp/recording_%Y-%m-%d_%Hh%Mm%Ss.wav",
-        start_time: datetime | None = None,
-        recognizer: Recognizer = Recognizer(),
-    ) -> None:
-        super().__init__(
-            allowed_extensions=[".wav"], filepath=filepath, timestamp=start_time
-        )
-        self.recording = recording
-        self.r = recognizer
-
-    def as_text(self) -> str:
-        """
-        Transcribe `recording` to text. This method is blocking.
-
-        Returns:
-            str: The transcribed text.
-        """
-        txt = self.r.recognize_whisper_api(self.recording)
-        return txt
-
-    def save(self, filepath: str | None = None) -> "AudioProcessor":
-        """
-        Save the audio data to file. If `filepath` is not provided, uses the `filepath` attribute.
-        Format strings such as `%H`, `%M` or `%S` inside `filepath` are evaluated using `strftime`,
-        given the timestamp of when the recording started.
-
-        Args:
-            filepath (str|None): The path the file get saved at.
-
-        Returns:
-            AudioProcessor: It's own instance for method chaining.
-        """
-        if filepath is None:
-            filepath = self.filepath
-        with open(self.filepath, "wb") as f:
-            # TODO Check what is convert_rate about, should it be configurable ?
-            f.write(self.recording.get_wav_data(convert_rate=16000))
-        debug(TXT_SAVED_AS.format(filepath=self.filepath))
-        return self
-
-
 class SpeechToText:
     """
     Conveninent class with chainable methods to record audio and perform speech to text.
@@ -126,7 +68,11 @@ class SpeechToText:
         self.r = recognizer
         self.mic = Microphone()
 
-    def in_background(self, callback: Callable[[AudioProcessor], None]):
+    def for_each_phrase(self, callback: Callable[[AudioProcessor], None]):
+        """
+        Repeatedly record to spoken phrases and call the callback with a configured AudioProcessor instance as argument. This method is non-blocking.
+        """
+
         def cb(r: Recognizer, recording: AudioData):
             return callback(AudioProcessor(recording, recognizer=r))
 
@@ -137,7 +83,7 @@ class SpeechToText:
         self.stop = self.r.listen_in_background(self.mic, cb)
         return self.stop
 
-    def one_sentence(self) -> "AudioProcessor":
+    def one_phrase(self) -> "AudioProcessor":
         """
         Wait for one sentence to be pronounce and record it.
 
@@ -166,7 +112,7 @@ class SpeechToText:
             AudioProcessor: An AudioProcessor instance that can manipulate the recording.
         """
         if isinstance(duration, str):
-            duration = _textual_duration_to_seconds(duration)
+            duration = textual_duration_to_seconds(duration)
 
         with Microphone() as source:
             debug(f"Listening for {duration} secondes...")  # TODO humanize date
