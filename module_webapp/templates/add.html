@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FlaskTest {{name}}</title>
+	<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
+</head>
+
+<body>
+{% block content %}
+    <p>This is a Flask application.</p>
+    <h3>Welcome, {{name}}</h3>
+    <form action="" method="POST" class="form-example">
+        <div class="form-example">
+            <label for="name">Enter your name: </label>
+	    <input type="text" name="name" value="{{ request.form['name']}} "required />
+        </div>
+        <div class="form-example">
+            <label for="firstname">Enter your first name: </label>
+	    <input type="text" name="firstname" value="{{ request.form['firstname']}} "required />
+        </div>
+        <div class="form-example">
+            <input type="submit" value="Subscribe!" />
+        </div>
+    </form>
+
+{% endblock %}
+    <a href="/" class="buttonMenu">MENU</a>
+</body>
+
+</html>
