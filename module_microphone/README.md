@@ -17,13 +17,15 @@ $ brew install portaudio
 
 ```
 
-then `cd` at the root of the project and run:
+eventually create / activate a virtual environment then `cd` at the root of the project and install the pip dependencies with:
 
 ```sh
 $ pip install -r requirements.txt
 ```
 
 ### Whisper API (OpenAi) configuration [paid option]
+
+This API perform speech to text and requires an internet connection.
 
 - Create an billing account on https://platform.openai.com/account/
 - Generate an API key, copy the API key
@@ -40,71 +42,73 @@ $ export OPENAI_ORG_ID=replace_with_your_organisation_id
 
 The charge is 0,006 ct per minute. That is 0,36 ct per hour of recording.
 
+## Usage
 
-### Usage
-
-The higher level function is `speech_to_text`. It records audio and give you back a string.
-
-``` py
-from module_microphone import speech_to_text
-
-text = speech_to_text(10) # give the duration in second
-print(text)
-```
-The Microphone class let you start recording audio and stop it. A timestamp suffix is added to the filepath you provide.
+`listen` is an instance of `SpeechToText`. Method chaining make it easy to trigger an audio record then transcribe the spoken text.
 
 ``` py
-mic = Microphone(filepath="/tmp/myaudio.wav")
-audio_filepath = mic.record(duration=10)
-# The recording automatically stop after 10 sec
-print(audio_filepath)
-# The file is saved at path `/tmp/myaudio_2023-08-17_12h35m10s.wav`
+from module_microphone import listen
 
+print("J'écoute pendant 5 secondes...")
+print("Tu as dis: " + listen.during("5 secondes").as_text())
 ```
 
-#### No timestamp
+`one_phrase()` records audio and stop when the speaker takes a break.
+`save(filepath)` save the audio file and can format timestamp.
 
 ``` py
-mic = Microphone(filepath="/tmp/myaudio.wav", use_ts_suffix=False)
-audio_filepath = mic.record() # default to 5 sec of recording
-print(audio_filepath) # The file is saved at path `/tmp/myaudio.wav`
+from module_microphone import listen
 
+filepath = listen.one_phrase().save("/tmp/my_sentence_%Y-%m-%d_%Hh%Mm%Ss.wav").filepath
+print(filepath)
 ```
 
-#### Customize timestamp
+The return of `one_phrase()` and `one_sentence()` are instance of `AudioProcessor`
 
 ``` py
-mic = Microphone(filepath="/tmp/myaudio.wav", filename_ts_suffix_format = "_at_%H-%M")
-audio_filepath = mic.record() # default to 5 sec of recording
-print(audio_filepath) # The file is saved at path `/tmp/myaudio_at_12-36.wav`
+from module_microphone import listen
 
+audio_processor: AudioProcessor = listen.one_phrase()
+txt: str = audio_processor.as_text()
+print(txt)
 ```
 
-#### Debug
+`for_each_phrase(callback)` repeatedly record in the background and every time you take a break, it calls the callback with a configured AudioProcessor instance as argument. This method is non-blocking.
+
+``` py
+from module_microphone import listen
+
+def print_speech(audio: AudioProcessor):
+    print("Je réfléchis...")
+    print("Tu as dis: " + audio.as_text())
+
+
+listen.for_each_phrase(print_speech)
+print("Le microphone écoute en arrière plan, il écrira ce que tu dis.\n")
+
+input("Appuies sur une touche pour arrêter.")
+
+listen.stop()
+print("Arrêt en cours...")
+```
+
+## Debug
 
 ``` py
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-mic = Microphone(filepath="/tmp/myaudio.wav")
-audio_filepath = mic.record()
-
 # Will print debug message when the recording start, stop...
 ```
 
-## Info
+## Dependencies
 
 The following dependencies are included in `../requirement.txt`
 ```
 PyAudio==0.2.13
-sounddevice==0.4.6
-wavio==0.0.7
 openai==0.27.8
+SpeechRecognition==3.10.0
+dateparser==1.1.8
+pytest==7.4.0
 ```
-
-
-## Research
-
-- I tried SpeechRecognition python package that gathers many input api in a simple package but had complicated issues, many of them are posted on github issues with no answer
-- OpenAI speech recognition is great but does not support audio stream which would result in latency and would require to break audio in chunk for file > 25mb
