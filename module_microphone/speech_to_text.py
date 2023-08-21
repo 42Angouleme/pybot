@@ -8,18 +8,16 @@ from .audio_processor import AudioProcessor
 
 
 # When running the programme in DEBUG mode, every debug message of this module will be preffixed with this string
-logger_name: str = "microphone"
+logger_name: str = "SpeechToText"
 
 # A custom logger for this module
-stt_logger = logging.getLogger(logger_name)
+logger = logging.getLogger(logger_name)
 
 # This method prints a debug message
-debug = stt_logger.debug
+debug = logger.debug
 
 ERR_NO_RECORD = "No record, nothing to transcribe."
 ERR_DEHUMANIZATION_FAILED = '"{textual_duration}" is not a valid duration.'
-
-TXT_SAVED_AS = "File saved at {filepath}"
 
 
 def get_default_recognizer() -> Recognizer:
@@ -76,8 +74,12 @@ class SpeechToText:
         def cb(r: Recognizer, recording: AudioData):
             return callback(AudioProcessor(recording, recognizer=r))
 
+        debug("Adjusting microphone energy threshold, this takes a few seconds...")
+
         with self.mic as source:
             self.r.adjust_for_ambient_noise(source)
+
+        debug("Listening for phrases in background...")
 
         # TODO add attribute is_recording for when recording is running
         self.stop = self.r.listen_in_background(self.mic, cb)
