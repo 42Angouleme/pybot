@@ -9,4 +9,4 @@ PyAudio==0.2.13
 openai==0.27.8
 SpeechRecognition==3.10.0
 dateparser==1.1.8
-
+pytest==7.4.0
