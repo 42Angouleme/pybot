@@ -42,6 +42,14 @@ $ export OPENAI_ORG_ID=replace_with_your_organisation_id
 
 The charge is 0,006 ct per minute. That is 0,36 ct per hour of recording.
 
+## Demo
+
+Follow JupyterLab [setup instruction](../main#setup) and at the root of the repo run:
+
+``` sh
+jupyter lab notebooks/modules/microphone.ipynb
+```
+
 ## Usage
 
 `listen` is an instance of `SpeechToText`. Method chaining make it easy to trigger an audio record then transcribe the spoken text.
@@ -112,3 +120,9 @@ SpeechRecognition==3.10.0
 dateparser==1.1.8
 pytest==7.4.0
 ```
+
+- [Dateparser](https://dateparser.readthedocs.io/en/latest/) Sert à convertir une date en toutes lettres et vis-versa
+- [Pytest](https://docs.pytest.org/en/7.4.x/) Un framework de test en python
+- [SpeechRecognition](https://github.com/Uberi/speech_recognition) Rassemble plusieurs API de reconnaissance vocal et fournis des wrapper autour du microphone.
+- [OpenAI](https://github.com/openai/openai-python) Wrapper officiel pour interroger OpenAI.
+- [PyAudio](https://pypi.org/project/PyAudio/) Permet de jouer et d'enregistrer des fichiers audio.
