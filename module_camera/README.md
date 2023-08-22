@@ -1,6 +1,5 @@
 # Module Camera
 
-
 ## Objective:
 
 Détecter et reconnaitre les dessins des collégiens.
