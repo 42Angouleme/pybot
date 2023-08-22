@@ -1,45 +1,39 @@
-from .speech_to_text import speech_to_text
-from .microphone import Microphone
-from .openai_stt import openai_setup, openai_speech_to_text
-
+from .speech_to_text import listen, AudioProcessor
 import logging
-import asyncio
 
-logging.basicConfig(level=logging.DEBUG)
-
-
-def using_high_level_function():
-    print("recording for 10 secs")
-    txt = speech_to_text(duration=10)
-    print("Transcribed text:")
-    print(txt)
+# Uncomment for debug message
+# logging.basicConfig(level=logging.DEBUG)
 
 
-def using_low_level_function():
-    openai_setup()
-    micro = Microphone()
-    print("recording for 5 secs")
-    audio_filepath = micro.record(5)
-    if audio_filepath:
-        transcribed_txt = openai_speech_to_text(audio_filepath)
-        print(f"Transcribed text {transcribed_txt}")
+def print_speech(audio: AudioProcessor):
+    print("Je réfléchis...")
+    print("Tu as dis: " + audio.as_text())
 
 
-async def async_recording():
-    openai_setup()
-    micro = Microphone()
-    # Run the recording for 4 sec maximum, without blocking
-    micro.async_record(4)
-    # Wait 2 sec
-    await asyncio.sleep(2)
-    # Stop the recording
-    audio_filepath = micro.stop()
-    #
-    print(audio_filepath)
+def scrib():
+    listen.for_each_phrase(print_speech)
+    print("Le microphone écoute en arrière plan, il écrira ce que tu dis.\n")
+    input("Appuies sur une touche pour arrêter.")
+    listen.stop()
+    print("Arrêt en cours...")
+
+
+def text_to_speech_5_sec():
+    print("J'écoute pendant 5 secondes...")
+    print("Tu as dis: " + listen.during("5 secondes").as_text())
+
+
+def save_one_phrase():
+    """Record one spoken sentence and save it at default path."""
+    filepath = (
+        listen.one_phrase().save("/tmp/my_sentence_%Y-%m-%d_%Hh%Mm%Ss.wav").filepath
+    )
+
+    print("Fichier sauvegardé au chemin " + filepath)
 
 
 def run():
-    print("Hello Module Microphone")
-    using_high_level_function()
-    using_low_level_function()
-    asyncio.run(async_recording())
+    # Comment / Uncomment functions to try them
+    # text_to_speech_5_sec()
+    scrib()
+    # save_one_phrase()
