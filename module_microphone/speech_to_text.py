@@ -7,14 +7,8 @@ from typing import Callable
 from .audio_processor import AudioProcessor
 
 
-# When running the programme in DEBUG mode, every debug message of this module will be preffixed with this string
-logger_name: str = "SpeechToText"
-
-# A custom logger for this module
-logger = logging.getLogger(logger_name)
-
-# This method prints a debug message
-debug = logger.debug
+debug = logging.getLogger("SpeechToText").debug
+"""Custom Logger debug function. Print a message only shown when DEBUG mode is activated."""
 
 ERR_NO_RECORD = "No record, nothing to transcribe."
 ERR_DEHUMANIZATION_FAILED = '"{textual_duration}" is not a valid duration.'

@@ -5,14 +5,9 @@ from datetime import datetime
 
 import logging
 
-# When running the programme in DEBUG mode, every debug message of this module will be preffixed with this string
-logger_name: str = "AudioProcessor"
 
-# A custom logger for this module
-logger = logging.getLogger(logger_name)
-
-# This method prints a debug message
-debug = logger.debug
+debug = logging.getLogger("AudioProcessor").debug
+"""Custom Logger debug function. Print a message only shown when DEBUG mode is activated."""
 
 TXT_SAVED_AS = "File saved at {filepath}"
 
