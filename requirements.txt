@@ -19,3 +19,4 @@ tqdm==4.66.1
 urllib3==2.0.4
 Werkzeug==2.3.6
 yarl==1.9.2
+pyttsx3==2.90
