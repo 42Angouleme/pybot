@@ -89,7 +89,7 @@ class SpeechToText:
             _debug("Listening to one sentence...")
             start_time = datetime.now()
             self.r.pause_threshold = 1
-            recording = self.r.listen(source, timeout=2)
+            recording = self.r.listen(source)
             _debug("Recording done...")
             return AudioProcessor(recording, start_time=start_time, recognizer=self.r)
 
