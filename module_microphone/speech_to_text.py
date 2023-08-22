@@ -7,11 +7,10 @@ from typing import Callable
 from .audio_processor import AudioProcessor
 
 
-debug = logging.getLogger("SpeechToText").debug
+_debug = logging.getLogger("SpeechToText").debug
 """Custom Logger debug function. Print a message only shown when DEBUG mode is activated."""
 
-ERR_NO_RECORD = "No record, nothing to transcribe."
-ERR_DEHUMANIZATION_FAILED = '"{textual_duration}" is not a valid duration.'
+_ERR_DEHUMANIZATION_FAILED = '"{textual_duration}" is not a valid duration.'
 
 
 def get_default_recognizer() -> Recognizer:
@@ -43,7 +42,7 @@ def textual_duration_to_seconds(textual_duration: str) -> float:
     # in case textutal_duration is absolute, it can be in the past. # TODO I had to reverse the condition (<= with >) I have no idea why
     if (not future_date) or future_date > relative_base:
         raise ValueError(
-            ERR_DEHUMANIZATION_FAILED.format(textual_duration=textual_duration)
+            _ERR_DEHUMANIZATION_FAILED.format(textual_duration=textual_duration)
         )
     duration_sec = (relative_base - future_date).total_seconds()
     return duration_sec
@@ -68,12 +67,12 @@ class SpeechToText:
         def cb(r: Recognizer, recording: AudioData):
             return callback(AudioProcessor(recording, recognizer=r))
 
-        debug("Adjusting microphone energy threshold, this takes a few seconds...")
+        _debug("Adjusting microphone energy threshold, this takes a few seconds...")
 
         with self.mic as source:
             self.r.adjust_for_ambient_noise(source)
 
-        debug("Listening for phrases in background...")
+        _debug("Listening for phrases in background...")
 
         # TODO add attribute is_recording for when recording is running
         self.stop = self.r.listen_in_background(self.mic, cb)
@@ -87,11 +86,11 @@ class SpeechToText:
             AudioProcessor: An AudioProcessor instance that can manipulate the recording.
         """
         with Microphone() as source:
-            debug("Listening to one sentence...")
+            _debug("Listening to one sentence...")
             start_time = datetime.now()
             self.r.pause_threshold = 1
             recording = self.r.listen(source, timeout=2)
-            debug("Recording done...")
+            _debug("Recording done...")
             return AudioProcessor(recording, start_time=start_time, recognizer=self.r)
 
     def during(
@@ -111,10 +110,10 @@ class SpeechToText:
             duration = textual_duration_to_seconds(duration)
 
         with Microphone() as source:
-            debug(f"Listening for {duration} secondes...")  # TODO humanize date
+            _debug(f"Listening for {duration} secondes...")  # TODO humanize date
             start_time = datetime.now()
             recording = self.r.record(source, duration=duration, offset=offset)
-            debug("Recording done...")
+            _debug("Recording done...")
             return AudioProcessor(recording, start_time=start_time, recognizer=self.r)
 
 
