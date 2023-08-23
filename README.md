@@ -26,6 +26,14 @@ documentation/hackathon.pdf
     * Un autre module proposé ?
 
 ## Setup environnement dev python
+
+
+#### Dependences possibles 
+
+```
+sudo apt install portaudio19-dev libasound-dev espeak
+```
+
 ```
 python3 -m venv venv
 source venv/bin/activate
