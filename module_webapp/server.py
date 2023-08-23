@@ -4,8 +4,6 @@ import enum
 import flask
 import waitress
 
-from config import DFLT_DB_PORT, DFLT_FRONT_PORT, DFLT_BACK_PORT, DFLT_LSTN_HOST
-
 class ST(enum.Enum):
 	FRONT = enum.auto(),
 	BACK = enum.auto(),
@@ -16,7 +14,7 @@ class ST(enum.Enum):
 		return any(x == value for x in cls.__members__.values())
 
 class Server():
-	def __init__(self, port, server_type, host = DFLT_LSTN_HOST):
+	def __init__(self, port, server_type, host):
 		if not ST.has_value(server_type):
 			exit(123)
 		self.server_type = server_type

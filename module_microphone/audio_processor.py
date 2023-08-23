@@ -3,6 +3,14 @@ from .filepath_schema import FilepathSchema
 from speech_recognition import Recognizer, AudioData
 from datetime import datetime
 
+import logging
+
+
+_debug = logging.getLogger("AudioProcessor").debug
+"""Custom Logger debug function. Print a message only shown when DEBUG mode is activated."""
+
+_TXT_SAVED_AS = "File saved at {filepath}"
+
 
 class AudioProcessor(FilepathSchema):
     """
@@ -55,5 +63,5 @@ class AudioProcessor(FilepathSchema):
         with open(self.filepath, "wb") as f:
             # TODO Check what is convert_rate about, should it be configurable ?
             f.write(self.recording.get_wav_data(convert_rate=16000))
-        debug(TXT_SAVED_AS.format(filepath=self.filepath))
+        _debug(_TXT_SAVED_AS.format(filepath=self.filepath))
         return self

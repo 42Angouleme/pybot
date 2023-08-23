@@ -4,7 +4,7 @@ from speech_recognition import Recognizer, AudioFile
 import re
 
 
-def test_speech_to_text():
+def test_audiofile_to_text():
     EXPECT_REG = r"bonjour.*bienvenue.*42"
     AUDIO_FILEPATH = "bonjour42.wav"
     AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), AUDIO_FILEPATH)
