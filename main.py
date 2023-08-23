@@ -1,19 +1,19 @@
 #! /bin/python3
-import module_microphone as microphone
+# import module_microphone as microphone
 import module_audio as audio
 
 # TODO an import is missing for skimage
-# import module_camera as camera
-import module_ia as ia
+import module_camera as camera
+# import module_ia as ia
 import module_ecran as ecran
-
-from module_microphone import listen
+                                                                        
+# from module_microphone import listen
 import asyncio
 
 
 async def chat_bot():
     print('J\'écoute... à tout moment tu peux dire le mot "STOP" pour arrêter.')
-    while True:
+    while True:                       
         try:
             question = listen.one_phrase().as_text()
             print("Tu as dis: " + question)
@@ -27,14 +27,14 @@ async def chat_bot():
             print(f"Une erreur est survenue: {e}")
             break
         print('J\'écoute... à tout moment tu peux dire le mot "STOP" pour arrêter.')
-
     print("Bye !")
 
 
 def main():
-    asyncio.run(chat_bot())
+    # asyncio.run(chat_bot())
     # microphone.run()
-    # camera.run()
+    # audio.run()
+    camera.run()
     # ia.run()
     # ecran.run()
 
