@@ -3,8 +3,8 @@ from flask import g, Flask, Blueprint, render_template, request, url_for, flash,
 from functools import wraps
 
 app = Flask(__name__)
-app.config['SECRET KEY'] = 'secret'
-app.secret_key = 'secret'
+app.config['SECRET KEY'] = 'hello'
+app.secret_key = 'hello'
 
 
 def login_required(f):
@@ -30,12 +30,11 @@ def login():
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    print("POST")
-    # password = request.form['password']
-    # print(password)
-    print(request.form)
-    print(request)
-    return render_template("login.html")
+    password = request.form['password']
+    if password != app.secret_key:
+        return render_template("login.html", log=True)
+    else:
+        return render_template("index.html")
 
 
 @app.route('/')

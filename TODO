@@ -1,17 +1,20 @@
-* token openai et password webapp dans le .env
+- token openai et password webapp dans le .env
 
-* general : dotenv for token api and simple user+password
-    * https://github.com/theskumar/python-dotenv#readme
+- general : dotenv for token api and simple user+password
 
-* webapp : flask db add image path
+  - https://github.com/theskumar/python-dotenv#readme
 
-* camera : upload image json from a flask route
+- webapp : flask db add image path
 
-* A tkinter app that get the camera stream from camera module and receive validation if a student is connected.
+- camera : upload image json from a flask route
 
-* test serving backend and tkinter app from raspberrypi
+- A tkinter app that get the camera stream from camera module and receive validation if a student is connected.
 
-* faire un plan de ce qu'il reste a faire : bien distinguer role application flask (module webapp) et application tkinter (module ecran)
+- test serving backend and tkinter app from raspberrypi
+
+- faire un plan de ce qu'il reste a faire : bien distinguer role application flask (module webapp) et application tkinter (module ecran)
+
+- structure app graph
 
 notes
 https://www.fullstackpython.com/sqlite.html
