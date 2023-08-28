@@ -1,3 +1,3 @@
 
 from server import Server, ServerType
-from log import log
+from module_webapp.v2.log import log

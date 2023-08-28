@@ -1,0 +1,1 @@
+print("Do tests, check .env then run the webapp server and the tkinter app fullscreen.")
