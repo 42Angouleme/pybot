@@ -1,12 +1,6 @@
+from sqlalchemy_media import ImageProcessor, ImageValidator
+
 from .image import image_model_factory
-from sqlalchemy_media import (
-    StoreManager,
-    FileSystemStore,
-    Image,
-    ImageAnalyzer,
-    ImageValidator,
-    ImageProcessor,
-)
 
 DrawingModel = image_model_factory(
     ImageValidator(
@@ -17,3 +11,4 @@ DrawingModel = image_model_factory(
     ),
     ImageProcessor(fmt="png", width=400),
 )
+"""A preconfigured sqlalchemy_media `Image` class. Performs image validation and resizing."""

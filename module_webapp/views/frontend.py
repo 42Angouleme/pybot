@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from sqlalchemy_media import StoreManager
-from ..models import user
-from ..app import db
+from module_webapp.dao import user
+from module_webapp.app import db
 
 frontend_bp = Blueprint("frontend", __name__)
 

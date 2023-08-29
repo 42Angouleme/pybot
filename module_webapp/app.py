@@ -18,7 +18,7 @@ def create_app():
     app = Flask(__name__, static_folder="../static", static_url_path="/static")
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 
-    # Static media storage
+    # Static media storage with sqlalchemy_media
     WORKING_DIR = os.path.abspath(os.getcwd())
     TEMP_PATH = os.path.join(WORKING_DIR, "static")
     StoreManager.register(
@@ -30,9 +30,9 @@ def create_app():
     # Database
     db.init_app(app)
     with app.app_context():
-        db.create_all()
+        db.create_all()  # ensure db table creation as defined by our models
 
-    ## Blueprints
+    # Blueprints
     app.register_blueprint(api_bp)
     app.register_blueprint(frontend_bp)
 
