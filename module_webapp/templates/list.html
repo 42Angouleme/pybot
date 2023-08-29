@@ -11,9 +11,14 @@
     <a href="/" class="buttonMenu">MENU</a>
     <br>
     {% block content %}
-    {% for student in posts %}
-    <a href={{student['name']}}_{{student['firstname']}} class="button1">Nom : {{ student['name'] }} Prenom : {{
-        student['firstname'] }}</a>
+    {% for user in users %}
+    <a href={{user['name']}} class="button1">Nom : {{ user['name'] }}</a>
+
+    <a href="{{ user['picture'].locate() }}">
+        <img
+            src="{{ user['picture'].get_thumbnail(width=48, auto_generate=True).locate() }}"
+            alt="Uploaded Image">
+    </a>
     <br />
     {% endfor %}
     {% endblock %}
