@@ -11,6 +11,7 @@ from module_webapp.models import UserId
 
 from sqlalchemy.exc import NoResultFound
 
+from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 from ..model import (
     create_user_parser,
     patch_user_parser,
@@ -26,6 +27,13 @@ ns = api.namespace("users", description="USER operations")
 @ns.errorhandler(ValidationError)
 @ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
 def handle_ValidationError_exception(error):
+    """This is a custom error"""
+    return {"message": error}, HTTPStatus.BAD_REQUEST
+
+
+@ns.errorhandler(JsonSchemaValidationError)
+@ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
+def handle_JsonSchemaValidationError_exception(error):
     """This is a custom error"""
     return {"message": error}, HTTPStatus.BAD_REQUEST
 

@@ -10,6 +10,41 @@ from module_webapp.models import (
 )
 from sqlalchemy.exc import NoResultFound
 import json
+from jsonschema import validate
+
+openai_chat_messages_schema = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "role": {
+                "type": "string",
+                "enum": ["system", "user", "assistant", "function"],
+            },
+            "content": {"type": ["string", "null"]},
+            "name": {"type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_]+$"},
+            "function_call": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "arguments": {"type": "string"},
+                },
+                "required": ["name", "arguments"],
+                "additionalProperties": False,
+            },
+        },
+        "required": ["role", "content"],
+    },
+}
+"""The json schema allowed for openai chat messages object as described at https://platform.openai.com/docs/api-reference/chat/create#messages. Note, the schema is not restrictive enough if you read the spec carrefully but that's enough for now."""
+
+
+def parse_openai_chat_messages(user: User):
+    """If the user has openai_chat_messages property, convert it from string to JSON, then validate the JSON schema and reassign the property as dict."""
+    if user.openai_chat_messages:
+        user.openai_chat_messages = json.loads(user.openai_chat_messages)
+        validate(user.openai_chat_messages, openai_chat_messages_schema)
 
 
 def raise_NoResultFound_if_none(user, id):
@@ -34,8 +69,8 @@ class UserDAO(object):
         """
         user = User.query.get(id)
         raise_NoResultFound_if_none(user, id)
-        if user.chat:
-            user.chat = json.loads(user.chat)
+        if user.openai_chat_messages:
+            user.openai_chat_messages = json.loads(user.openai_chat_messages)
         return user
 
     def create(self, user: UserCreate) -> UserResponse:
@@ -48,12 +83,11 @@ class UserDAO(object):
             file = user["picture"]
             img = DrawingModel.create_from(file)
             new_user = User(**(user | {"picture": img}))
+        parse_openai_chat_messages(new_user)
         db.session.add(new_user)
         db.session.commit()
         # refetch the user from the db for the response to include the generated ID
         db.session.refresh(new_user)
-        if new_user.chat:
-            new_user.chat = json.loads(new_user.chat)
         return new_user
 
     def update(self, id: UserId, user_patch: UserPatch) -> UserResponse:
@@ -72,6 +106,7 @@ class UserDAO(object):
                     user.picture = DrawingModel.create_from(user_patch["picture"])
             del user_patch["picture"]
 
+        parse_openai_chat_messages(user_patch)
         # apply the patch to the user object we just fetched
         for key, value in user_patch.items():
             if value is not None:
@@ -79,8 +114,6 @@ class UserDAO(object):
 
         db.session.commit()
         db.session.refresh(user)
-        if user.chat:
-            user.chat = json.loads(user.chat)
         return user
 
     def delete(self, id: UserId) -> UserResponse:
