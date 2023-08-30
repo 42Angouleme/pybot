@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from module_webapp.app import db, StoreManager
 from module_webapp.models import (
     User,
@@ -8,6 +9,7 @@ from module_webapp.models import (
     UserId,
 )
 from sqlalchemy.exc import NoResultFound
+import json
 
 
 def raise_NoResultFound_if_none(user, id):
@@ -32,6 +34,8 @@ class UserDAO(object):
         """
         user = User.query.get(id)
         raise_NoResultFound_if_none(user, id)
+        if user.chat:
+            user.chat = json.loads(user.chat)
         return user
 
     def create(self, user: UserCreate) -> UserResponse:
@@ -48,6 +52,8 @@ class UserDAO(object):
         db.session.commit()
         # refetch the user from the db for the response to include the generated ID
         db.session.refresh(new_user)
+        if new_user.chat:
+            new_user.chat = json.loads(new_user.chat)
         return new_user
 
     def update(self, id: UserId, user_patch: UserPatch) -> UserResponse:
@@ -65,6 +71,7 @@ class UserDAO(object):
                 with StoreManager(db.session):
                     user.picture = DrawingModel.create_from(user_patch["picture"])
             del user_patch["picture"]
+
         # apply the patch to the user object we just fetched
         for key, value in user_patch.items():
             if value is not None:
@@ -72,6 +79,8 @@ class UserDAO(object):
 
         db.session.commit()
         db.session.refresh(user)
+        if user.chat:
+            user.chat = json.loads(user.chat)
         return user
 
     def delete(self, id: UserId) -> UserResponse:

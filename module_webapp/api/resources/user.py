@@ -18,15 +18,21 @@ from ..model import (
     api_error_model,
 )
 
+import json
+
 ns = api.namespace("users", description="USER operations")
-
-
-from module_webapp.models import User
 
 
 @ns.errorhandler(ValidationError)
 @ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
 def handle_ValidationError_exception(error):
+    """This is a custom error"""
+    return {"message": error}, HTTPStatus.BAD_REQUEST
+
+
+@ns.errorhandler(json.JSONDecodeError)
+@ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
+def handle_JSONDecodeError_exception(error):
     """This is a custom error"""
     return {"message": error}, HTTPStatus.BAD_REQUEST
 
@@ -64,8 +70,7 @@ class UserList(Resource):
     def post(self):
         """Create a new user"""
         args = create_user_parser.parse_args()
-        data: User = user.create(args)
-        print("---", data.id)
+        data = user.create(args)
         return data, HTTPStatus.CREATED
 
 
@@ -85,8 +90,6 @@ class UserResource(Resource):
         """Fetch a given resource"""
 
         fetched_user = user.get(id)
-        if fetched_user is None:
-            api.abort(HTTPStatus.NOT_FOUND, f"User with ID {id} not found.")
         return fetched_user
 
     @ns.doc("delete_user")
@@ -98,10 +101,6 @@ class UserResource(Resource):
     def delete(self, id: UserId):
         """Delete a user given its identifier"""
         deleted_user = user.delete(id)
-        if deleted_user is None:
-            api.abort(
-                HTTPStatus.NOT_FOUND, f"User with ID {id} not found. Can't deleted."
-            )
         return deleted_user
 
     @ns.doc("update_user")
@@ -118,8 +117,4 @@ class UserResource(Resource):
         """Update a user given its identifier"""
         patch = patch_user_parser.parse_args()
         updated_user = user.update(id, patch)
-        if updated_user is None:
-            api.abort(
-                HTTPStatus.NOT_FOUND, f"User with ID {id} not found. Can't update."
-            )
         return updated_user, HTTPStatus.OK

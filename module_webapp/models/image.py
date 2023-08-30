@@ -17,7 +17,7 @@ class Json(TypeDecorator):
 
 
 def image_model_factory(validator=ImageValidator(), processor=ImageProcessor()):
-    """A wrapper around sqlalchemy `Image` class."""
+    """A wrapper around sqlalchemy_media `Image` class."""
 
     class ImageModel(Image):
         __pre_processors__ = [
