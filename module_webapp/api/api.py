@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask_restx import Api
 
 api_bp = Blueprint("api", __name__)
+"""Blueprint for the api routes"""
 
 api = Api(
     api_bp,
@@ -11,5 +12,6 @@ api = Api(
     prefix="/api",
     doc="/api/doc",
 )
+
 
 from .resources import user

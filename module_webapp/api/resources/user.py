@@ -1,34 +1,48 @@
 from flask_restx import Resource
+from flask_restx.api import HTTPStatus
 from sqlalchemy_media.exceptions import ValidationError
 from sqlalchemy.exc import IntegrityError
 
 from module_webapp.dao import user
 
-from werkzeug.datastructures import FileStorage
-from flask_restx import fields
 from ..api import api
+
+from module_webapp.models import UserId
+
+from sqlalchemy.exc import NoResultFound
+
+from ..model import (
+    create_user_parser,
+    patch_user_parser,
+    api_user_model,
+    api_error_model,
+)
 
 ns = api.namespace("users", description="USER operations")
 
-create_user_parser = api.parser()
-create_user_parser.add_argument(
-    "picture", location="files", type=FileStorage, required=True
-)
-create_user_parser.add_argument(
-    "name", type=str, help="The user name", location="form", required=True
-)
 
-patch_user_parser = api.parser()
-patch_user_parser.add_argument("picture", location="files", type=FileStorage)
-patch_user_parser.add_argument("name", type=str, help="The user name", location="form")
+from module_webapp.models import User
 
-api_user_model = api.model(
-    "User",
-    {
-        "id": fields.Integer(readonly=True, description="The user unique identifier"),
-        "name": fields.String(required=True, description="The student name"),
-    },
-)
+
+@ns.errorhandler(ValidationError)
+@ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
+def handle_ValidationError_exception(error):
+    """This is a custom error"""
+    return {"message": error}, HTTPStatus.BAD_REQUEST
+
+
+@ns.errorhandler(IntegrityError)
+@ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
+def handle_IntegrityError_exception(error):
+    """This is a custom error"""
+    return {"message": "Integrity constraint violation."}, HTTPStatus.BAD_REQUEST
+
+
+@ns.errorhandler(NoResultFound)
+@ns.marshal_with(api_error_model, code=HTTPStatus.NOT_FOUND)
+def handle_NoResultFound_exception(error):
+    """This is a custom error"""
+    return {"message": error}, HTTPStatus.NOT_FOUND
 
 
 @ns.route("/")
@@ -43,55 +57,69 @@ class UserList(Resource):
 
     @ns.doc("create_user")
     @ns.expect(create_user_parser)
-    @ns.response(400, "Bad request")
-    @ns.marshal_with(api_user_model, code=201)
+    @ns.marshal_with(api_user_model, code=HTTPStatus.CREATED)
+    @ns.response(
+        code=HTTPStatus.BAD_REQUEST, description="Bad Request", model=api_error_model
+    )
     def post(self):
         """Create a new user"""
         args = create_user_parser.parse_args()
-        try:
-            data = user.create(args)
-            return data, 201
-        except ValidationError as e:
-            api.abort(400, e)
-        except IntegrityError as e:
-            api.abort(400, "Integrity constraint violation.")
-        # TODO this try catch should be done on the other routes too?
+        data: User = user.create(args)
+        print("---", data.id)
+        return data, HTTPStatus.CREATED
 
 
 @ns.route("/<int:id>")
-@ns.response(404, "User not found")
+@ns.response(HTTPStatus.NOT_FOUND, "User not found")
 @ns.param("id", "The user identifier")
 class UserResource(Resource):
     """Show a single user item and lets you delete and patch them"""
 
     @ns.doc("get_user")
-    @ns.response(200, "User fetched")
+    @ns.response(HTTPStatus.OK, "User fetched")
     @ns.marshal_with(api_user_model)
-    def get(self, id):
+    @ns.response(
+        code=HTTPStatus.NOT_FOUND, description="Not Found", model=api_error_model
+    )
+    def get(self, id: UserId):
         """Fetch a given resource"""
+
         fetched_user = user.get(id)
         if fetched_user is None:
-            api.abort(404, f"User with ID {id} not found.")
+            api.abort(HTTPStatus.NOT_FOUND, f"User with ID {id} not found.")
         return fetched_user
 
     @ns.doc("delete_user")
-    @ns.response(200, "User deleted")
+    @ns.response(HTTPStatus.OK, "User deleted")
     @ns.marshal_with(api_user_model)
-    def delete(self, id):
+    @ns.response(
+        code=HTTPStatus.NOT_FOUND, description="Not Found", model=api_error_model
+    )
+    def delete(self, id: UserId):
         """Delete a user given its identifier"""
         deleted_user = user.delete(id)
         if deleted_user is None:
-            api.abort(404, f"User with ID {id} not found. Can't deleted.")
+            api.abort(
+                HTTPStatus.NOT_FOUND, f"User with ID {id} not found. Can't deleted."
+            )
         return deleted_user
 
     @ns.doc("update_user")
     @ns.expect(patch_user_parser)
-    @ns.response(200, "User updated")
+    @ns.response(HTTPStatus.OK, "User updated")
     @ns.marshal_with(api_user_model)
-    def patch(self, id):
+    @ns.response(
+        code=HTTPStatus.BAD_REQUEST, description="Bad Request", model=api_error_model
+    )
+    @ns.response(
+        code=HTTPStatus.NOT_FOUND, description="Not Found", model=api_error_model
+    )
+    def patch(self, id: UserId):
         """Update a user given its identifier"""
-        args = patch_user_parser.parse_args()
-        updated_user = user.update(id, args)
+        patch = patch_user_parser.parse_args()
+        updated_user = user.update(id, patch)
         if updated_user is None:
-            api.abort(404, f"User with ID {id} not found. Can't update.")
-        return updated_user, 200
+            api.abort(
+                HTTPStatus.NOT_FOUND, f"User with ID {id} not found. Can't update."
+            )
+        return updated_user, HTTPStatus.OK
