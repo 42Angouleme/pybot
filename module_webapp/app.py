@@ -18,6 +18,9 @@ def create_app():
     app = Flask(__name__, static_folder="../static", static_url_path="/static")
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 
+    app.config["SECRET KEY"] = "hello"
+    app.secret_key = "hello"
+
     # Static media storage with sqlalchemy_media
     WORKING_DIR = os.path.abspath(os.getcwd())
     TEMP_PATH = os.path.join(WORKING_DIR, "static")

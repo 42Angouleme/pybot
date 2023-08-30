@@ -12,17 +12,26 @@
     <br>
     {% block content %}
     {% for user in users %}
-    <a href={{user['name']}} class="button1">Nom : {{ user['name'] }}</a>
+    <div id="user-{{ user['id'] }}">
+        <a href={{user['name']}} class="button1">Nom : {{ user['name'] }}</a>
 
-    <a href="{{ user['picture'].locate() }}">
-        <img
-            src="{{ user['picture'].get_thumbnail(width=48, auto_generate=True).locate() }}"
-            alt="Uploaded Image">
-    </a>
-    <br />
+        <a href="{{ user['picture'].locate() }}">
+            <img
+                src="{{ user['picture'].get_thumbnail(width=48).locate() }}"
+                alt="Uploaded Image">
+        </a>
+        <button onclick="deleteUser({{ user['id'] }})"> delete</button>
+        <br />
+    </div>
     {% endfor %}
     {% endblock %}
-
+    <script>
+        deleteUser = id => fetch(`/api/users/${id}`, {method: "DELETE"}).then(resp => {
+            if (resp.ok)
+                document.getElementById(`user-${id}`).remove()
+        }).catch(e => console.log(e));
+    </script>
 </body>
+
 
 </html>

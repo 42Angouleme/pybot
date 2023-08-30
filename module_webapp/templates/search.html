@@ -11,14 +11,10 @@
     {% block content %}
     <p>This is a Flask application.</p>
     <h3>Welcome, {{name}}</h3>
-    <form action="" method='POST' class="form-example">
-        <div class="form-example">
-            <label for="name">Enter name to search: </label>
-            <input type="text" name="name" value="{{ request.form['name']}}" required />
-        </div>
-        <div class="form-example">
-            <input type="submit" value="Search!" />
-        </div>
+    <form action="/list" method="get">
+        <label for="inputContent">User name:</label>
+        <input type="text" id="inputContent" name="name">
+        <button type="submit">Search</button>
     </form>
     {% endblock %}
     <a href="/" class="buttonMenu">MENU</a>

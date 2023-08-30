@@ -10,14 +10,12 @@
 {% block content %}
     <p>This is a Flask application.</p>
     <h3>Welcome, {{name}}</h3>
-    <form action="" method="POST" class="form-example">
+    <form action="/api/users" method="POST" class="form-example" enctype="multipart/form-data">
+        <label for="picture">Choose an image:</label>
+        <input type="file" id="picture" name="picture">
         <div class="form-example">
             <label for="name">Enter your name: </label>
-	    <input type="text" name="name" value="{{ request.form['name']}} "required />
-        </div>
-        <div class="form-example">
-            <label for="firstname">Enter your first name: </label>
-	    <input type="text" name="firstname" value="{{ request.form['firstname']}} "required />
+	    <input type="text" name="name" required />
         </div>
         <div class="form-example">
             <input type="submit" value="Subscribe!" />

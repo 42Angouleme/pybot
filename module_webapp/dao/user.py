@@ -11,6 +11,7 @@ from module_webapp.models import (
 from sqlalchemy.exc import NoResultFound
 import json
 from jsonschema import validate
+from typing import List
 
 openai_chat_messages_schema = {
     "type": "array",
@@ -55,7 +56,7 @@ def raise_NoResultFound_if_none(user, id):
 class UserDAO(object):
     """User Data Access Object to manipulates `User` with CRUD-like methods."""
 
-    def getAll(self) -> UserResponse:
+    def getAll(self) -> List[UserResponse]:
         """
         Get all users.
         """
@@ -81,8 +82,9 @@ class UserDAO(object):
         """
         with StoreManager(db.session):
             file = user["picture"]
-            img = DrawingModel.create_from(file)
-            new_user = User(**(user | {"picture": img}))
+            picture = DrawingModel.create_from(file)
+            picture.get_thumbnail(width=48, auto_generate=True)
+            new_user = User(**(user | {"picture": picture}))
         parse_openai_chat_messages(new_user)
         db.session.add(new_user)
         db.session.commit()
@@ -127,6 +129,9 @@ class UserDAO(object):
         db.session.delete(user)
         db.session.commit()
         return user
+
+    def search(self, name: str) -> List[UserResponse]:
+        return User.query.filter(User.name.like(f"%{name}%")).all()
 
 
 user = UserDAO()
