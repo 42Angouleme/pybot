@@ -99,25 +99,25 @@ class UserDAO(object):
         id -- The user ID.
         userPatch -- The patch data.
         """
-        user = User.query.get(id)
-        raise_NoResultFound_if_none(user, id)
+        with StoreManager(db.session, delete_orphan=True):
+            user = User.query.get(id)
+            raise_NoResultFound_if_none(user, id)
 
-        if "picture" in user_patch:
-            if user_patch["picture"] is not None:
-                with StoreManager(db.session, delete_orphan=True):
+            if "picture" in user_patch:
+                if user_patch["picture"] is not None:
                     user.picture = DrawingModel.create_from(user_patch["picture"])
                     user.picture.get_thumbnail(width=48, auto_generate=True)
-            del user_patch["picture"]
+                del user_patch["picture"]
 
-        parse_openai_chat_messages(user_patch)
-        # apply the patch to the user object we just fetched
-        for key, value in user_patch.items():
-            if value is not None:
-                setattr(user, key, value)
+            parse_openai_chat_messages(user_patch)
+            # apply the patch to the user object we just fetched
+            for key, value in user_patch.items():
+                if value is not None:
+                    setattr(user, key, value)
 
-        db.session.commit()
-        db.session.refresh(user)
-        return user
+            db.session.commit()
+            db.session.refresh(user)
+            return user
 
     def delete(self, id: UserId) -> UserResponse:
         """Delete the user with corresponding ID.
@@ -125,11 +125,12 @@ class UserDAO(object):
         Keyword arguments:
         id -- The user ID.
         """
-        user = User.query.get(id)
-        raise_NoResultFound_if_none(user, id)
-        db.session.delete(user)
-        db.session.commit()
-        return user
+        with StoreManager(db.session, delete_orphan=True):
+            user = User.query.get(id)
+            raise_NoResultFound_if_none(user, id)
+            db.session.delete(user)
+            db.session.commit()
+            return user
 
     def search(self, first_name: str) -> List[UserResponse]:
         return User.query.filter(User.first_name.like(f"%{first_name}%")).all()
