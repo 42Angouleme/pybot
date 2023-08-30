@@ -14,7 +14,13 @@ create_user_parser = api.parser()
 create_user_parser.add_argument(
     "picture", location="files", type=FileStorage, required=True
 )
-create_user_parser.add_argument("name", type=str, help="Some param", location="form")
+create_user_parser.add_argument(
+    "name", type=str, help="The user name", location="form", required=True
+)
+
+patch_user_parser = api.parser()
+patch_user_parser.add_argument("picture", location="files", type=FileStorage)
+patch_user_parser.add_argument("name", type=str, help="The user name", location="form")
 
 api_user_model = api.model(
     "User",
@@ -36,8 +42,8 @@ class UserList(Resource):
         return user.getAll()
 
     @ns.doc("create_user")
-    @api.expect(create_user_parser)
-    @api.response(400, "Bad request")
+    @ns.expect(create_user_parser)
+    @ns.response(400, "Bad request")
     @ns.marshal_with(api_user_model, code=201)
     def post(self):
         """Create a new user"""
@@ -49,6 +55,7 @@ class UserList(Resource):
             api.abort(400, e)
         except IntegrityError as e:
             api.abort(400, "Integrity constraint violation.")
+        # TODO this try catch should be done on the other routes too?
 
 
 @ns.route("/<int:id>")
@@ -78,12 +85,13 @@ class UserResource(Resource):
         return deleted_user
 
     @ns.doc("update_user")
-    @ns.expect(api_user_model)
+    @ns.expect(patch_user_parser)
     @ns.response(200, "User updated")
     @ns.marshal_with(api_user_model)
     def patch(self, id):
         """Update a user given its identifier"""
-        updated_user = user.update(id, api.payload)
+        args = patch_user_parser.parse_args()
+        updated_user = user.update(id, args)
         if updated_user is None:
             api.abort(404, f"User with ID {id} not found. Can't update.")
         return updated_user, 200

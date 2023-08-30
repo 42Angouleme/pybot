@@ -52,9 +52,17 @@ class UserDAO(object):
         user = User.query.get(id)
         if user is None:
             return None
+
+        if "picture" in user_patch:
+            if user_patch["picture"] is not None:
+                with StoreManager(db.session):
+                    user.picture = DrawingModel.create_from(user_patch["picture"])
+            del user_patch["picture"]
         # apply the patch to the user object we just fetched
         for key, value in user_patch.items():
-            setattr(user, key, value)
+            if value is not None:
+                setattr(user, key, value)
+
         db.session.commit()
         db.session.refresh(user)
         return user
