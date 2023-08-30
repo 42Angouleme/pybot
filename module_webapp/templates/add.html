@@ -2,27 +2,26 @@
 <html>
 
 <head>
-    <title>FlaskTest {{name}}</title>
+    <title>FlaskTest</title>
 	<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
 </head>
 
 <body>
-{% block content %}
-    <p>This is a Flask application.</p>
-    <h3>Welcome, {{name}}</h3>
-    <form action="/api/users" method="POST" class="form-example" enctype="multipart/form-data">
-        <label for="picture">Choose an image:</label>
+    <h3>Ajout d'un élève</h3>
+    <form action="/api/users" method="POST" class="form-example" enctype="multipart/form-data" target="responseFrame">
+        <label for="picture">Selectionnez une image:</label>
         <input type="file" id="picture" name="picture">
         <div class="form-example">
-            <label for="name">Enter your name: </label>
+            <label for="name">Entrez un nom: </label>
 	    <input type="text" name="name" required />
         </div>
         <div class="form-example">
-            <input type="submit" value="Subscribe!" />
+            <input type="submit" value="Créer" />
         </div>
     </form>
 
-{% endblock %}
+    <iframe name="responseFrame" style="display: none;"></iframe>
+
     <a href="/" class="buttonMenu">MENU</a>
 </body>
 
