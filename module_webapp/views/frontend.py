@@ -6,6 +6,7 @@ from flask import (
     redirect,
     current_app,
     session,
+    abort,
 )
 from sqlalchemy_media import StoreManager
 from module_webapp.dao import user
@@ -82,12 +83,10 @@ def add_page():
 #    return "Invalid arguments"
 
 
-# @frontend_bp.route("/<name>_<surname>")
-# def profile_page(name, surname):
-#    connection = get_db_connection()
-#    posts = connection.execute("SELECT * FROM name").fetchall()
-#    connection.commit()
-#    connection.close()
-#    return render_template(
-#        "name.html", posts=posts, image="test.jpg", name=name, surname=surname
-#    )
+@frontend_bp.route("/edit/<int:id>")
+def profile_page(id):
+    with StoreManager(db.session):
+        u = user.get(id)
+        if u is None:
+            abort(404, description="User not found")
+        return render_template("edit.html", user=u)

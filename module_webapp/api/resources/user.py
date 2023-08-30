@@ -1,6 +1,6 @@
 from flask_restx import Resource
 from flask_restx.api import HTTPStatus
-from sqlalchemy_media.exceptions import ValidationError
+from sqlalchemy_media.exceptions import ValidationError, AnalyzeError
 from sqlalchemy.exc import IntegrityError
 
 from module_webapp.dao import user
@@ -25,31 +25,14 @@ ns = api.namespace("users", description="USER operations")
 
 
 @ns.errorhandler(ValidationError)
-@ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
-def handle_ValidationError_exception(error):
-    """This is a custom error"""
-    return {"message": error}, HTTPStatus.BAD_REQUEST
-
-
+@ns.errorhandler(AnalyzeError)
 @ns.errorhandler(JsonSchemaValidationError)
-@ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
-def handle_JsonSchemaValidationError_exception(error):
-    """This is a custom error"""
-    return {"message": error}, HTTPStatus.BAD_REQUEST
-
-
 @ns.errorhandler(json.JSONDecodeError)
-@ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
-def handle_JSONDecodeError_exception(error):
-    """This is a custom error"""
-    return {"message": error}, HTTPStatus.BAD_REQUEST
-
-
 @ns.errorhandler(IntegrityError)
 @ns.marshal_with(api_error_model, code=HTTPStatus.BAD_REQUEST)
-def handle_IntegrityError_exception(error):
+def handle_bad_request_exception(error):
     """This is a custom error"""
-    return {"message": "Integrity constraint violation."}, HTTPStatus.BAD_REQUEST
+    return {"message": error}, HTTPStatus.BAD_REQUEST
 
 
 @ns.errorhandler(NoResultFound)

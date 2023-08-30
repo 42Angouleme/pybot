@@ -3,24 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{name}}</title>
     <!-- <link rel="stylesheet" href={{url_for('static', filename='style.css')}}> -->
 </head>
 
 <body>
     <a href="/" class="buttonMenu">MENU</a>
+    <a href="/add" class="buttonMenu">Ajouter un élève</a>
     <br>
     {% block content %}
     {% for user in users %}
     <div id="user-{{ user['id'] }}">
-        <a href={{user['name']}} class="button1">Nom : {{ user['name'] }}</a>
+        <span>Prénom : {{ user['first_name'] }} Nom : {{ user['last_name'] }}</span>
 
         <a href="{{ user['picture'].locate() }}">
             <img
                 src="{{ user['picture'].get_thumbnail(width=48).locate() }}"
                 alt="Uploaded Image">
         </a>
-        <button onclick="deleteUser({{ user['id'] }})"> delete</button>
+        <a href="/edit/{{user['id']}}"><button>edit</button></a>
+        <button onclick="deleteUser({{ user['id'] }})">delete</button>
         <br />
     </div>
     {% endfor %}

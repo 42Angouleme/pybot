@@ -104,8 +104,9 @@ class UserDAO(object):
 
         if "picture" in user_patch:
             if user_patch["picture"] is not None:
-                with StoreManager(db.session):
+                with StoreManager(db.session, delete_orphan=True):
                     user.picture = DrawingModel.create_from(user_patch["picture"])
+                    user.picture.get_thumbnail(width=48, auto_generate=True)
             del user_patch["picture"]
 
         parse_openai_chat_messages(user_patch)
@@ -130,8 +131,8 @@ class UserDAO(object):
         db.session.commit()
         return user
 
-    def search(self, name: str) -> List[UserResponse]:
-        return User.query.filter(User.name.like(f"%{name}%")).all()
+    def search(self, first_name: str) -> List[UserResponse]:
+        return User.query.filter(User.first_name.like(f"%{first_name}%")).all()
 
 
 user = UserDAO()

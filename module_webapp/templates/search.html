@@ -9,11 +9,10 @@
 
 <body>
     {% block content %}
-    <p>This is a Flask application.</p>
-    <h3>Welcome, {{name}}</h3>
+    <h3>Recherche d'un élève par prénom</h3>
     <form action="/list" method="get">
-        <label for="inputContent">User name:</label>
-        <input type="text" id="inputContent" name="name">
+        <label for="inputContent">Prénom:</label>
+        <input type="text" id="inputContent" name="first_name">
         <button type="submit">Search</button>
     </form>
     {% endblock %}
