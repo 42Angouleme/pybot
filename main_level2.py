@@ -1,21 +1,12 @@
 #! venv/bin/python3
 
 import module_audio as audio
-<<<<<<< HEAD:main.py
-from robot import Robot
-
-robot = Robot()
-
-# import module_ia as ia
-from module_microphone import listen
-=======
 import module_microphone as micro
 
 # TODO an import is missing for skimage
 # import module_ia as ia
 
 # from module_micro import listen
->>>>>>> clean:main_level2.py
 
 
 async def chat_bot():
