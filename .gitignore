@@ -5,8 +5,13 @@ venv
 .env
 # Ignore Jupyter notebook backup files
 *-checkpoint.ipynb
+<<<<<<< Updated upstream
 
 module_webapp/static/images/
 module_webapp/static/thumbnails/
 
 *.db
+=======
+module_webapp/static/images/
+module_webapp/static/thumbnails/
+>>>>>>> Stashed changes
