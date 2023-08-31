@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Python - Search</title>
+	<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
+</head>
+
+<body>
+    {% block content %}
+
+    <a href="{{ url_for('admin.index') }}" class="buttonMenu">MENU</a>
+
+    <h3>Recherche d'un élève par prénom</h3>
+    <form action="{{ url_for('admin.list_page') }}" method="get">
+        <label for="inputContent">Prénom:</label>
+        <input type="text" id="inputContent" name="first_name">
+        <button type="submit">Search</button>
+    </form>
+    {% endblock %}
+</body>
+
+</html>

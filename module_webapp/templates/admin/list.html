@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Python - List</title>
+	<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
+</head>
+
+<body>
+    <a href="{{ url_for('admin.index') }}" class="buttonMenu">MENU</a>
+    <a href="{{ url_for('admin.add_page') }}" class="buttonMenu">Ajouter un élève</a>
+    <br>
+    {% block content %}
+    {% for user in users %}
+    <div id="user-{{ user['id'] }}">
+        <span>Prénom : {{ user['first_name'] }} Nom : {{ user['last_name'] }}</span>
+
+        <a href="{{ user['picture'].locate() }}">
+            <img
+                src="{{ user['picture'].get_thumbnail(width=48).locate() }}"
+                alt="Uploaded Image">
+        </a>
+        <a href="{{ url_for('admin.profile_page', id=user['id']) }}"><button>edit</button></a>
+        <button onclick="deleteUser({{ user['id'] }})">delete</button>
+        <br />
+    </div>
+    {% endfor %}
+    {% endblock %}
+    <script>
+        deleteUser = id => fetch(`/api/users/${id}`, {method: "DELETE"}).then(resp => {
+            if (resp.ok)
+                document.getElementById(`user-${id}`).remove()
+        }).catch(e => console.log(e));
+    </script>
+</body>
+
+
+</html>
