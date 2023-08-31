@@ -14,6 +14,21 @@
 * Php...
 * Nodejs...
 
+
+## Usage
+
+- Install the pip dependencies and activate your virtual env see [../README.md](README)
+- `cd` at the root of `robot-python` package
+- run `python3 run_server.py`
+- visit `http://127.0.0.1:5000`
+- if something goes wrong you can check the log in your terminal
+
+## Troubleshooting
+
+> sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: 
+
+The database is automatically created if it does not exist but there's is no migration strategy yet. If the database model changed compared to your local database, delete the database file and rerun the server.
+
 ## Frontend
 
 - Basic authentication with hardcoded password at `/admin`
