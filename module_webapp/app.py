@@ -14,19 +14,24 @@ from .api import api_bp
 
 
 def create_app():
-    # Flask
-    app = Flask(__name__, static_folder="../static", static_url_path="/static")
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+    """The directory containing the current Python file as the root directory"""
 
+    STATIC_DIR = os.path.join(ROOT_DIR, "static")
+    DATABASE_PATH = os.path.join(ROOT_DIR, "database.db")
+
+    # Flask
+    app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="/static")
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DATABASE_PATH}"
+
+    # Login hardcoded password
     app.config["SECRET KEY"] = "hello"
     app.secret_key = "hello"
 
     # Static media storage with sqlalchemy_media
-    WORKING_DIR = os.path.abspath(os.getcwd())
-    TEMP_PATH = os.path.join(WORKING_DIR, "static")
     StoreManager.register(
         "fs",
-        functools.partial(FileSystemStore, TEMP_PATH, "/static"),
+        functools.partial(FileSystemStore, STATIC_DIR, "/static"),
         default=True,
     )
 
