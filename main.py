@@ -2,14 +2,11 @@
 
 import module_audio as audio
 from robot import Robot
+
 robot = Robot()
 
-# import module_microphone as microphone
-
-# TODO an import is missing for skimage
 # import module_ia as ia
-
-# from module_microphone import listen
+from module_microphone import listen
 
 
 async def chat_bot():
