@@ -30,6 +30,7 @@ class UserPatch:
 class UserResponse(UserBase):
     id: UserId
     created_at: datetime
+    picture: dict
 
 
 class User(db.Model):

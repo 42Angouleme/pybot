@@ -13,12 +13,15 @@ from .views import admin_bp, frontend_bp
 from .api import api_bp
 
 
-def create_app():
-    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-    """The directory containing the current Python file as the root directory"""
+def create_app(root_dir: str = os.path.dirname(os.path.abspath(__file__))):
+    """Create the flask application.
 
-    STATIC_DIR = os.path.join(ROOT_DIR, "static")
-    DATABASE_PATH = os.path.join(ROOT_DIR, "database.db")
+    Attributes:
+        root_dir: The directory containing the `static` directory and the `database.db` file. Defaults to the current Python file.
+    """
+
+    STATIC_DIR = os.path.join(root_dir, "static")
+    DATABASE_PATH = os.path.join(root_dir, "database.db")
 
     # Flask
     app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="/static")
