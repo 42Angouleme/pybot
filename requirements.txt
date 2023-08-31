@@ -127,3 +127,4 @@ flask-restx==1.1.0
 sqlalchemy-media==0.17.4
 SQLAlchemy==2.0.20
 Flask-SQLAlchemy==3.0.5
+PySimpleGUI==4.60.5
