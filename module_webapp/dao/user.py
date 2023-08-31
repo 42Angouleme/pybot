@@ -42,7 +42,7 @@ openai_chat_messages_schema = {
 
 
 def parse_openai_chat_messages(user: User):
-    """If the user has openai_chat_messages property, convert it from string to JSON, then validate the JSON schema and reassign the property as dict."""
+    """If the user has openai_chat_messages property, convert it from string to JSON, then validate the JSON schema and reassign the property as object."""
     if user.openai_chat_messages:
         user.openai_chat_messages = json.loads(user.openai_chat_messages)
         validate(user.openai_chat_messages, openai_chat_messages_schema)
@@ -70,8 +70,6 @@ class UserDAO(object):
         """
         user = User.query.get(id)
         raise_NoResultFound_if_none(user, id)
-        if user.openai_chat_messages:
-            user.openai_chat_messages = json.loads(user.openai_chat_messages)
         return user
 
     def create(self, user: UserCreate) -> UserResponse:

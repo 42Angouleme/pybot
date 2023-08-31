@@ -14,6 +14,8 @@ from module_webapp.app import db
 from functools import wraps
 from module_webapp.models import User
 
+import json
+
 frontend_bp = Blueprint("frontend", __name__)
 
 
@@ -89,4 +91,8 @@ def profile_page(id):
         u = user.get(id)
         if u is None:
             abort(404, description="User not found")
-        return render_template("edit.html", user=u)
+        return render_template(
+            "edit.html",
+            user=u,
+            openai_chat_messages=json.dumps(u.openai_chat_messages, indent=2),
+        )
