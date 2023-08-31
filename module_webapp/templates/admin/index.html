@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <link rel="stylesheet" href={{url_for('static', filename='style.css' )}}> -->
+    <title>Menu</title>
+</head>
+
+<body>
+    <h1 class="title">Projet Robot</h1>
+    <a href="{{ url_for('admin.add_page') }}" class="button1">Ajouter un élève</a>
+    <a href="{{ url_for('admin.search_page') }}" class="button1">Chercher un élève</a>
+    <a href="{{ url_for('admin.list_page') }}" class="button1">Liste de tous les élèves</a>
+    <a href="{{ url_for('admin.logout') }}" class="button1">Déconnnection</a>
+</body>
+
+</html>

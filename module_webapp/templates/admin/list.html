@@ -7,8 +7,8 @@
 </head>
 
 <body>
-    <a href="/" class="buttonMenu">MENU</a>
-    <a href="/add" class="buttonMenu">Ajouter un élève</a>
+    <a href="{{ url_for('admin.index') }}" class="buttonMenu">MENU</a>
+    <a href="{{ url_for('admin.add_page') }}" class="buttonMenu">Ajouter un élève</a>
     <br>
     {% block content %}
     {% for user in users %}
@@ -20,7 +20,7 @@
                 src="{{ user['picture'].get_thumbnail(width=48).locate() }}"
                 alt="Uploaded Image">
         </a>
-        <a href="/edit/{{user['id']}}"><button>edit</button></a>
+        <a href="{{ url_for('admin.profile_page', id=user['id']) }}"><button>edit</button></a>
         <button onclick="deleteUser({{ user['id'] }})">delete</button>
         <br />
     </div>

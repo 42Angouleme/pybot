@@ -16,7 +16,7 @@
     {% if log %}
         <div class="mt-2 alert alert-danger" id="hello" role="alert">Désolé, ce n'est pas le bon mot de passe.</div>
     {% endif %}
-    <form action="{{ url_for('frontend.login_post') }}" method="post">
+    <form action="{{ url_for('admin.login_post') }}" method="post">
         <div class="mb-3">
             <h1>Python Robot Web App</h1>
         </div>

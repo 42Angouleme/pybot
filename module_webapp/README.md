@@ -16,17 +16,17 @@
 
 ## Frontend
 
-- Basic authentication with hardcoded password.
-- Visitors can only access the login page. Other pages redirect to `/login`.
+- Basic authentication with hardcoded password at `/admin`
+- Visitors can only access the login page. Other pages redirect to `/admin/login`.
 - Authentication persists across the session: user can reload/change the page and stay connected.
 - A logged-in user can logout.
 
 
 The following routes are available for authenticated users: 
-- `/add` A form to add a new user
-- `/list` List users, there's a delete button next to each user. An optional "name" GET parameter filters user by name example `/list?name=toto`
-- `/search` a basic form with one input and a search button, this redirects to `/list?name=<input_content>`
-- `/logout` Logout the user and redirect to the login page
+- `/admin/add` A form to add a new user
+- `/admin/list` List users, there's a delete button next to each user. An optional "name" GET parameter filters user by name example `/admin/list?name=toto`
+- `/admin/search` a basic form with one input and a search button, this redirects to `/admin/list?name=<input_content>`
+- `/admin/logout` Logout the user and redirect to the login page
 
 ## API
 
@@ -44,7 +44,8 @@ TODO: The API is not protected by authentication and is available to visitor.
 - `created_at`: creation timestamp
 - `picture`: info about the user uploaded picture, contains path, thumbnail_path and media related information. The picture file itself is stored on the filesystem at `static/images` and `static/thumbnail`
 - `openai_chat_messages` The JSON (as string) openai chat conversation history.
-- `name`
+- `first_name`
+- `last_name`
 
 ## Database manipulation
 

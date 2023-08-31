@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+	<meta charset="UTF-8">
+	<title>{{name}}</title>
+	<!-- <link rel="stylesheet" href={{url_for('static', filename='style.css')}}> -->
+</head>
+
+<body>
+	{% block content %}
+    <a href="{{ url_for('admin.index') }}" class="buttonMenu">MENU</a>
+    <h3>Modification d'un élève</h3>
+    <form id="patch-form" class="form-example" enctype="multipart/form-data">
+        <p>ID: {{ user['id']}}</p>
+        <div class="form-example">
+            <label for="name">Prénom: </label>
+	    <input type="text" name="first_name" required value="{{ user['first_name']}}"/>
+            <label for="name">Nom: </label>
+	    <input type="text" name="last_name" required value="{{ user['last_name']}}"/>
+
+        <input type="file" id="picture" name="picture" >
+		<img alt="student picture" src="{{ user['picture'].locate()}}">
+
+        <label for="openai_chat_messages">OpenAI chat messages:</label>
+	    <textarea id="openai_chat_messages" style="display:block;width:800px; height: 300px" type="text" name="openai_chat_messages" placeholder='[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Who won the world series in 2020?"},
+    {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+    {"role": "user", "content": "Where was it played?"}
+]'>{{openai_chat_messages}}</textarea>
+        </div>
+		<div id="error"></div>
+        <div class="form-example">
+            <input type="submit" value="Modifier" />
+        </div>
+    </form>
+
+    <button onclick="deleteUser({{ user['id'] }})">delete</button>
+
+
+	<script>
+	 set_error = error => document.getElementById("error").innerHTML = "Error: " + error
+
+	 document.getElementById("patch-form").onsubmit = async(e) => {
+	 	 e.preventDefault();
+	 	 const formData = new FormData(e.target);
+	 	 const response = await fetch("/api/users/{{ user['id'] }}", {method:"PATCH", body:formData})
+	 	 const data = await response.json();
+	 	 if (response.ok)
+	 		 location.reload()
+	 	 else
+	 		 set_error(data.message)
+	 }
+
+     deleteUser = id => fetch(`/api/users/${id}`, {method: "DELETE"}).then(() => location.href="{{ url_for('admin.index') }}").catch(e => console.log(e));
+
+	</script>
+    {% endblock %}
+</body>
+
+</html>

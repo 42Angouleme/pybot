@@ -9,14 +9,16 @@
 
 <body>
     {% block content %}
+
+    <a href="{{ url_for('admin.index') }}" class="buttonMenu">MENU</a>
+
     <h3>Recherche d'un élève par prénom</h3>
-    <form action="/list" method="get">
+    <form action="{{ url_for('admin.list_page') }}" method="get">
         <label for="inputContent">Prénom:</label>
         <input type="text" id="inputContent" name="first_name">
         <button type="submit">Search</button>
     </form>
     {% endblock %}
-    <a href="/" class="buttonMenu">MENU</a>
 </body>
 
 </html>

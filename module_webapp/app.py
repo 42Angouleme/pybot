@@ -9,14 +9,14 @@ from sqlalchemy_media import (
 
 db = SQLAlchemy()
 
-from .views import frontend_bp
+from .views import admin_bp, frontend_bp
 from .api import api_bp
 
 
 def create_app():
     # Flask
     app = Flask(__name__, static_folder="../static", static_url_path="/static")
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 
     app.config["SECRET KEY"] = "hello"
     app.secret_key = "hello"
@@ -36,7 +36,8 @@ def create_app():
         db.create_all()  # ensure db table creation as defined by our models
 
     # Blueprints
-    app.register_blueprint(api_bp)
+    app.register_blueprint(api_bp)  # prefix '/api' is already included
+    app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(frontend_bp)
 
     return app
