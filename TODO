@@ -1,4 +1,15 @@
-- token openai et password webapp dans le .env
+# SCRIPTS INSTALL / SETUP
+- script bash pour setup dependence qui necessite sudo (libaudio...)
+- docker pour tester l'environnement linux du college (demander informaticien du college) pour tester les dependences.
+- script pour nettoyer et automatiser l'installation
+- GUI pour configurer le .env (token openai, password, etc..)
+
+## LEVEL 1 : ROBOT
+
+
+## LEVEL 2 : MODULES
+
+
 
 - general : dotenv for token api and simple user+password
 
@@ -17,13 +28,13 @@
 - structure app graph
 
 notes
-https://www.fullstackpython.com/sqlite.html
-https://docs.python.org/3/library/sqlite3.html
-https://flask.palletsprojects.com/en/2.3.x/patterns/sqlite3/
-https://pythonbasics.org/flask-sqlite/
-https://pythonbasics.org/flask-cookies/
-https://flask.palletsprojects.com/en/2.3.x/patterns/viewdecorators/
-https://docs.python.org/3/library/functools.html#functools.wraps
-https://flask.palletsprojects.com/en/2.3.x/installation/#python-version
-https://flask.palletsprojects.com/en/2.3.x/patterns/flashing/
-https://getbootstrap.com/docs/4.0/components/forms/
+* https://www.fullstackpython.com/sqlite.html
+* https://docs.python.org/3/library/sqlite3.html
+* https://flask.palletsprojects.com/en/2.3.x/patterns/sqlite3/
+* https://pythonbasics.org/flask-sqlite/
+* https://pythonbasics.org/flask-cookies/
+* https://flask.palletsprojects.com/en/2.3.x/patterns/viewdecorators/
+* https://docs.python.org/3/library/functools.html#functools.wraps
+* https://flask.palletsprojects.com/en/2.3.x/installation/#python-version
+* https://flask.palletsprojects.com/en/2.3.x/patterns/flashing/
+* https://getbootstrap.com/docs/4.0/components/forms/
