@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |+
         sudo apt-get update
-        sudo apt-get install -y portaudio19-dev
+        sudo apt-get install -y portaudio19-dev libasound-dev espeak python3-tk
         python -m pip install --upgrade pip
         pip install flake8 pytest
         [ -f requirements.txt ] && pip install -r requirements.txt

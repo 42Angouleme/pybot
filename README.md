@@ -30,7 +30,7 @@ documentation/hackathon.pdf
 #### Dependences possibles
 
 ```
-sudo apt install portaudio19-dev libasound-dev espeak
+sudo apt install portaudio19-dev libasound-dev espeak python3-tk
 ```
 
 ```
