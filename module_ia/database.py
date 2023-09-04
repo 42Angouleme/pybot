@@ -12,7 +12,7 @@
 
 import sqlite3
 
-def    initDatabase():
+def initDatabase():
     try:
         connection = sqlite3.connect('database_ia.db')
     except Error as e:
@@ -21,10 +21,17 @@ def    initDatabase():
     if connection:
         query = connection.cursor()
         query.execute('''
-            CREATE TABLE IF NOT EXISTS prompt(
+            CREATE TABLE IF NOT EXISTS data_resume(
                 user_id CHAR(20) NOT NULL PRIMARY KEY,
-                last_prompt text,
+                resume text,
                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+            )'''
+        )
+
+        query.execute('''
+            CREATE TABLE IF NOT EXISTS data_history(
+                user_id CHAR(20) NOT NULL PRIMARY KEY,
+                history text
             )'''
         )
         return connection, query
@@ -33,19 +40,53 @@ def    initDatabase():
 def setPrompt( user_id, prompt ):
     connection, query = initDatabase()
     if connection:
-        query.execute("REPLACE INTO prompt( user_id, last_prompt ) VALUES (?, ?);", (user_id, prompt))
+        query.execute("REPLACE INTO data_resume( user_id, resume ) VALUES (?, ?);", (user_id, prompt))
         connection.commit()
         connection.close()
 
-def    getPrompt( user_id ):
+def getPrompt( user_id ):
     connection, query = initDatabase()
     if connection:
-        query.execute("SELECT last_prompt FROM prompt WHERE user_id = ?;", [user_id])
+        query.execute("SELECT resume FROM data_resume WHERE user_id = ?;", [user_id])
         myresult = query.fetchall()
         connection.close()
         if myresult and myresult[0] and myresult[0][0]:
             return myresult[0][0]
     return None
 
-setPrompt("Troudball", "Ceci est le dernier prompte")
-print(getPrompt("Troudball"))
+def newHistory( user_id, history ):
+    connection, query = initDatabase()
+    if connection:
+        query.execute("REPLACE INTO data_history( user_id, history ) VALUES (?, ?);", (user_id, history))
+        connection.commit()
+        connection.close()
+
+def addHistory( user_id, history ):
+    strHistory = ""
+    connection, query = initDatabase()
+    if connection:
+        query.execute("SELECT history FROM data_history WHERE user_id = ?;", [user_id])
+        myresult = query.fetchall()
+        if myresult and myresult[0] and myresult[0][0]:
+            strHistory = myresult[0][0]
+        strHistory += history
+        query.execute("REPLACE INTO data_history( user_id, history ) VALUES (?, ?);", (user_id, strHistory))
+        connection.commit()
+        connection.close()
+
+def clearHistory( user_id ):
+    connection, query = initDatabase()
+    if connection:
+        query.execute("DELETE FROM data_history WHERE user_id = ?;", [user_id])
+        connection.commit()
+        connection.close()
+
+def getHistory( user_id ):
+    connection, query = initDatabase()
+    if connection:
+        query.execute("SELECT history FROM data_history WHERE user_id = ?;", [user_id])
+        myresult = query.fetchall()
+        connection.close()
+        if myresult and myresult[0] and myresult[0][0]:
+            return myresult[0][0]
+    return None
