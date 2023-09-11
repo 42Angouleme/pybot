@@ -9,4 +9,4 @@ venv
 module_webapp/static/images/
 module_webapp/static/thumbnails/
 
-*.db
+module_webapp/database.db
