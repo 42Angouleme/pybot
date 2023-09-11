@@ -10,7 +10,7 @@ Sur l'image donnée, cherche des rectangles noir, détour et ajuste la perspecti
 
 ``` sh
 # cd à la racine du projet robot-python
-python3 -m interactions.track_user_cards.demo.track_user_cards_app
+python3 -m interactions.track_user_cards.demo.app
 ```
 
 > Cela lance:
