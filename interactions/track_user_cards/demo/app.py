@@ -45,4 +45,4 @@ def auth():
 if __name__ == "__main__":
     app = create_app(root_dir=os.path.dirname(os.path.abspath(__file__)))
     threading.Thread(target=auth).start()
-    app.run(debug=True)
+    app.run()
