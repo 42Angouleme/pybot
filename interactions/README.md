@@ -18,7 +18,7 @@ python3 -m interactions.track_user_cards.demo.track_user_cards_app
 > - le serveur qui se connecte à une base de donnée de test située à `track_user_cards/demo`
 > - l'application de reconnaissance de cartes dans un thread
 
-Maintenant, sur un téléphone par exemple, ouvrez une des images situé dans `track_user_cards/demo/static/images` et montrez-le à votre caméra.
+Maintenant, sur un téléphone par exemple, ouvrez une des images situé dans `track_user_cards/demo/img_to_show` et montrez-le à votre caméra.
 
 > Attention au reflets qui perturbent la détection sur téléphone, idéalement il faut une surface papier
 
