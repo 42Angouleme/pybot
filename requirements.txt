@@ -128,4 +128,4 @@ sqlalchemy-media==0.17.4
 SQLAlchemy==2.0.20
 Flask-SQLAlchemy==3.0.5
 PySimpleGUI==4.60.5
-cardscan==0.3.0
+cardscan==0.4.0

@@ -1,4 +1,8 @@
-from cardscan import scan, card_images, card_contours_transform
+from cardscan import (
+    scan,
+    card_contours_transform,
+    rotate_top_left_corner_low_density_transform,
+)
 from module_webapp.dao import user
 from module_webapp.app import db
 import cv2
@@ -48,10 +52,16 @@ class UserCardsTracker:
     def draw(self, frame: MatLike) -> Tuple[MatLike, List[UserResponse]]:
         """Find the matching user cards in the given `frame`. Highlighted the card contours and write their name next to it. Also return the array of matching users."""
         contours, candidate_images = scan(
-            frame.copy(), results=[card_contours_transform, card_images]
+            frame.copy(),
+            keep_results=[
+                card_contours_transform,
+                rotate_top_left_corner_low_density_transform,
+            ],
         )
 
-        frame_copy = cv2.drawContours(frame, contours, -1, (0, 255, 255), 3)
+        frame = cv2.drawContours(frame, contours, -1, (0, 255, 255), 3)
+        # Detection was performed from the camera perspective but output img is flipped for mirror-like effect
+        frame = cv2.flip(frame, 1)
         user_matches = []
 
         for candidate_idx, candidate_img in enumerate(candidate_images):
@@ -61,11 +71,13 @@ class UserCardsTracker:
             u = self.users[user_idx]
             user_matches.append(u)
             contour = contours[candidate_idx]
-            text_pos = contour[0][0] + [10, 10]
+            text_pos = contour[0][0] - [10, 10]
+            # Account for flip
+            text_pos[0] = frame.shape[1] - text_pos[0]
             text = self._get_user_fullname(u)
 
-            frame_copy = cv2.putText(
-                frame_copy,
+            frame = cv2.putText(
+                frame,
                 text,
                 text_pos,
                 cv2.FONT_HERSHEY_SIMPLEX,
@@ -74,4 +86,4 @@ class UserCardsTracker:
                 2,
                 cv2.LINE_AA,
             )
-        return frame_copy, user_matches
+        return frame, user_matches

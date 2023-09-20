@@ -17,7 +17,6 @@ def cam_track_cards_app(app) -> int | None:
 
     while True:
         ret, frame = cam.read()
-        frame = cv2.flip(frame, 1)
         if not ret:
             break
         frame, users = card_tracker.draw(frame)
