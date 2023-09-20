@@ -14,4 +14,4 @@ api = Api(
 )
 
 
-from .resources import user
+from .resources import user, image_processing

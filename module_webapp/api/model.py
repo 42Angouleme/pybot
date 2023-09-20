@@ -48,3 +48,13 @@ api_error_model = api.model(
         "message": fields.String(description="Error message"),
     },
 )
+
+img_parser = api.parser()
+img_parser.add_argument("image", location="files", type=FileStorage)
+
+img_model = api.model(
+    "Image",
+    {
+        "card": fields.Raw(description="Card image file"),
+    },
+)
