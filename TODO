@@ -9,8 +9,6 @@
 
 ## LEVEL 2 : MODULES
 
-
-
 - general : dotenv for token api and simple user+password
 
   - https://github.com/theskumar/python-dotenv#readme
