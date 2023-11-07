@@ -1,87 +1,139 @@
-#!/bin/python3
-import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
-import sys
-import os
+#**************************************************************#
+#                                                              #
+#              Python Robot - mdaadoun - 2023                  #
+#                                                              #
+#**************************************************************#
 
-from pathlib import Path
+import pygame
+import pygame_gui as pgui
 
-window = tk.Tk()
+import os, sys
+
+img = {}
+robot_face = "emoji_ok"
+
+#**************************************************************#
+#                  MAIN SETUP FUNCTIONS                        #
+#**************************************************************#
+
+def set_window():
+    global window, WIDTH, HEIGHT
+    # window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    pygame.display.init()
+    window = pygame.display.set_mode((0, 0))
+    WIDTH = window.get_width()
+    HEIGHT = window.get_height()
+
+def set_ui():
+    global manager
+    # pygame.font.Font( None, self.text_size )
+    pygame.freetype.init()
+    manager = pgui.UIManager((WIDTH, HEIGHT), os.getcwd() + '/assets/theme.json')
+
+def load_images():
+    img["emoji_ok"]  = pygame.image.load(os.getcwd() + "/assets/emoji_ok.png")
+    img["emoji_nok"] = pygame.image.load(os.getcwd() + "/assets/emoji_nok.png")
 
 
-def bind_events():
-    window.bind("q", close)
-    window.bind("<Escape>", close)
+#**************************************************************#
+#                     DRAWING FUNCTIONS                        #
+#**************************************************************#
+
+def draw_screen():
+    global update_drawing
+    draw_face()
+    draw_ui()
+    update_drawing = False
+
+def draw_ui():
+    global b0_button
+
+    b0_button = pgui.elements.UIButton(
+        relative_rect=pygame.Rect((350, 275), (150, 50)),
+        text='Face',
+        manager=manager
+    )
+    b1_button = pgui.elements.UIButton(
+        relative_rect=pygame.Rect((10, 10), (150, 50)),
+        text='BUTTON 1',
+        manager=manager
+    )
+    b2_button = pgui.elements.UIButton(
+        relative_rect=pygame.Rect((200, 10), (150, 50)),
+        text='BUTTON 2',
+        manager=manager
+    )
+
+def draw_face():
+    offset_x = img[robot_face].get_size()[0] / 2
+    offset_y = img[robot_face].get_size()[1] / 2
+    window.blit(img[robot_face], (WIDTH/2 - offset_x, HEIGHT/2 - offset_y))
+    pygame.display.flip()
+    print("face", robot_face)
 
 
-def draw_buttons():
-    label = tk.Label(window, text="Hello Tkinter 1!")
-    tk.Button(window, text="Close the Window", font=(
-        "Calibri", 14, "bold"), command=close).pack(pady=20)
-    label.pack()
-    tk.Button(window, text="Close the Window", font=(
-        "Calibri", 14, "bold"), command=close).pack(pady=10)
-    label2 = tk.Label(window, text="Hello Tkinter 2!")
-    label2.pack()
+#**************************************************************#
+#                  EVENTS & INPUTS CONTROL                     #
+#**************************************************************#
 
+def switch_face():
+    global robot_face, update_drawing
+    if robot_face == "emoji_ok":
+        robot_face = "emoji_nok"
+    else:
+        robot_face = "emoji_ok"
+    print("switch", robot_face)
+    update_drawing = True
 
-def init_window():
-    window.attributes('-fullscreen', True)
-    window.title("Python Robot")
-    width = window.winfo_screenwidth()
-    height = window.winfo_screenheight()
-    window.geometry("%dx%d" % (width, height))
+def check_events():
+    global robot_running
 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            robot_running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                robot_running = False
+            if event.key == pygame.K_SPACE:
+                switch_face()
+        if event.type == pygame.USEREVENT:
+            if event.user_type == pgui.UI_BUTTON_PRESSED:
+                if event.ui_element == b0_button:
+                    switch_face()
+        manager.process_events(event)
 
-def close(event=''):
-    # print(event)
-    window.destroy()
-    window.quit()
+                
+#**************************************************************#
+#                         MAIN LOOP                            #
+#**************************************************************#
+
+def main_loop():
+    global robot_running, update_drawing
+    clock = pygame.time.Clock()
+    robot_running = True
+    update_drawing = True
+    while robot_running:
+        time_delta = clock.tick(30)/1000.0
+        check_events()
+        if update_drawing:
+            window.fill((0,0,0))
+            draw_screen()
+            manager.update(time_delta)
+            manager.draw_ui(window)
+            pygame.display.update()
+    pygame.quit()
     sys.exit()
 
 
-# def tab():
-
-#     tabControl = ttk.Notebook(window)
-
-#     tab1 = ttk.Frame(tabControl)
-#     tab2 = ttk.Frame(tabControl)
-
-#     tabControl.add(tab1, text='Tab 1')
-#     tabControl.add(tab2, text='Tab 2')
-#     tabControl.pack(expand=1, fill="both")
-
-#     ttk.Label(tab1,
-#               text="Welcome to  GeeksForGeeks").grid(column=0,
-#                                                      row=0,
-#                                                      padx=30,
-#                                                      pady=30)
-#     ttk.Label(tab2,
-#               text="Lets dive into the world of computers").grid(column=0,
-#                                                                  row=0,
-#                                                                  padx=30,
-#                                                                  pady=30)
-
-
-def canvas():
-    canvas = tk.Canvas(window, width=230, height=230)
-    img_path = os.getcwd() + "/module_ecran/emoji_ok.png"
-    # img_path = str(Path.cwd()) + "/module_ecran/emoji_ok.png"
-    # img = tk.PhotoImage(Image.open(img_path))
-    img = tk.PhotoImage(file=img_path)
-    # canvas.create_image(10, 10, anchor=tk.NW, image=img)
-    canvas.create_image(230, 230, image=img)
-    canvas.pack()
-
+#**************************************************************#
+#                          START                               #
+#**************************************************************#
 
 def run():
-    bind_events()
-    init_window()
-    # draw_buttons()
-    # tab()
-    canvas()
-    window.mainloop()
+    set_window()
+    set_ui()
+    load_images()
+    main_loop()
 
 
 if __name__ == "__main__":
