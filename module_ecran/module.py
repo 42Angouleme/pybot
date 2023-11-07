@@ -1,52 +1,42 @@
-#**************************************************************#
+# **************************************************************#
 #                                                              #
 #              Python Robot - mdaadoun - 2023                  #
 #                                                              #
-#**************************************************************#
+# **************************************************************#
 
 import pygame
 import pygame_gui as pgui
 
-import os, sys
+import os
+import sys
 
 img = {}
 robot_face = "emoji_ok"
 
-#**************************************************************#
+# **************************************************************#
 #                  MAIN SETUP FUNCTIONS                        #
-#**************************************************************#
+# **************************************************************#
+
+
+def init_app():
+    pygame.freetype.init()
+    pygame.display.init()
+    set_window()
+    set_ui()
+
 
 def set_window():
     global window, WIDTH, HEIGHT
-    # window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-    pygame.display.init()
-    window = pygame.display.set_mode((0, 0))
+
+    window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     WIDTH = window.get_width()
     HEIGHT = window.get_height()
 
+
 def set_ui():
-    global manager
-    # pygame.font.Font( None, self.text_size )
-    pygame.freetype.init()
-    manager = pgui.UIManager((WIDTH, HEIGHT), os.getcwd() + '/assets/theme.json')
-
-def load_images():
-    img["emoji_ok"]  = pygame.image.load(os.getcwd() + "/assets/emoji_ok.png")
-    img["emoji_nok"] = pygame.image.load(os.getcwd() + "/assets/emoji_nok.png")
-
-
-#**************************************************************#
-#                     DRAWING FUNCTIONS                        #
-#**************************************************************#
-
-def draw_screen():
-    global update_drawing
-    draw_face()
-    draw_ui()
-    update_drawing = False
-
-def draw_ui():
-    global b0_button
+    global manager, b0_button
+    manager = pgui.UIManager(
+        (WIDTH, HEIGHT), os.getcwd() + '/assets/theme.json')
 
     b0_button = pgui.elements.UIButton(
         relative_rect=pygame.Rect((350, 275), (150, 50)),
@@ -64,17 +54,38 @@ def draw_ui():
         manager=manager
     )
 
+
+def load_images():
+    img["emoji_ok"] = pygame.image.load(os.getcwd() + "/assets/emoji_ok.png")
+    img["emoji_nok"] = pygame.image.load(os.getcwd() + "/assets/emoji_nok.png")
+
+
+# **************************************************************#
+#                     DRAWING FUNCTIONS                        #
+# **************************************************************#
+
+def draw_screen(td):
+    global update_drawing
+    window.fill((0, 40, 0))
+    draw_face()
+    update_drawing = False
+    manager.update(td)
+    manager.draw_ui(window)
+    pygame.display.flip()
+
+
 def draw_face():
     offset_x = img[robot_face].get_size()[0] / 2
     offset_y = img[robot_face].get_size()[1] / 2
     window.blit(img[robot_face], (WIDTH/2 - offset_x, HEIGHT/2 - offset_y))
-    pygame.display.flip()
-    print("face", robot_face)
+    # pygame.display.update()
+    # pygame.display.flip()
+    # print("face", robot_face)
 
 
-#**************************************************************#
+# **************************************************************#
 #                  EVENTS & INPUTS CONTROL                     #
-#**************************************************************#
+# **************************************************************#
 
 def switch_face():
     global robot_face, update_drawing
@@ -82,8 +93,8 @@ def switch_face():
         robot_face = "emoji_nok"
     else:
         robot_face = "emoji_ok"
-    print("switch", robot_face)
     update_drawing = True
+
 
 def check_events():
     global robot_running
@@ -102,10 +113,10 @@ def check_events():
                     switch_face()
         manager.process_events(event)
 
-                
-#**************************************************************#
+
+# **************************************************************#
 #                         MAIN LOOP                            #
-#**************************************************************#
+# **************************************************************#
 
 def main_loop():
     global robot_running, update_drawing
@@ -113,25 +124,20 @@ def main_loop():
     robot_running = True
     update_drawing = True
     while robot_running:
-        time_delta = clock.tick(30)/1000.0
+        time_delta = clock.tick(30) / 1000.0
         check_events()
         if update_drawing:
-            window.fill((0,0,0))
-            draw_screen()
-            manager.update(time_delta)
-            manager.draw_ui(window)
-            pygame.display.update()
+            draw_screen(time_delta)
     pygame.quit()
     sys.exit()
 
 
-#**************************************************************#
+# **************************************************************#
 #                          START                               #
-#**************************************************************#
+# **************************************************************#
 
 def run():
-    set_window()
-    set_ui()
+    init_app()
     load_images()
     main_loop()
 
