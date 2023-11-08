@@ -1,22 +1,23 @@
-#**************************************************************#
+# **************************************************************#
 #                                                              #
 #              Python Robot - mdaadoun - 2023                  #
 #                                                              #
-#**************************************************************#
+# **************************************************************#
 
 import pygame as pg
 import pygame_gui as pgui
 
-import os, sys
+import os
+import sys
 from .Ecran import Ecran
 
 img = {}
 robot_face = "emoji_ok"
 
 
-#**************************************************************#
+# **************************************************************#
 #                  MAIN SETUP FUNCTIONS                        #
-#**************************************************************#
+# **************************************************************#
 
 # def set_window():
 #     global window, WIDTH, HEIGHT
@@ -33,13 +34,13 @@ robot_face = "emoji_ok"
 #     manager = pgui.UIManager((WIDTH, HEIGHT), os.getcwd() + '/assets/theme.json')
 
 def load_images():
-    img["emoji_ok"]  = pg.image.load(os.getcwd() + "/assets/emoji_ok.png")
+    img["emoji_ok"] = pg.image.load(os.getcwd() + "/assets/emoji_ok.png")
     img["emoji_nok"] = pg.image.load(os.getcwd() + "/assets/emoji_nok.png")
 
 
-#**************************************************************#
+# **************************************************************#
 #                     DRAWING FUNCTIONS                        #
-#**************************************************************#
+# **************************************************************#
 
 # def draw_screen():
 #     global update_drawing
@@ -74,9 +75,9 @@ def draw_face():
     print("face", robot_face)
 
 
-#**************************************************************#
+# **************************************************************#
 #                  EVENTS & INPUTS CONTROL                     #
-#**************************************************************#
+# **************************************************************#
 
 def switch_face():
     global robot_face, update_drawing
@@ -86,6 +87,7 @@ def switch_face():
         robot_face = "emoji_ok"
     print("switch", robot_face)
     update_drawing = True
+
 
 def check_events():
     global robot_running
@@ -104,10 +106,10 @@ def check_events():
                     switch_face()
         manager.process_events(event)
 
-                
-#**************************************************************#
+
+# **************************************************************#
 #                         MAIN LOOP                            #
-#**************************************************************#
+# **************************************************************#
 
 # def main_loop():
 #     global robot_running, update_drawing
@@ -127,12 +129,12 @@ def check_events():
 #     sys.exit()
 
 
-#**************************************************************#
+# **************************************************************#
 #                          START                               #
-#**************************************************************#
+# **************************************************************#
 
 def run(robot):
-    win = Ecran(robot, True)   
+    win = Ecran(robot, True)
     win.run()
     # set_window()
     # set_ui()

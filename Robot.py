@@ -1,20 +1,12 @@
 import module_ecran as ecran
 # import module_camera as camera
 
-STATUS = {
-    "MENU": "menu",
-    "AUDIO": "audio",
-    "MICRO": "microphone",
-    "AFFICHAGE": "affichage",
-    "CAMERA": "camera"
-}
 
 class Robot:
     def __init__(self):
         self.ecran = ecran
         self.visage = ""
         self.visages = {}
-        self.status = STATUS["MENU"]
         # self.camera = camera
 
     def allumer_ecran(self):
@@ -25,7 +17,7 @@ class Robot:
 
     def set_visage(self, visage):
         self.visage = visage
-    
+
     def get_visage(self):
         return self.visage
 
