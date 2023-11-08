@@ -1,0 +1,6 @@
+content  = content.png
+colère =     colere.png
+fier=fier.png      
+
+
+     triste =triste.png
