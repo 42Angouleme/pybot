@@ -21,10 +21,9 @@ def cam_track_cards_app(app) -> int | None:
             break
         frame, users = card_tracker.draw(frame)
         if len(users):
-            [
-                print(f"- Match user (ID: {u.id}) {u.first_name} {u.last_name}")
-                for u in users
-            ]
+            print(f"- Match user (ID: {users[0].id}) {users[0].first_name} {users[0].last_name}")
+            print(users[0])
+            break
         cv2.imshow("Track users", frame)
         key = cv2.waitKey(1)
         ESC_KEY = 27
