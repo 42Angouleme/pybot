@@ -4,15 +4,15 @@
 #                                                              #
 # **************************************************************#
 
-import pygame as pg
-import pygame_gui as pgui
+# import pygame as pg
+# import pygame_gui as pgui
 
-import os
-import sys
+# import os
+# import sys
 from .Ecran import Ecran
 
-img = {}
-robot_face = "emoji_ok"
+# img = {}
+# robot_face = "emoji_ok"
 
 
 # **************************************************************#
@@ -33,9 +33,9 @@ robot_face = "emoji_ok"
 #     pg.freetype.init()
 #     manager = pgui.UIManager((WIDTH, HEIGHT), os.getcwd() + '/assets/theme.json')
 
-def load_images():
-    img["emoji_ok"] = pg.image.load(os.getcwd() + "/assets/emoji_ok.png")
-    img["emoji_nok"] = pg.image.load(os.getcwd() + "/assets/emoji_nok.png")
+# def load_images():
+#     img["emoji_ok"] = pg.image.load(os.getcwd() + "/assets/emoji_ok.png")
+#     img["emoji_nok"] = pg.image.load(os.getcwd() + "/assets/emoji_nok.png")
 
 
 # **************************************************************#
@@ -67,44 +67,44 @@ def load_images():
 #         manager=manager
 #     )
 
-def draw_face():
-    offset_x = img[robot_face].get_size()[0] / 2
-    offset_y = img[robot_face].get_size()[1] / 2
-    window.blit(img[robot_face], (WIDTH/2 - offset_x, HEIGHT/2 - offset_y))
-    pg.display.flip()
-    print("face", robot_face)
+# def draw_face():
+#     offset_x = img[robot_face].get_size()[0] / 2
+#     offset_y = img[robot_face].get_size()[1] / 2
+#     window.blit(img[robot_face], (WIDTH/2 - offset_x, HEIGHT/2 - offset_y))
+#     pg.display.flip()
+#     print("face", robot_face)
 
 
 # **************************************************************#
 #                  EVENTS & INPUTS CONTROL                     #
 # **************************************************************#
 
-def switch_face():
-    global robot_face, update_drawing
-    if robot_face == "emoji_ok":
-        robot_face = "emoji_nok"
-    else:
-        robot_face = "emoji_ok"
-    print("switch", robot_face)
-    update_drawing = True
+# def switch_face():
+#     global robot_face, update_drawing
+#     if robot_face == "emoji_ok":
+#         robot_face = "emoji_nok"
+#     else:
+#         robot_face = "emoji_ok"
+#     print("switch", robot_face)
+#     update_drawing = True
 
 
-def check_events():
-    global robot_running
+# def check_events():
+#     global robot_running
 
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            robot_running = False
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_ESCAPE:
-                robot_running = False
-            if event.key == pg.K_SPACE:
-                switch_face()
-        if event.type == pg.USEREVENT:
-            if event.user_type == pgui.UI_BUTTON_PRESSED:
-                if event.ui_element == b0_button:
-                    switch_face()
-        manager.process_events(event)
+#     for event in pg.event.get():
+#         if event.type == pg.QUIT:
+#             robot_running = False
+#         if event.type == pg.KEYDOWN:
+#             if event.key == pg.K_ESCAPE:
+#                 robot_running = False
+#             if event.key == pg.K_SPACE:
+#                 switch_face()
+#         if event.type == pg.USEREVENT:
+#             if event.user_type == pgui.UI_BUTTON_PRESSED:
+#                 if event.ui_element == b0_button:
+#                     switch_face()
+#         manager.process_events(event)
 
 
 # **************************************************************#

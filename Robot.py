@@ -15,11 +15,20 @@ class Robot:
         """
         self.ecran.run(self)
 
-    def set_visage(self, visage):
+    def switch_visage(self):
+        # Temporary function
+        import random
+        face = random.choice(list(self.visages.keys()))
+        self.configurer_visage(face)
+
+    def configurer_visage(self, visage):
         self.visage = visage
 
-    def get_visage(self):
+    def recevoir_visage(self):
         return self.visage
+    
+    def recevoir_images_visages(self):
+        return self.visages
 
     def enregistrer_les_visages(self, file):
         import random
@@ -32,8 +41,8 @@ class Robot:
                 valeurs = ligne.split('=')
                 valeurs[1] = valeurs[1].replace('\n', '')
                 self.visages[valeurs[0]] = valeurs[1]
-        # a, b = random.choice(list(self.visages.items()))
-        # print(a, b)
+        premier_visage = random.choice(list(self.visages.keys()))
+        self.configurer_visage(premier_visage)
 
     def configurer(self):
         self.enregistrer_les_visages("visages.txt")
