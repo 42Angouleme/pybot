@@ -103,6 +103,7 @@ class UserDAO(object):
 
             if "picture" in user_patch:
                 if user_patch["picture"] is not None:
+                    # TODO handle error when img is invalid, AttributeError: 'StreamDescriptor' object has no attribute 'readline'
                     user.picture = DrawingModel.create_from(user_patch["picture"])
                     user.picture.get_thumbnail(width=48, auto_generate=True)
                 del user_patch["picture"]
