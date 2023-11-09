@@ -1,6 +1,6 @@
 #! venv/bin/python3
 
-from robot import Robot
+from Robot import Robot
 robot = Robot()
 
 

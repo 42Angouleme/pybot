@@ -1,0 +1,42 @@
+{
+    "button":
+    {
+        "misc":
+        {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "10",
+            "border_width": "1",
+            "shadow_width": "2"
+        },
+        "colours":
+        {
+            "normal_bg":"#a65d35",
+            "hovered_bg":"#f8c7a4",
+            "disabled_bg":"#eeeeee",
+            "selected_bg":"#eeeeee",
+            "active_bg":"#c8dbdf",
+            "dark_bg":"#eeeeee",
+            "normal_text":"#c5cbd8",
+            "hovered_text":"#a65d35",
+            "selected_text":"#f4f5ef",
+            "disabled_text":"#6d736f",
+            "active_text":"#191023",
+            "link_text": "#0000EE",
+            "link_hover": "#2020FF",
+            "link_selected": "#551A8B",
+            "text_shadow": "#777777",
+            "normal_border": "#f8c7a4",
+            "hovered_border": "#a65d35",
+            "disabled_border": "#808080",
+            "selected_border": "#8080B0",
+            "active_border": "#8080B0",
+            "filled_bar":"#111111",
+            "unfilled_bar":"#CCCCCC"
+        },
+        "font":{
+            "name":"chicago",
+            "size":20,
+            "regular_path":"assets/chicago.ttf"
+        }
+    }
+}
