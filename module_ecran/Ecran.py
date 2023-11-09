@@ -9,15 +9,7 @@ from .Interface import Interface
 from .Visuel import Visuel
 import time
 import sys
-
-STATUS = {
-    "MENU": "menu",
-    "AUDIO": "audio",
-    "MICRO": "microphone",
-    "DISPLAY": "affichage",
-    "CAMERA": "camera"
-}
-
+from .data import STATUS
 
 class Ecran:
     def __init__(self, robot, debug=False):
@@ -41,11 +33,12 @@ class Ecran:
         # We create the interface
         self.ui = Interface(self, debug)
         self.visuel = Visuel(robot, self, debug)
-
+        self.update_render = True
         self.clock = pg.time.Clock()  # The clock be used to limit our fps
         self.fps = 30
         self.last = time.time()
         self.runMainLoop = True
+
         self.current_status = STATUS["MENU"]
 
     def run(self):
@@ -57,7 +50,7 @@ class Ecran:
             self.input()
             self.tick()
             self.render()
-            self.clock.tick(self.fps)
+        self.clock.tick(self.fps)
 
     def getWidth(self):
         return self.surface.get_width()
@@ -67,6 +60,12 @@ class Ecran:
 
     def getDeltaTime(self):
         return self.clock.tick(self.fps) / 1000.0
+
+    def getStatus(self):
+        return self.current_status
+    
+    def setStatus(self, status):
+        self.current_status = status
 
     def stop(self):
         self.runMainLoop = False
@@ -111,6 +110,7 @@ class Ecran:
         # We clean our screen with one color
         self.surface.fill((0, 0, 0))
         self.ui.draw()
+        self.update_render = False
         # We update the drawing.
         # Before the function call, any changes will be not visible
         pg.display.update()
