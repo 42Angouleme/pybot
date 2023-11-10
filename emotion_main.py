@@ -21,8 +21,8 @@ async def emotion_bot():
         except Exception as e:
             print(f"Une erreur est survenue: {e}")
             break
+        print("--- (wait 2sec)")
         sleep(2)
-        print("---")
     print("Bye !")
 
 

@@ -33,7 +33,10 @@ def get_emotion(sentence: str, choices: list[str]):
             {"role": "user", "content": sentence},
         ],
     )
-    return reponse["choices"][0]["message"]["content"]
+    emotion = reponse["choices"][0]["message"]["content"]
+    if not emotion in choices:
+        return "unknown"
+    return emotion
 
 
 def run(question):
@@ -42,13 +45,15 @@ def run(question):
     reponse = requete_api(question)
     return reponse
 
+
 def read_file(filename):
     try:
-        with open(filename, 'r') as file:
+        with open(filename, "r") as file:
             content = file.read()
             return content
     except FileNotFoundError:
         print(f"Le fichier '{filename}' est introuvable.")
+
 
 # def parse():
 #     print("")
