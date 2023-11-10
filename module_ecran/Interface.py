@@ -15,7 +15,8 @@ class Interface:
 		self.window = window
 		self.manager_main = pgui.UIManager(
 			(window.getWidth(), window.getHeight()), os.getcwd() + '/assets/theme.json')
-		
+		self.manager_menu = pgui.UIManager(
+			(window.getWidth(), window.getHeight()), os.getcwd() + '/assets/theme.json')
 		self.manager_display = pgui.UIManager(
 			(window.getWidth(), window.getHeight()), os.getcwd() + '/assets/theme.json')
 		self.robot = robot
@@ -26,8 +27,8 @@ class Interface:
 		self.manager_main.update(self.window.getDeltaTime())
 		self.manager_main.draw_ui(self.window.surface)
 		if self.window.getStatus() == STATUS['MENU']:
-				pass
-				# print("menu drawing")
+			self.manager_menu.update(self.window.getDeltaTime())
+			self.manager_menu.draw_ui(self.window.surface)
 		# elif self.window.getStatus() == STATUS['AUDIO']:
 		#         print("audio drawing")
 		# elif self.window.getStatus() == STATUS['MICRO']:
@@ -39,6 +40,18 @@ class Interface:
 			self.manager_display.draw_ui(self.window.surface)
 
 	def load_buttons(self):
+		self.button["id_confirm_yes"] = pgui.elements.UIButton(
+			relative_rect=pg.Rect(
+				(self.window.getWidth() / 2 - 100, self.window.getHeight() - 60), (200, 50)),
+			text='Oui',
+			manager=self.manager_menu
+		)
+		self.button["id_confirm_no"] = pgui.elements.UIButton(
+			relative_rect=pg.Rect(
+				(self.window.getWidth() / 2 + 100, self.window.getHeight() - 60), (200, 50)),
+			text='Non',
+			manager=self.manager_menu
+		)
 		self.button["face_button"] = pgui.elements.UIButton(
 			relative_rect=pg.Rect(
 				(self.window.getWidth() / 2 - 100, self.window.getHeight() - 60), (200, 50)),
@@ -81,7 +94,7 @@ class Interface:
 					self.window.setStatus(STATUS['DISPLAY'])
 		self.manager_main.process_events(event)
 		if self.window.getStatus() == STATUS['MENU']:
-				pass
+			self.manager_menu.process_events(event)
 		#         print("menu event")
 		# elif self.window.getStatus() == STATUS['AUDIO']:
 		#         print("audio event")

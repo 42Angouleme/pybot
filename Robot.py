@@ -3,17 +3,19 @@ import module_ecran as ecran
 
 
 class Robot:
-    def __init__(self):
+    def __init__(self, webapp, debug=False):
         self.ecran = ecran
         self.visage = ""
         self.visages = {}
+        self.debug = debug
+        self.webapp = webapp
         # self.camera = camera
 
     def allumer_ecran(self):
         """
         Allume l'ecran pygame
         """
-        self.ecran.run(self)
+        self.ecran.run(self, self.debug)
 
     def switch_visage(self):
         # Temporary function
@@ -29,6 +31,9 @@ class Robot:
     
     def recevoir_images_visages(self):
         return self.visages
+
+    def recevoir_webapp(self):
+        return self.webapp
 
     def enregistrer_les_visages(self, file):
         import random
