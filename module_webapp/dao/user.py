@@ -60,7 +60,11 @@ class UserDAO(object):
         """
         Get all users.
         """
-        return User.query.all()
+        tab = User.query.all()
+        for t in tab:
+            with StoreManager(db.session):
+                t.picture_path = t.picture.locate()
+        return tab
 
     def get(self, id: UserId) -> UserResponse:
         """Get one user by ID.
@@ -70,6 +74,7 @@ class UserDAO(object):
         """
         user = User.query.get(id)
         raise_NoResultFound_if_none(user, id)
+        print(user)
         return user
 
     def create(self, user: UserCreate) -> UserResponse:

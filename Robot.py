@@ -9,6 +9,14 @@ class Robot:
         self.visages = {}
         self.debug = debug
         self.webapp = webapp
+
+        self.connecte = "no"
+        self.eleve = {
+            "id": "",
+            "prenom": "",
+            "nom": "",
+            "carte": ""
+        }
         # self.camera = camera
 
     def allumer_ecran(self):
@@ -48,6 +56,21 @@ class Robot:
                 self.visages[valeurs[0]] = valeurs[1]
         premier_visage = random.choice(list(self.visages.keys()))
         self.configurer_visage(premier_visage)
+
+    def eleve_connecte(self):
+        return self.connecte
+
+    def change_eleve_connecte(self, connecte):
+        self.connecte = connecte
+    
+    def obtenir_eleve(self):
+        return self.eleve
+
+    def configurer_eleve(self, id, prenom, nom, carte):
+        self.eleve["prenom"] = prenom
+        self.eleve["nom"] = nom
+        self.eleve["carte"] = carte
+        self.eleve["id"] = id
 
     def configurer(self):
         self.enregistrer_les_visages("visages.txt")

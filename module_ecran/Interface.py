@@ -21,6 +21,7 @@ class Interface:
 			(window.getWidth(), window.getHeight()), os.getcwd() + '/assets/theme.json')
 		self.robot = robot
 		self.button = {}
+		self.textbox = {}
 		self.load_buttons()
 
 	def draw(self):
@@ -38,6 +39,9 @@ class Interface:
 		elif self.window.getStatus() == STATUS['DISPLAY']:
 			self.manager_display.update(self.window.getDeltaTime())
 			self.manager_display.draw_ui(self.window.surface)
+
+	# def load_text_box_confirm(self):
+
 
 	def load_buttons(self):
 		self.button["id_confirm_yes"] = pgui.elements.UIButton(

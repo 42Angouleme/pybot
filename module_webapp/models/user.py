@@ -12,6 +12,7 @@ UserId = int
 class UserBase:
     first_name: str
     last_name: str
+    picture_path: str
     picture: bytes
     openai_chat_messages: dict
 

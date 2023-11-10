@@ -5,7 +5,7 @@ import os
 import threading
 
 def run():
-    debug = True
+    debug = False
     webapp = create_app(root_dir=os.path.dirname(os.path.abspath(__file__)))
     robot = Robot(webapp, debug)
     threading.Thread(target=robot.demarrer()).start()

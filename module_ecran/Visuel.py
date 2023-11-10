@@ -20,46 +20,47 @@ class Visuel:
 		self.surface_visage = pg.Surface((10, 10))
 		self.img = {}
 		self.charger_images()
+		self.carte = None
+		self.connect_msg = ""
 
 	def charger_images(self):
 		img = self.robot.recevoir_images_visages()
 		for i in img:
 			self.img[i] = pg.image.load(os.getcwd() + "/assets/" + img[i])
 
+	def charger_carte(self, filepath):
+		print("charge carte ")
+		self.carte = pg.image.load(os.getcwd() + filepath)
 
 	def afficher(self):
 		if self.window.getStatus() == STATUS['DISPLAY']:
 			self.afficher_visage()
 		if self.window.getStatus() == STATUS['CAMERA']:
 			self.afficher_camera()
+		if self.window.getStatus() == STATUS['MENU']:
+			if self.robot.eleve_connecte() == "maybe":
+				self.afficher_carte()
+			elif self.robot.eleve_connecte() == "no":
+				print("Connecte toi. (temp: CAMERA)")
+
 		
+	def afficher_carte(self):
+		offset_x = self.carte.get_size()[0] / 2
+		offset_y = self.carte.get_size()[1] / 2
+		print(self.carte.get_size()[0], self.carte.get_size()[1])
+		self.window.surface.blit(self.carte, (self.width/2 - offset_x, self.height/2 - offset_y))
+		print(self.connect_msg)
+
 	def afficher_visage(self):
 		robot_face = self.robot.recevoir_visage()
 		offset_x = self.img[robot_face].get_size()[0] / 2
 		offset_y = self.img[robot_face].get_size()[1] / 2
 		self.window.surface.blit(self.img[robot_face], (self.width/2 - offset_x, self.height/2 - offset_y))
 
-
-	# def auth():
-	# 	from interactions import UserCardsTracker
-	# 	import time
-	# 	time.sleep(2)
-	# 	cam_track_cards_app(app)
-
 	def afficher_camera(self):
 		time.sleep(1)
-		camera.cam_track_cards_app(self.robot.recevoir_webapp())
+		camera.cam_track_cards_app(self.robot, self.window)
+		eleve = self.robot.obtenir_eleve()
+		self.charger_carte(eleve["carte"])
+		self.connect_msg = f"Bonjour {eleve['prenom']} {eleve['nom']}, est ce que c'est bien toi ?"
 		self.window.setStatus(STATUS['MENU'])
-		# threading.Thread(target=auth).start()
-		# ret, frame = camera.read()
-		# self.window.surface.fill([0,0,0])
-
-		# frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-		# frame = np.rot90(frame)
-		# frame = pg.surfarray.make_surface(frame)
-		# self.window.surface.blit(frame, (0,0))
-		# width = self.width / 2
-		# offset_x = width / 2
-		# height = self.height / 2
-		# offset_y = height / 2
-		# pg.draw.rect(self.window.surface, (100, 255, 255), (width - offset_x , height - offset_y, width, height))
