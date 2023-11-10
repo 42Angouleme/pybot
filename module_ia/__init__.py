@@ -1,1 +1,1 @@
-from .module import run
+from .module import run, get_emotion

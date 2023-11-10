@@ -21,6 +21,21 @@ def requete_api(question):
     return reponse["choices"][0]["message"]["content"]
 
 
+def get_emotion(sentence: str, choices: list[str]):
+    choices_str = ", ".join(choices)
+    preprompt = f"""Pick one word from [ {choices_str} ] that fits well with the following sentence: {sentence}.
+    Answer only one word. Answer 'unknown' if you really can't find any match"""
+
+    reponse = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": preprompt},
+            {"role": "user", "content": sentence},
+        ],
+    )
+    return reponse["choices"][0]["message"]["content"]
+
+
 def run(question):
     if question is None:
         return None
