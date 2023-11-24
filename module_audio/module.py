@@ -2,7 +2,7 @@ import pyttsx3
 
 
 # il faut que ma string soit en global/static sur ce fichier.
-def run(txt="Bonjour et Bienvenue dans le projet ROBOTECH!"):
+def run(txt="Bonjour, Monde!"):
     print("Hello Module Audio")
     print("\ten cours...")
 
