@@ -5,7 +5,7 @@ venv
 .env
 # Ignore Jupyter notebook backup files
 *-checkpoint.ipynb
-
+.DS_Store
 module_webapp/static/images/
 module_webapp/static/thumbnails/
 
