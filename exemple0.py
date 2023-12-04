@@ -5,9 +5,9 @@ robot = Robot()
 
 
 def main():
-    robot.configurer()
+    # robot.configurer()
     robot.allumer_ecran()
-    robot.allumer_camera()
+    # robot.allumer_camera()
 
 
 if __name__ == "__main__":

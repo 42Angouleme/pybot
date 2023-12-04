@@ -1,0 +1,14 @@
+cardscan==0.4.0
+imageio==2.33.0
+lazy_loader==0.3
+networkx==3.2.1
+numpy==1.26.2
+opencv-python==4.8.1.78
+packaging==23.2
+Pillow==10.1.0
+pygame-ce==2.3.2
+pygame-gui==0.6.9
+python-i18n==0.3.9
+scikit-image==0.22.0
+scipy==1.11.4
+tifffile==2023.9.26

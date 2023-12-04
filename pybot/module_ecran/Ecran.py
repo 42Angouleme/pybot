@@ -9,118 +9,112 @@ from .Interface import Interface
 from .Visuel import Visuel
 import time
 import sys
-from .data import STATUS
+
 
 class Ecran:
-	def __init__(self, robot, debug=False):
-		"""
-		This method define all variables needed by the program
-		"""
-		self.debug = debug
+    def __init__(self, robot, debug=False):
+        self.debug = debug
+        pg.init()
+        pg.freetype.init()
+        self.robot = robot
+        self.surface = None
+        self.ui = None
+        self.visuel = None
+        self.clock = pg.time.Clock()
+        self.fps = 30
+        self.last = time.time()
+        self.runMainLoop = True
+        self.cameraRunning = False
+        self.capturePhoto = False
 
-		# Start of pygame
-		pg.init()
-		pg.freetype.init()
+    def run(self, width=400, height=300):
+        self.surface = pg.display.set_mode((width, height))
+        self.ui = Interface(self.robot, self)
+        self.visuel = Visuel(self.robot, self)
+        return self
 
-		self.robot = robot
+    def loop(self):
+        while self.runMainLoop:
+            self.input()
+            self.render()
+            self.clock.tick(self.fps)
 
-		# We create the window
-		if self.debug:
-			self.surface = pg.display.set_mode((800, 600))
-		else:
-			self.surface = pg.display.set_mode((0, 0), pg.FULLSCREEN)
+    def getWidth(self):
+        return self.surface.get_width()
 
-		# We create the interface
-		self.ui = Interface(robot, self, debug)
-		self.visuel = Visuel(robot, self, debug)
-		# self.update_render = True
-		self.clock = pg.time.Clock()  # The clock be used to limit our fps
-		self.fps = 30
-		self.last = time.time()
-		self.runMainLoop = True
+    def getHeight(self):
+        return self.surface.get_height()
 
-		self.current_status = STATUS["MENU"]
+    def getDeltaTime(self):
+        return self.clock.tick(self.fps) / 1000.0
 
-	def run(self):
-		"""
-		This method is the main loop of the game
-		"""
-		# Game loop
-		while self.runMainLoop:
-			self.input()
-			self.tick()
-			self.render()
-		self.clock.tick(self.fps)
+    def getStatus(self):
+        return self.current_status
 
-	def getWidth(self):
-		return self.surface.get_width()
+    def setStatus(self, status):
+        self.current_status = status
 
-	def getHeight(self):
-		return self.surface.get_height()
+    def stop(self):
+        self.runMainLoop = False
 
-	def getDeltaTime(self):
-		return self.clock.tick(self.fps) / 1000.0
+    def input(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.quit()
+            self.ui.check_event(event)
 
-	def getStatus(self):
-		return self.current_status
+        self.keyboardState = pg.key.get_pressed()
+        self.mouseState = pg.mouse.get_pressed()
+        self.mousePos = pg.mouse.get_pos()
 
-	def setStatus(self, status):
-		self.current_status = status
+        if self.keyboardState[pg.K_ESCAPE]:
+            self.quit()
 
-	def stop(self):
-		self.runMainLoop = False
+    def title(self, title):
+        pg.display.set_caption(title)
 
-	def input(self):
-		"""
-		The method catch user's inputs, as key presse or a mouse click
-		"""
-		# We check each event
-		for event in pg.event.get():
-			# If the event it a click on the top right cross, we quit the game
-			if event.type == pg.QUIT:
-				self.quit()
-			self.ui.check_event(event)
+    def render(self):
+        self.surface.fill((0, 0, 0))
+        self.ui.draw()
+        self.visuel.afficher()
+        pg.display.update()
 
-		self.keyboardState = pg.key.get_pressed()
-		self.mouseState = pg.mouse.get_pressed()
-		self.mousePos = pg.mouse.get_pos()
+    def quit(self):
+        self.stop()
+        # pg.quit()
+        sys.exit()
 
-		# Press espace to quit
-		if self.keyboardState[pg.K_ESCAPE]:
-			self.quit()
+    def ajouter_bouton(self, titre, function):
+        self.ui.add_button(titre, function)
 
-	def tick(self):
-		"""
-		This is the method where all calculations will be done
-		"""
-		tmp = time.time()
-		delta = str(round(tmp - self.last, 4))
-		delta_time = str(round(self.getDeltaTime(), 4))
-		fps = str(round(self.clock.get_fps(), 4))
-		self.last = tmp
+    def supprimer_bouton(self, titre):
+        self.ui.delete_button(titre)
 
-		if self.debug:
-			pg.display.set_caption(
-				f"fps: {fps} - delta: {delta} - delta_time: {delta_time}")
+    def afficher_camera(self):
+        self.cameraRunning = True
+        self.visuel.afficher_camera(self.ui)
 
-	def render(self):
-		"""
-		This is the method where all graphic update will be done
-		"""
-		# We clean our screen with one color
-		self.surface.fill((0, 0, 0))
-		self.ui.draw()
-		self.visuel.afficher()
-		# self.update_render = False
-		# We update the drawing.
-		# Before the function call, any changes will be not visible
-		pg.display.update()
+    def eteindre_camera(self):
+        self.cameraRunning = False
 
-	def quit(self):
-		"""
-		This is the quit method
-		"""
-		self.stop()
-		# Pygame quit
-		pg.quit()
-		sys.exit()
+    def get_camera_running(self):
+        return self.cameraRunning
+
+    def enregistrer_photo(self):
+        self.capturePhoto = True
+
+    def check_capture(self):
+        if self.capturePhoto:
+            self.capturePhoto = False
+            return True
+        return False
+
+    def afficher_photo(self):
+        self.visuel.set_visage(False)
+        self.visuel.charger_photo()
+
+    def afficher_visage(self):
+        self.visuel.set_visage(True)
+
+    def tourner_photo(self):
+        self.visuel.tourner_photo()

@@ -1,6 +1,6 @@
 #!/bin/python
-from Robot import Robot
-from module_webapp import create_app
+from pybot import Robot
+from pybot.module_webapp import create_app
 import os
 import threading
 
