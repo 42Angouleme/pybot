@@ -1,9 +1,3 @@
-# **************************************************************#
-#                                                              #
-#        Python Robot - mdaadoun & aderouba - 2023             #
-#                                                              #
-# **************************************************************#
-
 import pygame as pg
 from .Interface import Interface
 from .Visuel import Visuel

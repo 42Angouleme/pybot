@@ -9,8 +9,8 @@ from flask import (
     abort,
 )
 from sqlalchemy_media import StoreManager
-from module_webapp.dao import user
-from module_webapp.app import db
+from pybot.module_webapp.dao import user
+from pybot.module_webapp.app import db
 from functools import wraps
 
 import json

@@ -1,7 +1,7 @@
 from typing import Optional
 
 from sqlalchemy.engine import create
-from module_webapp.app import db
+from pybot.module_webapp.app import db
 from .image_model_preset import DrawingModel
 from datetime import datetime
 

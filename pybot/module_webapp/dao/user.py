@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
-from module_webapp.app import db, StoreManager
-from module_webapp.models import (
+from pybot.module_webapp.app import db, StoreManager
+from pybot.module_webapp.models import (
     User,
     DrawingModel,
     UserCreate,

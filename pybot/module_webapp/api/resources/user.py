@@ -3,11 +3,11 @@ from flask_restx.api import HTTPStatus
 from sqlalchemy_media.exceptions import ValidationError, AnalyzeError
 from sqlalchemy.exc import IntegrityError
 
-from module_webapp.dao import user
+from pybot.module_webapp.dao import user
 
 from ..api import api
 
-from module_webapp.models import UserId
+from pybot.module_webapp.models import UserId
 
 from sqlalchemy.exc import NoResultFound
 

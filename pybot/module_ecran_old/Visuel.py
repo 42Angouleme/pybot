@@ -1,15 +1,8 @@
-# **************************************************************#
-#                                                              #
-#              Python Robot - mdaadoun - 2023                  #
-#                                                              #
-# **************************************************************#
-
 import pygame as pg
 import os
 from .data import STATUS
 from . import camera
 import time
-
 
 class Visuel:
     def __init__(self, robot, window, debug=False):
