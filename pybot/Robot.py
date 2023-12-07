@@ -11,7 +11,8 @@ class Robot:
         self.ecran = None
         self.titre = "Pybot"
         self.actif = True
-    
+        self.events = []
+
     ### GENERAL - ECRAN ###
 
     def demarrer_webapp(self):
@@ -31,17 +32,6 @@ class Robot:
         '''
         self.ecran = ecran.run(self, longueur, hauteur)
 
-    def eteindre_ecran(self):
-        '''
-            Sert à éteindre correctement l'écran (et la bibliothèque graphique), le robot est inactivé.
-            Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) il peut etre utilisé pour arrêter le programme.
-        '''
-        self.ecran.stop()
-        self.actif = False
-
-    def dessiner_ecran(self):
-        self.ecran.render()
-
     def changer_titre(self, titre):
         '''
             Changer le titre de la fenêtre.
@@ -51,26 +41,64 @@ class Robot:
         except AttributeError:
             self.message_erreur("Le titre doit être défini aprés création de l'écran.")
 
+    def dessiner_ecran(self):
+        '''
+            Fonction nécessaire dans une boucle pour mettre à jour l'affichage de l'écran.
+        '''
+        self.ecran.render()
+
     def plein_ecran(self, changer):
         '''
             Passer l'ecran en plein ecran (changer=True) ou en sortir (changer=False).
         '''
         self.ecran.update_fullscreen(changer)
 
-    def est_actif(self):
-        '''
-            Retourne vrai (True) ou faux (False) pour savoir si le robot est toujours actif.
-            Peut être utilisé pour vérifier la sortie d'une boucle.
-        '''
-        return self.actif
-    
     def dort(self, secondes):
         '''
             Le programme restera en attente le nombre de seconde passé en argument.
         '''
         time.sleep(secondes)
     
-    ### INTERFACE - LAYOUT ###
+    def est_actif(self):
+        '''
+            Retourne vrai (True) ou faux (False) pour savoir si le robot est toujours actif.
+            Peut être utilisé pour vérifier la sortie d'une boucle.
+        '''
+        return self.actif
+
+    def eteindre_ecran(self):
+        '''
+            Sert à éteindre correctement l'écran (et la bibliothèque graphique), le robot est inactivé.
+            Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) il peut etre utilisé pour arrêter le programme.
+        '''
+        try:
+            self.ecran.stop()
+            self.actif = False
+        except AttributeError:
+                self.message_erreur("L'écran n'a pas été allumé.")
+
+    ### GENERAL - EVENEMENTS ###
+
+    def ajouter_evenement(self, touche, nom):
+        """
+            ...
+        """
+        self.events.append((touche, nom))
+
+    def supprimer_evenement(self, touche):
+        """
+            ...
+        """
+        print(self.events)
+
+    def verifier_evenements(self):
+        """
+            ...
+        """
+        return self.ecran.input(self.events)
+
+
+    ### INTERFACE - BOUTONS ###
 
     ### CAMERA - CARTES ###
     ### IA ###
