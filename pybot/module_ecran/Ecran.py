@@ -2,7 +2,7 @@
 # from .Interface import Interface
 # from .Visuel import Visuel
 # import time
-import sys
+# import sys
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'
 import pygame as pg
@@ -65,21 +65,6 @@ class Ecran:
     def stop(self):
         pg.quit()
 
-    def input(self, events):
-        print("event to check:", events)
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                self.robot.eteindre_ecran()
-            # self.ui.check_event(event) # boutons
-        return ["stop"]
-
-    #     self.keyboardState = pg.key.get_pressed()
-    #     self.mouseState = pg.mouse.get_pressed()
-    #     self.mousePos = pg.mouse.get_pos()
-
-    #     if self.keyboardState[pg.K_ESCAPE]:
-    #         self.quit()
-
     def update_fullscreen(self, change):
         if change:
             self.toggle_in_fullscreen = True
@@ -100,13 +85,13 @@ class Ecran:
         if self.change_title:
             pg.display.set_caption(self.title)
 
-    def set_background_color(self, R, G, B):
-        self.background_color = (R, G, B)
+    # def set_background_color(self, R, G, B):
+    #     self.background_color = (R, G, B)
 
     def render(self):
         try:
             self.check_flags()
-            self.surface.fill(self.background_color)
+            # self.surface.fill(self.background_color)
             # self.ui.draw()
             # self.visuel.afficher()
             pg.display.update()

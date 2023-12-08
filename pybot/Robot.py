@@ -1,4 +1,5 @@
 from .module_ecran import module as ecran
+from .module_ecran.Input import Input
 from .module_ecran.filtres import Filtres
 from .module_webapp import create_app
 import os, sys
@@ -81,21 +82,26 @@ class Robot:
 
     def ajouter_evenement(self, touche, nom):
         """
-            ...
+            Ajoute à la liste des évènements, un évènement et la touche liée, un évènement peut avoir plusieurs touches.
+            Voir documentation pour la liste des touches possibles.
         """
-        self.events.append((touche, nom))
+        new = (touche.lower(), nom)
+        if new not in self.events:
+            self.events.append(new)
 
-    def supprimer_evenement(self, touche):
+    def supprimer_evenement(self, nom):
         """
-            ...
+            Supprimer l'évènement donnée en paramètre de la liste des évènements.
         """
-        print(self.events)
+        for e in self.events:
+            if e[1] == nom:
+                self.events.remove(e)
 
     def verifier_evenements(self):
         """
-            ...
+            Vérifie chaque évènements et retourne un tableau avec les évènements détectés.
         """
-        return self.ecran.input(self.events)
+        return Input.check(self.events, self)
 
 
     ### INTERFACE - BOUTONS ###
