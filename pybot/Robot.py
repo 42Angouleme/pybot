@@ -66,6 +66,12 @@ class Robot:
             Peut être utilisé pour vérifier la sortie d'une boucle.
         '''
         return self.actif
+    
+    def desactiver(self):
+        '''
+            Passe la variable self.actif du robot en mode False
+        '''
+        self.actif = False
 
     def eteindre_ecran(self):
         '''

@@ -11,9 +11,9 @@ def preparer_robot():
     robot.allumer_ecran(long, haut)
     robot.changer_titre("Bonjour!")
     robot.ajouter_evenement("ESC", "stop")
-    robot.ajouter_evenement("A", "banane")
     robot.ajouter_evenement("B", "banane")
     robot.ajouter_evenement("C", "carotte")
+    print("Vous pouvez maintenant utiliser ESC et C")
 
 preparer_robot()
 
@@ -23,14 +23,19 @@ while robot.est_actif():
     if "stop" in events:
         robot.eteindre_ecran()
     elif "carotte" in events:
+        print("Vous pouvez maintenant utiliser P")
         ecrire_nom_evenement("carotte")
+        robot.supprimer_evenement("carotte")
         robot.ajouter_evenement("P", "poireau")
     elif nom in events:
         ecrire_nom_evenement(nom)
         if nom == "poireau":
-            robot.supprimer_evenement("carotte")
+            print("Vous pouvez maintenant utiliser B")
+            robot.supprimer_evenement("poireau")
             nom = "banane"
-        if nom == "banane":
+        elif nom == "banane":
+            print("ESC ne permet plus de quitter, il faut maintenant utiliser Q")
             robot.supprimer_evenement("stop")
+            robot.supprimer_evenement("banane")
             robot.ajouter_evenement("Q", "stop")
     robot.dessiner_ecran()
