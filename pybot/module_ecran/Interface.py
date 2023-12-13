@@ -53,7 +53,7 @@ class Button:
             pass
         return False
 
-    def afficher_bouton(self):
+    def afficher(self):
         """
             ...
         """

@@ -13,7 +13,6 @@ class Robot:
         self.titre = "Pybot"
         self.actif = True
         self.events = []
-        self.zone = "menu"
 
     ### GENERAL - ECRAN ###
 
@@ -29,7 +28,7 @@ class Robot:
 
     def allumer_ecran(self, longueur=800, hauteur=600):
         '''
-            Créer un écran avec une longueur et une hauteur de fenêtre passée en argument (en nombre de pixels).
+            Créer un écran avec une longueur et une hauteur de fenêtre passée en argument (en nombre de pixels). \n
             Si un argument n'est pas donné, la longueur par défaut sera 800 pixels et la hauteur par défaut sera 600 pixels.
         '''
         self.ecran = ecran.run(self, longueur, hauteur)
@@ -63,20 +62,20 @@ class Robot:
     
     def est_actif(self):
         '''
-            Retourne vrai (True) ou faux (False) pour savoir si le robot est toujours actif.
+            Retourne vrai (True) ou faux (False) pour savoir si le robot est toujours actif. \n
             Peut être utilisé pour vérifier la sortie d'une boucle.
         '''
         return self.actif
     
     def desactiver(self):
         '''
-            Passe la variable self.actif du robot en mode False
+            Passe la variable self.actif du robot avec la valeur False.
         '''
         self.actif = False
 
     def eteindre_ecran(self):
         '''
-            Sert à éteindre correctement l'écran (et la bibliothèque graphique), le robot est inactivé.
+            Sert à éteindre correctement l'écran (et la bibliothèque graphique), le robot est inactivé. \n
             Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) il peut etre utilisé pour arrêter le programme.
         '''
         try:
@@ -89,7 +88,7 @@ class Robot:
 
     def ajouter_evenement(self, touche, nom):
         """
-            Ajoute à la liste des évènements, un évènement et la touche liée, un évènement peut avoir plusieurs touches.
+            Ajoute à la liste des évènements, un évènement et la touche liée, un évènement peut avoir plusieurs touches. \n
             Voir documentation pour la liste des touches possibles.
         """
         new = (touche.lower(), nom)
@@ -115,13 +114,16 @@ class Robot:
 
     def couleur_fond(self, couleur):
         """
-            ...
+            Change la couleur du fond d'écran. \n
+            La couleur passée en paramètre doit être au format: (R, G, B). \n
+            R, G et B sont des nombres entre 0 et 255.
         """
         self.ecran.change_background_color(couleur[0], couleur[1], couleur[2])
 
     def afficher_fond(self):
         """
-            ...
+            Affiche le fond d'écran avec la couleur enregistrée en dernier avec la fonction couleur_fond() \n
+            (par défaut, la couleur est noir).
         """
         self.ecran.draw_background()
 
@@ -143,19 +145,8 @@ class Robot:
         """
         self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
 
-    def zone_courante(self):
-        """
-            Retourne la zone courante.
-        """
-        return self.zone
-
-    def changer_zone(self, nom):
-        """
-            Change la zone courante.
-        """
-        self.zone = nom
-
-    ### CAMERA - CARTES ###
+    ### CAMERA - PHOTOS ###
+    ### CAMERA - RECONNAISANCE CARTES ###
     ### IA ###
     ### AUDIO ###
     ### MICROPHONE ###

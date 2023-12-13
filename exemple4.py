@@ -32,6 +32,8 @@ bouton_plus = None
 
 mettre_a_jour_affichage = True
 
+zone = "menu"
+
 def preparer_programme():
     global bouton_menu, bouton_quitter, bouton_discussion, bouton_plus
     robot.allumer_ecran(long, haut)
@@ -48,16 +50,15 @@ def preparer_programme():
     bouton_plus = robot.creer_bouton(180, 40, 200, 200, rouge)
     bouton_plus.ajouter_texte("suite du texte", 10, 10, 20, noir)
 
-
 def verifier_boutons():
-    global mettre_a_jour_affichage, paroles_index
+    global mettre_a_jour_affichage, paroles_index, zone
     if bouton_menu.verifier_contact():
-        robot.changer_zone("menu")
+        zone = "menu"
         mettre_a_jour_affichage = True
     if bouton_quitter.verifier_contact():
         robot.eteindre_ecran()
     if bouton_discussion.verifier_contact():
-        robot.changer_zone("discussion")
+        zone = "discussion"
         mettre_a_jour_affichage = True
     if bouton_plus.verifier_contact():
         paroles_index = paroles_index + 1
@@ -67,21 +68,20 @@ def verifier_boutons():
 
 def affichage_ecran():
     global mettre_a_jour_affichage
-    zone = robot.zone_courante()
     if mettre_a_jour_affichage:
         if zone == "menu":
             robot.couleur_fond(rouge_sombre)
         else:
             robot.couleur_fond(bleu_sombre)
         robot.afficher_fond()
-        bouton_menu.afficher_bouton()
-        bouton_quitter.afficher_bouton()
+        bouton_menu.afficher()
+        bouton_quitter.afficher()
         if zone == "menu":
-            bouton_discussion.afficher_bouton()
+            bouton_discussion.afficher()
         if zone == "discussion":
             robot.dessiner_rectangle(700, 100, 150, 50, blanc)
             robot.afficher_texte(paroles_robot[paroles_index], 150, 80, 20)
-            bouton_plus.afficher_bouton()
+            bouton_plus.afficher()
         mettre_a_jour_affichage = False
 
 def boucle_programme():

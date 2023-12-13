@@ -1,10 +1,7 @@
 
 from .Interface import Interface
-# from .Visuel import Visuel
-# import time
-# import sys
 import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True' # need to be declared before to import pygame
 import pygame as pg
 
 class Ecran:
@@ -32,7 +29,6 @@ class Ecran:
         self.surface = pg.display.set_mode((width, height))
         pg.display.set_caption(self.title)
         self.interface = Interface(self.surface)
-        # self.visuel = Visuel(self.robot, self)
         return self
 
     def getWidth(self):
@@ -70,8 +66,6 @@ class Ecran:
     def render(self):
         try:
             self.check_flags()
-            # self.interface.draw()
-            # self.visuel.afficher()
             self.clock.tick(self.fps)
             pg.display.update()
         except:
