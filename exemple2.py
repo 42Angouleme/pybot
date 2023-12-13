@@ -10,10 +10,10 @@ def ecrire_nom_evenement(event_name):
 def preparer_robot():
     robot.allumer_ecran(long, haut)
     robot.changer_titre("Bonjour!")
-    robot.ajouter_evenement("ESC", "stop")
+    robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("B", "banane")
     robot.ajouter_evenement("C", "carotte")
-    print("Vous pouvez maintenant utiliser ESC et C")
+    print("Vous pouvez maintenant utiliser ECHAP et C")
 
 preparer_robot()
 
@@ -34,7 +34,7 @@ while robot.est_actif():
             robot.supprimer_evenement("poireau")
             nom = "banane"
         elif nom == "banane":
-            print("ESC ne permet plus de quitter, il faut maintenant utiliser Q")
+            print("ECHAP ne permet plus de quitter, il faut maintenant utiliser Q")
             robot.supprimer_evenement("stop")
             robot.supprimer_evenement("banane")
             robot.ajouter_evenement("Q", "stop")

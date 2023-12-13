@@ -71,12 +71,4 @@ class Input:
                     k = keys[e[0]]
                     if event.key == k:
                         result.append(e[1])
-            # self.ui.check_event(event) # boutons
         return result
-
-    #     self.keyboardState = pg.key.get_pressed()
-    #     self.mouseState = pg.mouse.get_pressed()
-    #     self.mousePos = pg.mouse.get_pos()
-
-    #     if self.keyboardState[pg.K_ESCAPE]:
-    #         self.quit()

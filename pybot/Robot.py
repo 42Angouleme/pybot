@@ -13,6 +13,7 @@ class Robot:
         self.titre = "Pybot"
         self.actif = True
         self.events = []
+        self.zone = "menu"
 
     ### GENERAL - ECRAN ###
 
@@ -111,6 +112,48 @@ class Robot:
 
 
     ### INTERFACE - BOUTONS ###
+
+    def couleur_fond(self, couleur):
+        """
+            ...
+        """
+        self.ecran.change_background_color(couleur[0], couleur[1], couleur[2])
+
+    def afficher_fond(self):
+        """
+            ...
+        """
+        self.ecran.draw_background()
+
+    def creer_bouton(self, longueur, hauteur, position_x, position_y, couleur):
+        """
+            ...
+        """
+        return self.ecran.create_button(longueur, hauteur, position_x, position_y, couleur)
+
+    def dessiner_rectangle(self, longueur, hauteur, position_x, position_y, couleur):
+        """
+            ...
+        """
+        self.ecran.draw_rect(longueur, hauteur, position_x, position_y, couleur)
+    
+    def afficher_texte(self, texte, position_x=0, position_y=0, taille=16, couleur=(0, 0, 0)):
+        """
+            ...
+        """
+        self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
+
+    def zone_courante(self):
+        """
+            Retourne la zone courante.
+        """
+        return self.zone
+
+    def changer_zone(self, nom):
+        """
+            Change la zone courante.
+        """
+        self.zone = nom
 
     ### CAMERA - CARTES ###
     ### IA ###

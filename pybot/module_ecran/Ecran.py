@@ -1,12 +1,11 @@
 
-# from .Interface import Interface
+from .Interface import Interface
 # from .Visuel import Visuel
 # import time
 # import sys
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'
 import pygame as pg
-
 
 class Ecran:
     def __init__(self, robot, debug=False):
@@ -27,40 +26,23 @@ class Ecran:
         # clock and fps
         self.clock = pg.time.Clock()
         self.fps = 30
-        # self.last = time.time()
-        # self.runMainLoop = True
-        # self.cameraRunning = False
-        # self.capturePhoto = False
 
     def run(self, width, height):
         pg.init()
         self.surface = pg.display.set_mode((width, height))
         pg.display.set_caption(self.title)
-        # pg.freetype.init()
-        # self.ui = Interface(self.robot, self)
+        self.interface = Interface(self.surface)
         # self.visuel = Visuel(self.robot, self)
         return self
-
-    # def loop(self):
-    #     while self.runMainLoop:
-    #         self.input()
-    #         self.render()
-    #         self.clock.tick(self.fps)
 
     def getWidth(self):
         return self.surface.get_width()
 
     def getHeight(self):
         return self.surface.get_height()
-
-    # def getDeltaTime(self):
-    #     return self.clock.tick(self.fps) / 1000.0
-
-    # def getStatus(self):
-    #     return self.current_status
-
-    # def setStatus(self, status):
-    #     self.current_status = status
+    
+    def change_background_color(self, R, G, B):
+        self.background_color = (R, G, B)
 
     def stop(self):
         pg.quit()
@@ -85,30 +67,31 @@ class Ecran:
         if self.change_title:
             pg.display.set_caption(self.title)
 
-    # def set_background_color(self, R, G, B):
-    #     self.background_color = (R, G, B)
-
     def render(self):
         try:
             self.check_flags()
-            # self.surface.fill(self.background_color)
-            # self.ui.draw()
+            # self.interface.draw()
             # self.visuel.afficher()
-            pg.display.update()
             self.clock.tick(self.fps)
+            pg.display.update()
         except:
             pass
 
-    # def quit(self):
-    #     self.stop()
-    #     # pg.quit()
-    #     sys.exit()
+    def draw_background(self):
+        self.surface.fill(self.background_color)
+        pg.display.update()
 
-    # def ajouter_bouton(self, titre, function):
-    #     self.ui.add_button(titre, function)
+    def draw_rect(self, w, h, x, y, c):
+        rect = pg.Rect(x, y, w, h)
+        pg.draw.rect(self.surface, c, rect)
 
-    # def supprimer_bouton(self, titre):
-    #     self.ui.delete_button(titre)
+    def draw_text(self, txt, x, y, s, c):
+        font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", s)
+        surf = font.render(txt, True, c)
+        self.surface.blit(surf, (x, y))
+
+    def create_button(self, w, h, x, y, c):
+        return self.interface.create_button(w, h, x, y, c)
 
     # def afficher_camera(self):
     #     self.cameraRunning = True
