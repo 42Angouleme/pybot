@@ -42,9 +42,9 @@ def preparer_robot():
     robot.ajouter_evenement("espace", "afficher_cacher_bouton")
     bouton_bleu = robot.creer_bouton(100, 40, 100, 100, bleu)
     bouton_vert = robot.creer_bouton(300, 20, 10, 10, vert)
-    bouton_vert.configurer_bouton("Afficher boutons")
+    bouton_vert.ajouter_texte("Afficher boutons")
     bouton_jaune = robot.creer_bouton(500, 30, 200, 220, jaune)
-    bouton_jaune.configurer_bouton("Eteindre robot", taille_texte=20, couleur_texte=rouge)
+    bouton_jaune.ajouter_texte("Eteindre robot", taille=20, couleur=rouge)
 
 preparer_robot()
 
@@ -59,9 +59,9 @@ while robot.est_actif():
         robot.afficher_fond()
 
         if not cacher_bouton:
-            bouton_bleu.afficher_bouton()
-            bouton_jaune.afficher_bouton()
-        bouton_vert.afficher_bouton()
+            bouton_bleu.afficher()
+            bouton_jaune.afficher()
+        bouton_vert.afficher()
         mettre_a_jour_affichage = False
 
     if not cacher_bouton:
@@ -71,9 +71,9 @@ while robot.est_actif():
             robot.eteindre_ecran()
     if bouton_vert.verifier_contact():
         if cacher_bouton:
-            bouton_vert.configurer_bouton("Cacher bouton")
+            bouton_vert.ajouter_texte("Cacher bouton")
         else:
-            bouton_vert.configurer_bouton("Afficher bouton")
+            bouton_vert.ajouter_texte("Afficher bouton")
         afficher_cacher_bouton()
 
     robot.dessiner_ecran()
