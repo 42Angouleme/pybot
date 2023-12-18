@@ -1,5 +1,6 @@
 
 from .Interface import Interface
+from .Visuel import Visuel
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True' # need to be declared before to import pygame
 import pygame as pg
@@ -13,7 +14,6 @@ class Ecran:
         # objects
         self.robot = robot
         self.interface = None
-        self.visuel = None
         # update flags
         self.toggle_in_fullscreen = False
         self.toggle_out_fullscreen = False
@@ -23,12 +23,15 @@ class Ecran:
         # clock and fps
         self.clock = pg.time.Clock()
         self.fps = 30
+        # camera
+        self.visuel = None
 
     def run(self, width, height):
         pg.init()
         self.surface = pg.display.set_mode((width, height))
         pg.display.set_caption(self.title)
         self.interface = Interface(self.surface)
+        self.visuel = Visuel(self.surface)
         return self
 
     def getWidth(self):
@@ -87,12 +90,12 @@ class Ecran:
     def create_button(self, w, h, x, y, c):
         return self.interface.create_button(w, h, x, y, c)
 
-    # def afficher_camera(self):
-    #     self.cameraRunning = True
-    #     self.visuel.afficher_camera(self.ui)
+    def afficher_camera(self):
+        self.cameraRunning = True
+        self.visuel.afficher_camera(self.ui)
 
-    # def eteindre_camera(self):
-    #     self.cameraRunning = False
+    def eteindre_camera(self):
+        self.cameraRunning = False
 
     # def get_camera_running(self):
     #     return self.cameraRunning
