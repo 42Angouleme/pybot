@@ -96,3 +96,6 @@ class Ecran:
     
     def capture_photo(self, file_name):
         self.camera.capture(file_name)
+    
+    def detect_card(self):
+        return self.camera.detect_card()

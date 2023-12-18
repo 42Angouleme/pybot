@@ -173,12 +173,11 @@ class Robot:
 
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
         
-    def detecter_carte(self, nom_fichier):
+    def detecter_carte(self):
         """
             ...
         """
-        print("detecter carte et retourne utilisateur connecté")
-        return False
+        return self.ecran.detect_card()
     
     def creer_session(self, nom_eleve):
         """

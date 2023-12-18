@@ -62,6 +62,7 @@ def boucle_programme():
         affichage_ecran()
         if afficher_camera:
             robot.afficher_camera(200, 200)
+            robot.detecter_carte()
         verifier_boutons()
         robot.dessiner_ecran()
 
