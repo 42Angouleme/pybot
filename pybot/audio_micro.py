@@ -1,13 +1,8 @@
 #! venv/bin/python3
 
-from pybot import module_audio as audio
-from pybot import module_microphone as micro
-
-# TODO an import is missing for skimage
-# import module_ia as ia
-
-# from module_micro import listen
-
+from . import module_audio as audio
+from . import module_microphone as micro
+from . import module_ia as ia
 
 async def chat_bot():
     print('J\'écoute... à tout moment tu peux dire le mot "STOP" pour arrêter.')

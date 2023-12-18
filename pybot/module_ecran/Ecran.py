@@ -1,6 +1,6 @@
 
 from .Interface import Interface
-from .Visuel import Visuel
+from ..module_camera.Camera import Camera
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True' # need to be declared before to import pygame
 import pygame as pg
@@ -24,14 +24,14 @@ class Ecran:
         self.clock = pg.time.Clock()
         self.fps = 30
         # camera
-        self.visuel = None
+        self.camera = None
 
     def run(self, width, height):
         pg.init()
         self.surface = pg.display.set_mode((width, height))
         pg.display.set_caption(self.title)
         self.interface = Interface(self.surface)
-        self.visuel = Visuel(self.surface)
+        self.camera = Camera(self.surface)
         return self
 
     def getWidth(self):
@@ -44,6 +44,7 @@ class Ecran:
         self.background_color = (R, G, B)
 
     def stop(self):
+        self.camera.stop()
         pg.quit()
 
     def update_fullscreen(self, change):
@@ -90,31 +91,8 @@ class Ecran:
     def create_button(self, w, h, x, y, c):
         return self.interface.create_button(w, h, x, y, c)
 
-    def afficher_camera(self):
-        self.cameraRunning = True
-        self.visuel.afficher_camera(self.ui)
-
-    def eteindre_camera(self):
-        self.cameraRunning = False
-
-    # def get_camera_running(self):
-    #     return self.cameraRunning
-
-    # def enregistrer_photo(self):
-    #     self.capturePhoto = True
-
-    # def check_capture(self):
-    #     if self.capturePhoto:
-    #         self.capturePhoto = False
-    #         return True
-    #     return False
-
-    # def afficher_photo(self):
-    #     self.visuel.set_visage(False)
-    #     self.visuel.charger_photo()
-
-    # def afficher_visage(self):
-    #     self.visuel.set_visage(True)
-
-    # def tourner_photo(self):
-    #     self.visuel.tourner_photo()
+    def display_camera(self, x, y):
+        self.camera.display(x, y)
+    
+    def capture_photo(self, file_name):
+        self.camera.capture(file_name)

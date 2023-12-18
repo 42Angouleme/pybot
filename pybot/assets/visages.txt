@@ -1,4 +1,0 @@
-content  = content.png
-colere = colere.png
-fier=fier.png  
-triste =triste.png

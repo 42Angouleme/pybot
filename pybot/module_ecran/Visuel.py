@@ -2,7 +2,7 @@ import pygame as pg
 import os
 import numpy as np
 import cv2
-from . import camera
+from ..module_camera import Camera
 
 
 class Visuel:
@@ -66,7 +66,7 @@ class Visuel:
     #         self.img[robot_face], (self.width/2 - offset_x, self.height/2 - offset_y))
 
     def afficher_camera(self, ui):
-        camera.cam_track_cards_app(ui, self.window)
+        Camera.cam_track_cards_app(ui, self.window)
 
     # def set_visage(self, set):
     #     self.display_visage = set

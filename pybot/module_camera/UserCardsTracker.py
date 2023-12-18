@@ -8,7 +8,7 @@ import os
 from cv2.typing import MatLike
 from typing import List, Tuple
 
-from ..module_camera import ImageComparator
+from . import ImageComparator
 
 
 class UserCardsTracker:

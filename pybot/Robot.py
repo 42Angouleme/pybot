@@ -146,24 +146,18 @@ class Robot:
         self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
 
     ### CAMERA - PHOTOS ###
-        
-    def afficher_camera(self, position_x, position_y):
+    
+    def afficher_camera(self, x=0, y=0):
         """
             ...
         """
-        print("afficher camera")
-
-    def eteindre_camera(self):
-        """
-            ...
-        """
-        print("eteindre camera")
+        self.ecran.display_camera(x, y)
 
     def prendre_photo(self, nom_fichier):
         """
             ...
         """
-        print("prendre photo")
+        self.ecran.capture_photo(nom_fichier)
 
     def appliquer_filtre(self, nom_fichier, nom_filtre):
         """
