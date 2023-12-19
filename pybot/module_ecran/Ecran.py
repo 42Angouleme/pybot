@@ -1,6 +1,7 @@
 
 from .Interface import Interface
 from ..module_camera.Camera import Camera
+from .filtres import Filtres
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True' # need to be declared before to import pygame
 import pygame as pg
@@ -25,6 +26,8 @@ class Ecran:
         self.fps = 30
         # camera
         self.camera = None
+        # filters
+        self.filters = None
 
     def run(self, width, height):
         pg.init()
@@ -32,6 +35,7 @@ class Ecran:
         pg.display.set_caption(self.title)
         self.interface = Interface(self.surface)
         self.camera = Camera(self.surface)
+        self.filters = Filtres()
         return self
 
     def getWidth(self):
@@ -97,5 +101,16 @@ class Ecran:
     def capture_photo(self, file_name):
         self.camera.capture(file_name)
     
+    def display_image(self, file_path, x, y):
+        try:
+            img = pg.image.load(os.getcwd() + file_path)
+            self.surface.blit(img, (x, y))
+        except:
+            pass
+
+    def set_filter(self, file_path, filter_name):
+        self.filters.apply(file_path, filter_name)
+    
     def detect_card(self):
         return self.camera.detect_card()
+    

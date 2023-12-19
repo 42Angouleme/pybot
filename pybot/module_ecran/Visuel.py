@@ -1,17 +1,17 @@
-import pygame as pg
-import os
-import numpy as np
-import cv2
-from ..module_camera import Camera
+# import pygame as pg
+# import os
+# import numpy as np
+# import cv2
+# from ..module_camera import Camera
 
 
-class Visuel:
+# class Visuel:
     # def __init__(self, robot, window, debug=False):
-    def __init__(self, surface):
+    # def __init__(self, surface):
         # self.debug = debug
         # self.robot = robot
         # self.window = window
-        self.surface = surface
+        # self.surface = surface
         # self.width = self.window.getWidth()
         # self.height = self.window.getHeight()
         # self.img = {}
@@ -65,17 +65,17 @@ class Visuel:
     #     self.window.surface.blit(
     #         self.img[robot_face], (self.width/2 - offset_x, self.height/2 - offset_y))
 
-    def afficher_camera(self, ui):
-        Camera.cam_track_cards_app(ui, self.window)
+    # def afficher_camera(self, ui):
+    #     Camera.cam_track_cards_app(ui, self.window)
 
     # def set_visage(self, set):
     #     self.display_visage = set
 
-    def appliquer_filtre(self, filter):
-        image_path = os.getcwd() + "/pybot/photo.jpg"
-        image = cv2.imread(image_path)
-        if image is None:
-            print(f"Il faut prendre une image avant de pouvoir appliquer un filtre.")
-            return
-        filtered_image = filter(image)
-        cv2.imwrite(image_path, filtered_image)
+    # def appliquer_filtre(self, filter):
+    #     image_path = os.getcwd() + "/pybot/photo.jpg"
+    #     image = cv2.imread(image_path)
+    #     if image is None:
+    #         print(f"Il faut prendre une image avant de pouvoir appliquer un filtre.")
+    #         return
+    #     filtered_image = filter(image)
+    #     cv2.imwrite(image_path, filtered_image)

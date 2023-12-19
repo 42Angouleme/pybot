@@ -1,8 +1,39 @@
 import cv2
 import numpy as np
-
+import os
 
 class Filtres:
+    def __init__(self) -> None:
+        pass
+
+    def apply(self, file_path, filter_name):
+        image_path = os.getcwd() + file_path
+        image = cv2.imread(image_path)
+        if image is None:
+            print(f"\033[91mErreur: Il faut une image correcte pour pouvoir appliquer un filtre.\033[00m")
+            return None
+        filtered_image = None
+        if filter_name == "cartoon":
+            filtered_image = self.cartoon(image)
+        elif filter_name == "ocean":
+            filtered_image = self.ocean(image)
+        elif filter_name == "alien":
+            filtered_image = self.alien(image)
+        elif filter_name == "rose":
+            filtered_image = self.rose(image)
+        elif filter_name == "flou":
+            filtered_image = self.flou(image)
+        elif filter_name == "noir_et_blanc":
+            filtered_image = self.noir_et_blanc(image)
+        elif filter_name == "tourner":
+            filtered_image = self.tourner(image)
+        elif filter_name == "vernis":
+            filtered_image = self.vernis(image)
+        if filtered_image is None:
+            print(f"\033[91mErreur: Il faut un nom de filtre correct.\033[00m")
+            return None
+        cv2.imwrite(image_path, filtered_image)
+
     @staticmethod
     def creer_filtre_teinte(rvb: tuple[int, int, int]):
         def hue_filter(image):

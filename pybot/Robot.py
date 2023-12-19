@@ -1,6 +1,5 @@
 from .module_ecran import module as ecran
 from .module_ecran.Input import Input
-from .module_ecran.filtres import Filtres
 from .module_webapp import create_app
 import os, sys
 import time
@@ -158,18 +157,18 @@ class Robot:
             ...
         """
         self.ecran.capture_photo(nom_fichier)
+        
+    def afficher_image(self, nom_fichier, position_x, position_y):
+        """
+            ...
+        """
+        self.ecran.display_image(nom_fichier, position_x, position_y)
 
     def appliquer_filtre(self, nom_fichier, nom_filtre):
         """
             ...
         """
-        print("appliquer filtre")
-        
-    def afficher_image(self, nom_fichier):
-        """
-            ...
-        """
-        print("afficher image")
+        self.ecran.set_filter(nom_fichier, nom_filtre)
 
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
         
