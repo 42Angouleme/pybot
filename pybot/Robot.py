@@ -158,17 +158,17 @@ class Robot:
         """
         self.ecran.capture_photo(nom_fichier)
         
-    def afficher_image(self, nom_fichier, position_x, position_y):
+    def afficher_image(self, chemin_fichier, position_x, position_y):
         """
             ...
         """
-        self.ecran.display_image(nom_fichier, position_x, position_y)
+        self.ecran.display_image(chemin_fichier, position_x, position_y)
 
-    def appliquer_filtre(self, nom_fichier, nom_filtre):
+    def appliquer_filtre(self, chemin_fichier, nom_filtre):
         """
             ...
         """
-        self.ecran.set_filter(nom_fichier, nom_filtre)
+        self.ecran.set_filter(chemin_fichier, nom_filtre)
 
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
         
