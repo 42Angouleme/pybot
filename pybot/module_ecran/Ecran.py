@@ -1,5 +1,7 @@
 
 from .Interface import Interface
+from ..module_camera.Camera import Camera
+from .filtres import Filtres
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True' # need to be declared before to import pygame
 import pygame as pg
@@ -13,7 +15,6 @@ class Ecran:
         # objects
         self.robot = robot
         self.interface = None
-        self.visuel = None
         # update flags
         self.toggle_in_fullscreen = False
         self.toggle_out_fullscreen = False
@@ -23,12 +24,18 @@ class Ecran:
         # clock and fps
         self.clock = pg.time.Clock()
         self.fps = 30
+        # camera
+        self.camera = None
+        # filters
+        self.filters = None
 
     def run(self, width, height):
         pg.init()
         self.surface = pg.display.set_mode((width, height))
         pg.display.set_caption(self.title)
         self.interface = Interface(self.surface)
+        self.camera = Camera(self.surface)
+        self.filters = Filtres()
         return self
 
     def getWidth(self):
@@ -41,6 +48,7 @@ class Ecran:
         self.background_color = (R, G, B)
 
     def stop(self):
+        self.camera.stop()
         pg.quit()
 
     def update_fullscreen(self, change):
@@ -87,31 +95,22 @@ class Ecran:
     def create_button(self, w, h, x, y, c):
         return self.interface.create_button(w, h, x, y, c)
 
-    # def afficher_camera(self):
-    #     self.cameraRunning = True
-    #     self.visuel.afficher_camera(self.ui)
+    def display_camera(self, x, y):
+        self.camera.display(x, y)
+    
+    def capture_photo(self, file_name):
+        self.camera.capture(file_name)
+    
+    def display_image(self, file_path, x, y):
+        try:
+            img = pg.image.load(os.getcwd() + file_path)
+            self.surface.blit(img, (x, y))
+        except:
+            pass
 
-    # def eteindre_camera(self):
-    #     self.cameraRunning = False
-
-    # def get_camera_running(self):
-    #     return self.cameraRunning
-
-    # def enregistrer_photo(self):
-    #     self.capturePhoto = True
-
-    # def check_capture(self):
-    #     if self.capturePhoto:
-    #         self.capturePhoto = False
-    #         return True
-    #     return False
-
-    # def afficher_photo(self):
-    #     self.visuel.set_visage(False)
-    #     self.visuel.charger_photo()
-
-    # def afficher_visage(self):
-    #     self.visuel.set_visage(True)
-
-    # def tourner_photo(self):
-    #     self.visuel.tourner_photo()
+    def set_filter(self, file_path, filter_name):
+        self.filters.apply(file_path, filter_name)
+    
+    def detect_card(self):
+        return self.camera.detect_card()
+    

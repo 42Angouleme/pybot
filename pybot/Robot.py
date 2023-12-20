@@ -1,6 +1,5 @@
 from .module_ecran import module as ecran
 from .module_ecran.Input import Input
-from .module_ecran.filtres import Filtres
 from .module_webapp import create_app
 import os, sys
 import time
@@ -146,10 +145,93 @@ class Robot:
         self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
 
     ### CAMERA - PHOTOS ###
-    ### CAMERA - RECONNAISANCE CARTES ###
+    
+    def afficher_camera(self, x=0, y=0):
+        """
+            ...
+        """
+        self.ecran.display_camera(x, y)
+
+    def prendre_photo(self, nom_fichier):
+        """
+            ...
+        """
+        self.ecran.capture_photo(nom_fichier)
+        
+    def afficher_image(self, chemin_fichier, position_x, position_y):
+        """
+            ...
+        """
+        self.ecran.display_image(chemin_fichier, position_x, position_y)
+
+    def appliquer_filtre(self, chemin_fichier, nom_filtre):
+        """
+            ...
+        """
+        self.ecran.set_filter(chemin_fichier, nom_filtre)
+
+    ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
+        
+    def detecter_carte(self):
+        """
+            ...
+        """
+        return self.ecran.detect_card()
+    
+    def creer_session(self, nom_eleve):
+        """
+            ...
+        """
+        print("creer une session pour", nom_eleve)
+
+    def fermer_session(self):
+        """
+            ...
+        """
+        print("fermer une session")
+
+    def verifier_session(self):
+        """
+            ...
+        """
+        print("vérifier session")
+
     ### IA ###
+        
+    def entrainer(self, texte):
+        """
+            ...
+        """
+        print("entrainer avec", texte)
+
+    def repondre_question(self, texte):
+        """
+            ...
+        """
+        print("envoyer question")
+        return "Réponse"
+
+    def choisir_emotion(texte, liste_emotions):
+        """
+            ...
+        """
+        print("avec", texte, "choisir emotion dans", liste_emotions)
+
     ### AUDIO ###
+
+    def parler(self, texte):
+        """
+            ...
+        """
+        print("texte conversion audio", texte)
+        
     ### MICROPHONE ###
+        
+    def enregister_audio(self):
+        """
+            ...
+        """
+        print("enregistrer audio")
 
     ### AUTRES ###
     def message_erreur(self, msg):
