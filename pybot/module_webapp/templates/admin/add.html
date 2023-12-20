@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Robot Python - Add</title>
+	<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
+</head>
+
+<body>
+    <a href="{{ url_for('admin.index') }}" class="buttonMenu">MENU</a>
+
+    <h3>Ajout d'un élève</h3>
+
+    <form id="add-form" class="form-example" enctype="multipart/form-data">
+        <label for="picture">Selectionnez une image:</label>
+        <input type="file" id="picture" name="picture" accept="image/*" onchange="displayImage(this)" >
+
+        <div class="form-example">
+            <label for="name">Prénom: </label>
+	    <input type="text" name="first_name" required />
+            <label for="name">Nom: </label>
+	    <input type="text" name="last_name" required />
+        </div>
+        <label for="openai_chat_messages">OpenAi chat messages:</label>
+	    <textarea id="openai_chat_messages" style="display:block;width:800px; height: 100px" type="text" name="openai_chat_messages" placeholder='[
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Who won the world series in 2020?"},
+    {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+    {"role": "user", "content": "Where was it played?"}
+]'></textarea>
+        <div id="msg"></div>
+        <div class="form-example">
+            <input type="submit" value="Créer" />
+        </div>
+        <button id="reset-btn" type="reset" onclick="resetForm()">Reset</button>
+    </form>
+
+    <button id="crop-btn" onclick="crop()" style="display:none">Détourer la carte dans votre image</button>
+    <label for="uploaded-image">L'image que vous vous allez envoyer</label>
+    <img id="uploaded-image" />
+    <script>
+	set_msg = msg => document.getElementById("msg").innerHTML = msg
+	cropBlob = null;
+
+	const form = document.getElementById("add-form");
+	const inputField = document.getElementById('picture');
+	const uploadedImg = document.getElementById('uploaded-image');
+	const cropBtn = document.getElementById('crop-btn');
+	const resetBtn = document.getElementById('reset-btn');
+
+	form.onsubmit = async (e) => {
+	  e.preventDefault();
+	  const formData = new FormData(e.target);
+
+	  /* If user cropped the image, use it in the request instead of the original uploaded file. */
+	  if (cropBlob) {
+	    const existingFilename = formData.get('picture').name;
+	    formData.set('picture', cropBlob, existingFilename);
+	  }
+	  const response = await fetch("/api/users", {
+	    method: "POST",
+	    body: formData
+	  })
+	  const data = await response.json();
+	  if (response.ok)
+	    set_msg("Utilisateur ajouté avec succès")
+	  else
+	    set_msg("Error: " + data.message)
+	  resetBtn.click();
+	}
+
+	/* Use our API to crop the card detected in the uploaded image, then display the cropped image user is about to upload. */
+	crop = async () => {
+	  const formData = new FormData();
+	  const inputValue = inputField.files[0];
+
+	  formData.append('image', inputValue);
+	  try {
+	    const response = await fetch("/api/image-processing/find-card", {
+	      method: "POST",
+	      body: formData
+	    });
+
+	    cropBlob = await response.blob()
+	    const blobUrl = URL.createObjectURL(cropBlob);
+
+	    // Display the image in the <img> element
+	    uploadedImg.src = blobUrl;
+	    cropBtn.style.display = "none";
+	    set_msg("Image détourée avec succès.");
+	  } catch (err) {
+	    set_msg("Error: " + err);
+	  }
+	}
+
+	/* Show the uploaded file image */
+	displayImage = input => {
+	  if (!input.files || !input.files[0])
+	    return;
+	  const reader = new FileReader();
+	  reader.onload = e => uploadedImg.src = e.target.result;
+	  reader.readAsDataURL(input.files[0]);
+	  cropBtn.style.display = "block";
+	  uploadedImg.style.display = "block";
+	}
+
+	const resetForm = () => {
+	  form.reset();
+	  cropBlob = null;
+	  uploadedImg.src = "";
+	  cropBtn.style.display = "none";
+	  uploadedImg.style.display = "none";
+	}
+    </script>
+
+</body>
+
+</html>
