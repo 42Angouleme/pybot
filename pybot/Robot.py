@@ -204,7 +204,7 @@ class Robot:
         """
         print("entrainer avec", texte)
 
-    def envoyer_question(self, texte):
+    def repondre_question(self, texte):
         """
             ...
         """
