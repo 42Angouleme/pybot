@@ -2,7 +2,6 @@ from IA import ChatBot
 
 chat = ChatBot()
 memory = chat.create_new_conversation_history()
-chat.connect_user("Hey")
 chat.connect_user(memory)
 while (1) :
     prompt = input()
@@ -17,15 +16,19 @@ TODO :
     (la mêmoire de l'utilisateur ne doit pas être chercher par la fonction mais doit être passer en paramètre)
     Mettre le prompt qu'une fois ??
     Voir pour les emotions
-    Start Connexion with Ia
-    Connect User
-    Disconnect User
-    Speek to Ia
-    Change Prompt
+    Attendre le retour de ChatGPT avant de continuer
 
     - Librairie installer openai==0.28 langchain tiktoken python-dotenv
+
+    Pour ce qui est de la mémoire il faut voir s'il est possible d'entraîner l'IA avec les informations du collège et il faut que l'IA sache les utiliser pour répondre aux questions de l'élève.
+    Si jamais l'option entraînement n'est pas possible.
+    Il faudrait pouvoir détecter sur quelle sujet la question est par exemple "Bonjour j'aimerai savoir le repas à la cantine aujourd'hui" -> sujet : "repas, cantine".
+    Une fois le sujet détecté (grâce à l'IA) on pourrait envoyer la requête avec le contexte correspondant à la requête (l'IA s'occupant de comprendre si elle peut répondre
+    à la question a les éléments à sa disposition).
+    Le contexte lui pourrait être stocké dans la base de données.
 """
-# Code qui a servit de Base pour le developpement
+
+# Code qui a servit de base pour le developpement de la classe ChatBot dans le fichier IA (Pour l'instant on le garde pas touche)
 # import os
 # from dotenv import load_dotenv, find_dotenv
 # from langchain_community.chat_models import ChatOpenAI

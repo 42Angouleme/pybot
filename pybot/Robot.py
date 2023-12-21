@@ -206,7 +206,8 @@ class Robot:
 
     def repondre_question(self, texte):
         """
-            ...
+            Permet de poser une question au robot.
+            Renvoi la réponse du robot.
         """
         print("envoyer question")
         return "Réponse"
@@ -216,6 +217,28 @@ class Robot:
             ...
         """
         print("avec", texte, "choisir emotion dans", liste_emotions)
+    
+    def commencer_discussion_avec_robot(historique_de_conversation=None):
+        """
+            Commence la discussion avec le robot.
+            L'historique de la conversation passer en parametre doit etre recuperer / cree avant d'appeler cette fonction pour pour le passer en parametre a la fonction.
+            Sinon le robot n'aura pas de mémoire.
+        """
+        print("Commence / Reprend une discussion avec le robot")
+    
+    def arreter_discussion_avec_IA() :
+        """
+            Arrete la discussion actuel avec le robot
+            Après l'appelle de cette fonction le robot ne se souvient plus de la discussion
+        """
+        print("Arrete la dissussion avec l'IA")
+
+    def donne_historique_de_conversation():
+        """
+            Permet de recuperer la discussion actuel de l'utilisateur avec le robot
+        """
+        print("Renvoi la discution que l'utilisateur a avec le robot")
+        
 
     ### AUDIO ###
 
