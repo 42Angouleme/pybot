@@ -10,6 +10,7 @@ class Ecran:
     def __init__(self, robot, debug=False):
         self.debug = debug
         self.title = "Pybot"
+        self.is_fullscreen = False
         # main surface
         self.surface = None
         # objects
@@ -43,7 +44,7 @@ class Ecran:
 
     def getHeight(self):
         return self.surface.get_height()
-    
+
     def change_background_color(self, R, G, B):
         self.background_color = (R, G, B)
 
@@ -52,6 +53,8 @@ class Ecran:
         pg.quit()
 
     def update_fullscreen(self, change):
+        if change == self.is_fullscreen:
+            return
         if change:
             self.toggle_in_fullscreen = True
         else:
@@ -65,9 +68,11 @@ class Ecran:
         if self.toggle_in_fullscreen:
             pg.display.set_mode((self.getWidth(), self.getHeight()), pg.FULLSCREEN | pg.SCALED)
             self.toggle_in_fullscreen = False
+            self.is_fullscreen = True
         elif self.toggle_out_fullscreen:
             pg.display.set_mode((self.getWidth(), self.getHeight()))
             self.toggle_out_fullscreen = False
+            self.is_fullscreen = False
         if self.change_title:
             pg.display.set_caption(self.title)
 
@@ -113,4 +118,3 @@ class Ecran:
     
     def detect_card(self):
         return self.camera.detect_card()
-    
