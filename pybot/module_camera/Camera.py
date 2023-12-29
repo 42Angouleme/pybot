@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 import pygame as pg
-# from .UserCardsTracker import UserCardsTracker
+from .UserCardsTracker import UserCardsTracker
+from flask import Flask
 
 
 class Camera:
@@ -9,9 +10,15 @@ class Camera:
         self.frame = None
         self.camera = cv2.VideoCapture(0)
         self.surface = surface
-        # self.card_tracker = UserCardsTracker()
+        self.card_tracker: UserCardsTracker = None
         self.x = 0
         self.y = 0
+
+    def initUserCardsTracker(self, webapp: Flask):
+        # Handle Unintialized webapp
+        if not isinstance(webapp, Flask):
+            raise ValueError
+        self.card_tracker = UserCardsTracker(webapp)
 
     def stop(self):
         self.camera.release()
@@ -39,8 +46,10 @@ class Camera:
         except:
             pass
 
-    # def detect_card(self):
-    #     frame, users = self.card_tracker.draw(self.frame)
-    #     self.surface.blit(frame, (self.x, self.y))
-    #     print(frame, users)
-    #     return users
+    def detect_card(self):
+        # Handle first launch of camera with 0 frame
+        if self.frame is None:
+            return []
+        frame, users = self.card_tracker.draw(self.frame)
+        self.surface.blit(frame, (self.x, self.y))
+        return users
