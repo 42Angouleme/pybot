@@ -58,14 +58,14 @@ class Robot:
             Le programme restera en attente le nombre de seconde passé en argument.
         '''
         time.sleep(secondes)
-    
+
     def est_actif(self):
         '''
             Retourne vrai (True) ou faux (False) pour savoir si le robot est toujours actif. \n
             Peut être utilisé pour vérifier la sortie d'une boucle.
         '''
         return self.actif
-    
+
     def desactiver(self):
         '''
             Passe la variable self.actif du robot avec la valeur False.
@@ -81,7 +81,7 @@ class Robot:
             self.ecran.stop()
             self.actif = False
         except AttributeError:
-                self.message_erreur("L'écran n'a pas été allumé.")
+            self.message_erreur("L'écran n'a pas été allumé.")
 
     ### GENERAL - EVENEMENTS ###
 
@@ -137,7 +137,7 @@ class Robot:
             ...
         """
         self.ecran.draw_rect(longueur, hauteur, position_x, position_y, couleur)
-    
+
     def afficher_texte(self, texte, position_x=0, position_y=0, taille=16, couleur=(0, 0, 0)):
         """
             ...
@@ -145,7 +145,7 @@ class Robot:
         self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
 
     ### CAMERA - PHOTOS ###
-    
+
     def afficher_camera(self, x=0, y=0):
         """
             ...
@@ -157,7 +157,7 @@ class Robot:
             ...
         """
         self.ecran.capture_photo(nom_fichier)
-        
+
     def afficher_image(self, chemin_fichier, position_x, position_y):
         """
             ...
@@ -171,13 +171,13 @@ class Robot:
         self.ecran.set_filter(chemin_fichier, nom_filtre)
 
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
-        
+
     def detecter_carte(self):
         """
             ...
         """
         return self.ecran.detect_card()
-    
+
     def creer_session(self, nom_eleve):
         """
             ...
@@ -197,7 +197,7 @@ class Robot:
         print("vérifier session")
 
     ### IA ###
-        
+
     def entrainer(self, texte):
         """
             ...
@@ -224,9 +224,9 @@ class Robot:
             ...
         """
         print("texte conversion audio", texte)
-        
+
     ### MICROPHONE ###
-        
+
     def enregister_audio(self):
         """
             ...
@@ -235,4 +235,7 @@ class Robot:
 
     ### AUTRES ###
     def message_erreur(self, msg):
-        print(f"\033[91mErreur: {msg}\033[00m")
+        print(f"\033[91mErreur: {msg}\033[00m", file=sys.stderr)
+
+    def message_avertissement(self, msg):
+        print(f"\033[33mAttention: {msg}\033[00m", file=sys.stderr)
