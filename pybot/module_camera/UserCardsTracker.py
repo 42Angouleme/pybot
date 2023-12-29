@@ -11,7 +11,7 @@ from cv2.typing import MatLike
 from typing import List, Tuple
 
 from sqlalchemy_media import StoreManager
-from ..module_camera import ImageComparator
+from .compare_images import ImageComparator
 from flask import Flask
 
 from ..module_webapp.models.user import UserResponse
