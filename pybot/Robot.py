@@ -179,13 +179,13 @@ class Robot:
 
     def detecter_carte(self):
         """
-            Affiche à l' écran la carte encadrée et le nom associé à la carte.\n
+            Affiche à l' écran un cadre autour de la carte.\n
             Retourne 'nom prénom': soit le nom et prénom associé à la carte détectée\n
             Retourne '': si aucune carte n' est détectée ou si Robot a mal été initalisé
         """
         if self.webapp is None:
             self.message_avertissement(
-                "La fonction Robot.detecter_carte() a été appelé sans Robot.demarrer_webapp()")
+                "La fonction Robot.detecter_carte() a été appelée sans Robot.demarrer_webapp()")
             return ""
         users = self.ecran.detect_card()
         if len(users) > 0:
