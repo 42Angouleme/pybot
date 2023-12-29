@@ -22,7 +22,7 @@ import pygame as pg
 class UserCardsTracker:
     def __init__(self, app: Flask):
         self.users, user_image_paths = self._get_users_info(app)
-        self.image_comparator = ImageComparator(user_image_paths, sim_min_threshold=0.6)
+        self.image_comparator = ImageComparator(user_image_paths, sim_min_threshold=0.55)
 
     @staticmethod
     def _get_users_info(app: Flask):
@@ -53,8 +53,6 @@ class UserCardsTracker:
 
         frame = cv2.drawContours(frame, contours, -1, (0, 255, 255), 3)
         user_matches = []
-        # Detection was performed from the camera perspective but output img is flipped for mirror-like effect
-        # frame = cv2.flip(frame, 1)
 
         for candidate_idx, candidate_img in enumerate(candidate_images):
             user_idx = self.image_comparator.get_match_idx(candidate_img)
@@ -62,24 +60,29 @@ class UserCardsTracker:
                 continue
             u = self.users[user_idx]
             user_matches.append(u)
-            contour = contours[candidate_idx]
-            text_pos = contour[0][0] - [10, 10]
-            # Account for flip
-            text_pos[0] = frame.shape[1] - text_pos[0]
-            text = self._get_user_fullname(u)
 
-            frame = cv2.putText(
-                frame,
-                text,
-                text_pos,
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.7,
-                (200, 0, 255),
-                2,
-                cv2.LINE_AA,
-            )
-        # TODO check
-        # frame = cv2.flip(frame, -1)
+            #       --  Text handling  --
+            #   Issue: Text written vertically
+
+            # contour = contours[candidate_idx]
+            # text = self._get_user_fullname(u)
+            # font = cv2.FONT_HERSHEY_SIMPLEX
+            # bottom_left = max(contour, key=lambda edge: edge[0][0])[0]
+            # text_size = cv2.getTextSize(text, font, 0.7, 2)[0]
+            # textY = bottom_left[1] - 10
+            # textX = bottom_left[0] - text_size[0] // 2
+            # text_pos = (textX, textY)
+            # cv2.putText(
+            #   img=frame,
+            #   text=text,
+            #   org=text_pos,
+            #   fontFace=font,
+            #   fontScale=0.7,
+            #   color=(200, 0, 255, 127),
+            #   thickness=2,
+            #   lineType=cv2.LINE_AA,
+            #   bottomLeftOrigin=True)
+
         # convert np_array -> pyagame_surface
         frame = pg.surfarray.make_surface(frame)
         return frame, user_matches
