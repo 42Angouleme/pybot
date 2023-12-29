@@ -2,9 +2,9 @@
 from .Interface import Interface
 from ..module_camera.Camera import Camera
 from .filtres import Filtres
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True' # need to be declared before to import pygame
 import pygame as pg
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'  # need to be declared before to import pygame
 
 class Ecran:
     def __init__(self, robot, debug=False):
@@ -38,12 +38,16 @@ class Ecran:
         self.filters = Filtres()
         return self
 
+    def initApp(self, app):
+        # Link Robot.webapp to Camera for database interaction
+        self.camera.initUserCardsTracker(app)
+
     def getWidth(self):
         return self.surface.get_width()
 
     def getHeight(self):
         return self.surface.get_height()
-    
+
     def change_background_color(self, R, G, B):
         self.background_color = (R, G, B)
 
@@ -97,10 +101,10 @@ class Ecran:
 
     def display_camera(self, x, y):
         self.camera.display(x, y)
-    
+
     def capture_photo(self, file_name):
         self.camera.capture(file_name)
-    
+
     def display_image(self, file_path, x, y):
         try:
             img = pg.image.load(os.getcwd() + file_path)
@@ -110,7 +114,7 @@ class Ecran:
 
     def set_filter(self, file_path, filter_name):
         self.filters.apply(file_path, filter_name)
-    
+
     def detect_card(self):
         return self.camera.detect_card()
-    
+

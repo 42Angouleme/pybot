@@ -7,6 +7,7 @@ import time
 
 class Robot:
     def __init__(self):
+        self.webapp = None
         self.debug = True
         self.ecran = None
         self.titre = "Pybot"
@@ -19,10 +20,10 @@ class Robot:
         '''
             Cette méthode lance de manière non bloquant le serveur web qui s'occupe de la partie base de donnée.
         '''
+        self.webapp = create_app(root_dir=os.path.dirname(os.path.abspath(__file__)))
         pid = os.fork()
         if pid:
-            webapp = create_app(root_dir=os.path.dirname(os.path.abspath(__file__)))
-            webapp.run()
+            self.webapp.run()
             sys.exit()
 
     def allumer_ecran(self, longueur=800, hauteur=600):
@@ -31,6 +32,10 @@ class Robot:
             Si un argument n'est pas donné, la longueur par défaut sera 800 pixels et la hauteur par défaut sera 600 pixels.
         '''
         self.ecran = ecran.run(self, longueur, hauteur)
+        try:
+            self.ecran.initApp(self.webapp)
+        except ValueError:
+            self.message_erreur("L' application web doit être lancé avant d' allumer l'écran.")
 
     def changer_titre(self, titre):
         '''
@@ -174,9 +179,19 @@ class Robot:
 
     def detecter_carte(self):
         """
-            ...
+            Affiche à l' écran la carte encadrée et le nom associé à la carte.\n
+            Retourne 'nom prénom': soit le nom et prénom associé à la carte détectée\n
+            Retourne '': si aucune carte n' est détectée ou si Robot a mal été initalisé
         """
-        return self.ecran.detect_card()
+        if self.webapp is None:
+            self.message_avertissement(
+                "La fonction Robot.detecter_carte() a été appelé sans Robot.demarrer_webapp()")
+            return ""
+        users = self.ecran.detect_card()
+        if len(users) > 0:
+            u = users[0]
+            return f"{u.first_name} {u.last_name}"
+        return ""
 
     def creer_session(self, nom_eleve):
         """
