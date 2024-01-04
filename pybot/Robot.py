@@ -128,7 +128,11 @@ class Robot:
 
     def creer_bouton(self, longueur, hauteur, position_x, position_y, couleur):
         """
-            ...
+            Créer et retourner un bouton qui peut être affiché et vérifié plus tard. \n
+            Les paramètres attendus sont : \n
+                * la longueur et la hauteur du bouton. \n
+                * la position x et y du bouton (son coin en haut à gauche). \n
+                * la couleur du bouton.
         """
         return self.ecran.create_button(longueur, hauteur, position_x, position_y, couleur)
 
