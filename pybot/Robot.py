@@ -117,14 +117,21 @@ class Robot:
             La couleur passée en paramètre doit être au format: (R, G, B). \n
             R, G et B sont des nombres entre 0 et 255.
         """
-        self.ecran.change_background_color(couleur[0], couleur[1], couleur[2])
+        try:
+            self.ecran.change_background_color(couleur[0], couleur[1], couleur[2])
+        except AttributeError:
+            self.message_erreur("L'écran n'a pas été allumé.")
 
     def afficher_fond(self):
         """
             Affiche le fond d'écran avec la couleur enregistrée en dernier avec la fonction couleur_fond() \n
             (par défaut, la couleur est noir).
         """
-        self.ecran.draw_background()
+        try:
+            self.ecran.draw_background()
+        except AttributeError:
+            self.message_erreur("L'écran n'a pas été allumé.")
+
 
     def creer_bouton(self, longueur, hauteur, position_x, position_y, couleur):
         """
@@ -134,19 +141,32 @@ class Robot:
                 * la position x et y du bouton (son coin en haut à gauche). \n
                 * la couleur du bouton.
         """
-        return self.ecran.create_button(longueur, hauteur, position_x, position_y, couleur)
+        try:
+            return self.ecran.create_button(longueur, hauteur, position_x, position_y, couleur)
+        except AttributeError:
+            self.message_erreur("L'écran n'a pas été allumé.")
+
 
     def dessiner_rectangle(self, longueur, hauteur, position_x, position_y, couleur):
         """
             ...
         """
-        self.ecran.draw_rect(longueur, hauteur, position_x, position_y, couleur)
+        try:
+            self.ecran.draw_rect(longueur, hauteur, position_x, position_y, couleur)
+        except AttributeError:
+            self.message_erreur("L'écran n'a pas été allumé.")
+
     
     def afficher_texte(self, texte, position_x=0, position_y=0, taille=16, couleur=(0, 0, 0)):
         """
             ...
         """
-        self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
+
+        try:
+
+            self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
+        except AttributeError:
+            self.message_erreur("L'écran n'a pas été allumé.")
 
     ### CAMERA - PHOTOS ###
     
