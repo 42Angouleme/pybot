@@ -138,7 +138,7 @@ class Robot:
             Créer et retourner un bouton qui peut être affiché et vérifié plus tard. \n
             Les paramètres attendus sont : \n
                 * la longueur et la hauteur du bouton. \n
-                * la position x et y du bouton (son coin en haut à gauche). \n
+                * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. \n
                 * la couleur du bouton.
         """
         try:
@@ -149,7 +149,12 @@ class Robot:
 
     def dessiner_rectangle(self, longueur, hauteur, position_x, position_y, couleur):
         """
-            ...
+            Dessine un rectangle dans la fenêtre. \n
+        
+            Les paramètres attendus sont : \n
+                * la longueur et la hauteur du rectangle. \n
+                * la position x et y du rectangle (son coin en haut à gauche) par rapport à la fenêtre. \n
+                * la couleur du rectangle.
         """
         try:
             self.ecran.draw_rect(longueur, hauteur, position_x, position_y, couleur)
@@ -159,7 +164,13 @@ class Robot:
     
     def afficher_texte(self, texte, position_x=0, position_y=0, taille=16, couleur=(0, 0, 0)):
         """
-            ...
+            Affiche un texte dans la fenêtre. \n
+
+            Les paramètres attendus sont : \n
+                * le texte à afficher. \n
+                * la position x et y du texte (son coin en haut à gauche) par rapport à la fenêtre. \n
+                * la taille du texte. \n
+                * la couleur du texte.
         """
 
         try:
