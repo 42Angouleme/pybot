@@ -22,7 +22,7 @@ import pygame as pg
 class UserCardsTracker:
     def __init__(self, app: Flask):
         self.users, user_image_paths = self._get_users_info(app)
-        self.image_comparator = ImageComparator(user_image_paths, sim_min_threshold=0.68)
+        self.image_comparator = ImageComparator(user_image_paths, sim_min_threshold=0.78)
 
     @staticmethod
     def _get_users_info(app: Flask):
@@ -43,6 +43,7 @@ class UserCardsTracker:
         """Find the matching user cards in the given `frame`. Highlighted the card contours and write their name next to it. Also return the array of matching users."""
         # Convert pygame.surface -> np_array
         frame = pg.surfarray.array3d(frame)
+        frame = cv2.flip(frame, 0)
         contours, candidate_images = scan(
             frame.copy(),
             keep_results=[
@@ -50,10 +51,8 @@ class UserCardsTracker:
                 rotate_top_left_corner_low_density_transform,
             ],
         )
-
         frame = cv2.drawContours(frame, contours, -1, (0, 255, 255), 3)
         user_matches = []
-
         for candidate_idx, candidate_img in enumerate(candidate_images):
             user_idx = self.image_comparator.get_match_idx(candidate_img)
             if user_idx is None:
