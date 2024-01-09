@@ -1,11 +1,11 @@
 from IA import ChatBot
 
 chat = ChatBot()
-memory = chat.create_new_conversation_history()
-chat.connect_user(memory)
+memory = chat.create_conversation_history()
+chat.load_history(memory)
 while (1) :
     prompt = input()
-    if prompt .lower()== "stop" :
+    if prompt .lower() == "stop" :
             break
     print(chat.get_ai_answer(prompt))
 
@@ -24,7 +24,7 @@ TODO :
     Si jamais l'option entraînement n'est pas possible.
     Il faudrait pouvoir détecter sur quelle sujet la question est par exemple "Bonjour j'aimerai savoir le repas à la cantine aujourd'hui" -> sujet : "repas, cantine".
     Une fois le sujet détecté (grâce à l'IA) on pourrait envoyer la requête avec le contexte correspondant à la requête (l'IA s'occupant de comprendre si elle peut répondre
-    à la question a les éléments à sa disposition).
+    à la question avec les éléments à sa disposition).
     Le contexte lui pourrait être stocké dans la base de données.
 """
 

@@ -8,8 +8,16 @@ from langchain.prompts.prompt import PromptTemplate
 
 class ChatBot:
     def __init__(self) :
+        """
+            Start connection with AI API (ChatGpt 3.5 turbo)
+            Do not forget to add .env with OPENAI_API_KEY and OPENAI_API_ORG_ID
+        """
         env_file = find_dotenv(".env")
+        self.__chatGPT = None
         load_dotenv(env_file)
+        if (os.getenv("OPENAI_API_KEY") == None or os.getenv("OPENAI_API_ORG_ID") == None) :
+            print("Api_key or Api_Org_Id are missing")
+            return 
         self.__chatGPT = ChatOpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization = os.getenv("OPENAI_API_ORG_ID"),model_name="gpt-3.5-turbo", )
         self.__memory = None
         self.__template = """
@@ -27,31 +35,40 @@ class ChatBot:
         PROMPT = PromptTemplate(input_variables=["history", "input"], template=self.__template)
         self.__conversation = ConversationChain ( llm=self.__chatGPT,
                                                 prompt= PROMPT,
-                                                verbose= True,
+                                                # verbose= True,
                                             )
     
-    def connect_user(self, conversation_history=None) :
+    def load_history(self, conversation_history=None) :
         """
-            Connects user to AI by giving it the conversation history (User <-> AI).
-            If another user was logged in, their information is overwritten.
+            Give memory to the AI
+            If another memory was in use, the memory is overwritten.
 
             :param conversation_history : (ConversationSummaryBufferMemory) The conversation history (User <-> AI) must be retrieved from the database or created by create_new_conversation_history.
-            Si conversation_history n'est pas donner alors l'IA n'enregistre rien et elle n'as pas d'historique non plus
+            If conversations_history isn't given then the AI won't remember/save anything
         """
+        if(self.__chatGPT == None) :
+            print("No API connection started")
+            return
         self.__memory = conversation_history
         self.__conversation.memory = self.__memory
     
-    def disconnect_current_user(self) :
+    def unload_history(self) :
         """
-            Disconnect current user which means that the conversation history is deleted and no more saved.
+            End the current conversation which means that the conversation history is deleted and no more saved.
         """
+        if(self.__chatGPT == None) :
+            print("No API connection started")
+            return
         self.__memory = None
         self.__conversation.memory = None
     
-    def create_new_conversation_history(self) :
+    def create_conversation_history(self) :
         """
             Create a new conversation history (memory of AI)
         """
+        if(self.__chatGPT == None) :
+            print("No API connection started")
+            return
         return ConversationSummaryBufferMemory(llm=self.__chatGPT, max_token_limit=256)
 
     def getCurrentConversationHistory(self) :
@@ -69,6 +86,9 @@ class ChatBot:
 
             :param promt : (str)
         """
+        if(self.__chatGPT == None) :
+            print("No API connection started")
+            return
         completion = self.__conversation.predict(input=prompt)
         return (completion)
     
@@ -91,6 +111,9 @@ class ChatBot:
             Human: {input}
             AI Assistant:
         """
+        if(self.__chatGPT == None) :
+            print("No API connection started")
+            return
         PROMPT = PromptTemplate(input_variables=["history", "input"], template=self.__template)
         self.__conversation.prompt = PROMPT
         

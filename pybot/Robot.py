@@ -1,6 +1,7 @@
 from .module_ecran import module as ecran
 from .module_ecran.Input import Input
 from .module_webapp import create_app
+from .module_ia.IA import ChatBot
 import os, sys
 import time
 
@@ -12,6 +13,7 @@ class Robot:
         self.titre = "Pybot"
         self.actif = True
         self.events = []
+        self.chatBot = None
 
     ### GENERAL - ECRAN ###
 
@@ -232,48 +234,71 @@ class Robot:
         print("vérifier session")
 
     ### IA ###
-        
-    def entrainer(self, texte):
-        """
-            ...
-        """
-        print("entrainer avec", texte)
 
-    def repondre_question(self, texte):
+    def demarrer_discussion(self) :
+        """
+            Commence une discussion avec le robot
+        """
+        self.chatBot = ChatBot()
+    
+    def arrêter_discussion(self) :
+        """
+            Arrete la discussion avec le robot
+        """
+        self.chatBot = None
+
+    def repondre_question(self, question):
         """
             Permet de poser une question au robot.
-            Renvoi la réponse du robot.
+            Imprime la réponse du robot
         """
-        print("envoyer question")
-        return "Réponse"
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        reponse = self.chatBot.get_ai_answer(question)
+        print(reponse)
+        # En finalité la fonction renverra la réponse du robot.
+        # return "Réponse"
+    
+    def charger_historique(self, historique_de_conversation=None):
+        """
+            Commence la discussion avec le robot.
+            L'historique de la conversation passer en parametre doit etre recuperer / cree avant d'appeler cette fonction pour pour le passer en parametre a la fonction.
+            Sinon le robot n'aura pas de mémoire.
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        self.chatBot.load_history(historique_de_conversation)
+           
+    def supprimer_historique(self) :
+        """
+            Arrete la discussion actuel avec le robot
+            Après l'appelle de cette fonction le robot ne se souvient plus de la discussion
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        self.chatBot.unload_history()
 
+    def recuperer_historique_de_conversation(self):
+        """
+            Permet de recuperer la discussion actuel de l'utilisateur avec le robot
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        memory = self.chatBot.getCurrentConversationHistory()
+        return memory
+    
     def choisir_emotion(texte, liste_emotions):
         """
             ...
         """
         print("avec", texte, "choisir emotion dans", liste_emotions)
     
-    def commencer_discussion_avec_robot(historique_de_conversation=None):
+    def entrainer(self, texte):
         """
-            Commence la discussion avec le robot.
-            L'historique de la conversation passer en parametre doit etre recuperer / cree avant d'appeler cette fonction pour pour le passer en parametre a la fonction.
-            Sinon le robot n'aura pas de mémoire.
+            ...
         """
-        print("Commence / Reprend une discussion avec le robot")
-    
-    def arreter_discussion_avec_IA() :
-        """
-            Arrete la discussion actuel avec le robot
-            Après l'appelle de cette fonction le robot ne se souvient plus de la discussion
-        """
-        print("Arrete la dissussion avec l'IA")
+        print("entrainer avec", texte)
 
-    def donne_historique_de_conversation():
-        """
-            Permet de recuperer la discussion actuel de l'utilisateur avec le robot
-        """
-        print("Renvoi la discution que l'utilisateur a avec le robot")
-        
 
     ### AUDIO ###
 
