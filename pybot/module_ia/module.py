@@ -1,7 +1,4 @@
-from .IA import IA
-
-def run():
-    IA()
+from .IA import ChatBot
 
 # def get_emotion(sentence: str, choices: list[str]):
 #     choices_str = ", ".join(choices)

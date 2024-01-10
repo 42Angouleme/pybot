@@ -28,6 +28,23 @@ TODO :
     Le contexte lui pourrait être stocké dans la base de données.
 """
 
+# def get_emotion(sentence: str, choices: list[str]):
+#     choices_str = ", ".join(choices)
+#     preprompt = f"""Pick one word from [ {choices_str} ] that fits well with the following sentence: {sentence}.
+#     Answer only one word. Answer 'unknown' if you really can't find any match"""
+
+#     reponse = client.chat.completions.create(
+#         model="gpt-3.5-turbo",
+#         messages=[
+#             {"role": "system", "content": preprompt},
+#             {"role": "user", "content": sentence},
+#         ],
+#     )
+#     emotion = reponse.choices[0].message.content
+#     if not emotion in choices:
+#         return "unknown"
+#     return emotion
+
 # Code qui a servit de base pour le developpement de la classe ChatBot dans le fichier IA (Pour l'instant on le garde pas touche)
 # import os
 # from dotenv import load_dotenv, find_dotenv
