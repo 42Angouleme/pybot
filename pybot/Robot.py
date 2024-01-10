@@ -14,6 +14,7 @@ class Robot:
         self.actif = True
         self.events = []
         self.chatBot = None
+        self.isWriting = False
 
     ### GENERAL - ECRAN ###
 
@@ -239,13 +240,27 @@ class Robot:
         """
             Commence une discussion avec le robot
         """
+        self.isWriting = True
         self.chatBot = ChatBot()
     
-    def arrêter_discussion(self) :
+    def arreter_discussion(self) :
         """
             Arrete la discussion avec le robot
         """
         self.chatBot = None
+        self.isWriting = False
+
+    def recuperer_entree_utilisateur(self, texte) :
+        """
+            Active l'entree utilisateur pour pouvoir poser une question au robot
+        """
+        letter = Input.get_user_entry(self)
+        if (letter != None) :
+            if letter == "\b" :
+                texte = texte[:-1]
+            else :
+                texte += letter
+        return texte
 
     def repondre_question(self, question):
         """
@@ -255,8 +270,9 @@ class Robot:
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
         reponse = self.chatBot.get_ai_answer(question)
-        print(reponse)
-        # En finalité la fonction renverra la réponse du robot.
+        print("Humain : " + question + "\nRobot : " + reponse)
+        return reponse
+        # En finalité la fonction n'imprimera plus la reponse
         # return "Réponse"
     
     def charger_historique(self, historique_de_conversation=None):
