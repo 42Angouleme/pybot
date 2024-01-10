@@ -34,7 +34,7 @@ def preparer_programme():
     bouton_question.ajouter_texte("Poser question", 5, 20)
     bouton_stop = robot.creer_bouton(200, 60, 10, 900, vert)
     bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
-    robot.ajouter_evenement("C", "carotte")
+    robot.ajouter_evenement("C", "C")
 
 def affichage_ecran():  
     global mettre_a_jour_affichage, texte
@@ -66,8 +66,8 @@ def boucle_programme():
         events = robot.verifier_evenements()
         if "stop" in events:
             robot.eteindre_ecran()
-        elif "carotte" in events:
-            print("Vous appuyer sur C")
+        elif "C" in events:
+            print("Vous appuyez sur C")
         affichage_ecran()
         verifier_boutons(robot)
         if discussion_commencer :
@@ -83,3 +83,16 @@ def boucle_programme():
 if __name__ == "__main__":
     preparer_programme()
     boucle_programme()
+
+"""
+To DO :
+    Voir comment on gère la fin d'une entrée utilisateur.
+    Voir pour rendre le code d'exemple plus joli (optionel).
+    Faire la documentation sur le site.
+    Voir pour faire en sorte qu'il n'y ai que la partie écrite qui s'update et pas tout l'écran.
+
+    Truc à dire dans la documentation sur le site :
+    La fonction recuperer_entree_utilisateur, bloque le fonctionnement de la fonction. verifier_evenement.
+    Préciser comment on détecte la fin d'une entrée utilisateur (Enter is pressed).
+    Préciser que la fonction repondre_question bloque le robot le temps qu'il "réfléchisse", et qu'elle imprime la réponse dans le terminal.
+"""
