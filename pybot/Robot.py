@@ -219,11 +219,15 @@ class Robot:
 
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
 
-    def detecter_carte(self):
+    def detecter_carte(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
         """
             Affiche à l' écran un cadre autour de la carte.\n
             Retourne 'nom prénom': soit le nom et prénom associé à la carte détectée\n
             Retourne '': si aucune carte n' est détectée ou si Robot a mal été initalisé
+
+            Paramètres:
+                - seuil_minimal (défaut: 0.75) : score minimum pour qu' une carte détectée soit considérée comme valide.
+                - seuil_arret_recherche (défaut: 0.85) : score pour qu' une carte détectée soit interprétée comme la bonne.
         """
         if self.webapp is None:
             self.message_avertissement(
