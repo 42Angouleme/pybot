@@ -36,6 +36,7 @@ def preparer_programme():
     bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
     text_area = robot.creer_zone_texte(600, 100, 300, 250, blanc)
     text_area_bis = robot.creer_zone_texte(600, 100, 300, 400, blanc)
+    text_area.modifier_couleur_ecriture(vert)
     robot.ajouter_evenement("C", "C")
 
 def affichage_ecran():  
@@ -64,10 +65,11 @@ def verifier_boutons(robot : Robot):
         robot.desactiver()
     if discussion_commencer and text_area.verifier_contact() :
         user_entry = robot.ecrire(text_area)
-        robot.repondre_question(user_entry)
+        print("user_entry = ", user_entry)
     if discussion_commencer and text_area_bis.verifier_contact() :
         user_entry = robot.ecrire(text_area_bis)
         print("user_entry = ", user_entry)
+        text_area_bis.effacer_text()
 
 def boucle_programme():
     global discussion_commencer, mettre_a_jour_affichage
@@ -87,14 +89,14 @@ if __name__ == "__main__":
 
 """
 To DO :
-    Voir comment on gère la fin d'une entrée utilisateur.
-    Voir pour rendre le code d'exemple plus joli (optionel).
     Faire la documentation sur le site.
-    Voir pour faire en sorte qu'il n'y ai que la partie écrite qui s'update et pas tout l'écran.
+    Avoir plus de flexibilité sur la personalisation de la zone de texte
 
     Truc à dire dans la documentation sur le site :
-    La fonction recuperer_entree_utilisateur, bloque le fonctionnement de la fonction verifier_evenement.
-    Préciser comment on détecte la fin d'une entrée utilisateur (Enter is pressed).
+    La fonction ecrire, bloque le fonctionnement du robot en général.
+    Préciser que l'on arrete d'écrire si on tape sur entrée ou que l'on clique à nouveau sur la zone de texte
     Préciser que la fonction repondre_question bloque le robot le temps qu'il "réfléchisse", et qu'elle imprime la réponse dans le terminal.
     Préciser qu'il faut mettre une petite taille d'écriture
+
+    S'occuper de pouvoir sortir de la zone de texte en cliquant à l'exterieur
 """

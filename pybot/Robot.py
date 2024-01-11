@@ -337,12 +337,12 @@ class Robot:
     
     def ecrire(self, text_area) :
         """
-            Creer un champs dans lequel l'utilisateur pourra ecrire
+            Permet à l'utilisateur d'ecrire dans la zone de texte associé
             Renvoie le texte ecrit par l'utilisateur
         """
-        text = ""
         new_text = ""
         self.isWriting = True
+        text = text_area.renvoi_texte()
         print("User start writing")
         while self.isWriting :
             if text_area.verifier_contact() :
@@ -354,13 +354,11 @@ class Robot:
                 if ("\r" in new_text) :
                     self.isWriting = False
                     text_area.pressed = False
-                text_area.add_text(new_text, 10, 10, 20, (52, 164, 235), text)
+                    break
+                text_area.add_text(new_text, 10, 10, text)
                 text_area.afficher()
                 self.dessiner_ecran() # Vraiment utile ??
                 text = new_text
-        text_area.add_text("", 10, 10, 20, (52, 164, 235), text)
-        text_area.afficher()
-        self.dessiner_ecran() # Vraiment utile ??
         print("User end writing")
         return text
 

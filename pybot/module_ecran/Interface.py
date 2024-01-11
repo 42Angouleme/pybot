@@ -79,25 +79,54 @@ class TextArea(Button) :
     def __init__(self, data, surface):
         super().__init__(data, surface)
         self.old_text = ""
+        self.text = ""
     
     def afficher(self):
         """
             Affiche la zone de texte dans la fenêtre principale.
         """
         pg.draw.rect(self.surface, self.color, self.rect)
-        if self.text:
+        if self.text != "":
             font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", self.text_size)
             surf = font.render(self.old_text, True, self.color)
             surf = font.render(self.text, True, self.text_color)
             self.surface.blit(surf, self.text_position)
         pg.display.update()
         
-    def add_text(self, texte,position_x=0, position_y=0, taille=16, couleur=(0, 0, 0), old_text = ""):
+    def add_text(self, texte,position_x=0, position_y=0, old_text = ""):
         """
             Permet l'affiche d'un texte dans la zone de texte
         """
         self.text = texte
-        self.text_size = taille
         self.old_text = old_text
-        self.text_color = couleur
         self.text_position = (self.position[0] + position_x, self.position[1] + position_y)
+    
+    def effacer_text(self) :
+        """
+            Permer d'effacer le contenue de la zone de texte
+            Renvoi le texte contenue dans la zone de texte
+        """
+        self.old_text = self.text
+        self.text = ""
+        self.afficher()
+        return self.old_text
+
+    def renvoi_texte(self) :
+        """
+            Renvoi le texte contenue dans la zone de texte
+        """
+        return self.text
+
+    def modifier_taille_ecriture(self, taille=16) :
+        """
+            Permet de changer la taille de la police
+            Utiliser sans parametre cela renitialise la taille
+        """
+        self.text_size = taille
+    
+    def modifier_couleur_ecriture(self, color=(0,0,0)) :
+        """
+            Permet de modifier la couleur de la police
+            Utiliser sans parametre cela renitialise la couleur
+        """
+        self.text_color = color
