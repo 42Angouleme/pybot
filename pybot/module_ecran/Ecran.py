@@ -1,6 +1,5 @@
 
 from .Interface import Interface
-from ..module_camera.Camera import Camera
 from .filtres import Filtres
 import pygame as pg
 import os
@@ -25,8 +24,6 @@ class Ecran:
         # clock and fps
         self.clock = pg.time.Clock()
         self.fps = 30
-        # camera
-        self.camera = None
         # filters
         self.filters = None
 
@@ -35,13 +32,8 @@ class Ecran:
         self.surface = pg.display.set_mode((width, height))
         pg.display.set_caption(self.title)
         self.interface = Interface(self.surface)
-        self.camera = Camera(self.surface)
         self.filters = Filtres()
         return self
-
-    def initApp(self, app):
-        # Link Robot.webapp to Camera for database interaction
-        self.camera.initUserCardsTracker(app)
 
     def getWidth(self):
         return self.surface.get_width()
@@ -53,7 +45,6 @@ class Ecran:
         self.background_color = (R, G, B)
 
     def stop(self):
-        self.camera.stop()
         pg.quit()
 
     def update_fullscreen(self, change):
@@ -104,12 +95,6 @@ class Ecran:
     def create_button(self, w, h, x, y, c):
         return self.interface.create_button(w, h, x, y, c)
 
-    def display_camera(self, x, y):
-        self.camera.display(x, y)
-
-    def capture_photo(self, file_name):
-        self.camera.capture(file_name)
-
     def display_image(self, file_path, x, y):
         try:
             img = pg.image.load(os.getcwd() + file_path)
@@ -120,5 +105,3 @@ class Ecran:
     def set_filter(self, file_path, filter_name):
         self.filters.apply(file_path, filter_name)
 
-    def detect_card(self):
-        return self.camera.detect_card()

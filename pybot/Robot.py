@@ -1,4 +1,5 @@
 from .module_ecran import module as ecran
+from .module_camera.Camera import Camera
 from .module_ecran.Input import Input
 from .module_webapp import create_app
 import os, sys
@@ -13,6 +14,8 @@ class Robot:
         self.titre = "Pybot"
         self.actif = True
         self.events = []
+        # camera
+        self.camera = None
 
     ### GENERAL - ECRAN ###
 
@@ -32,8 +35,9 @@ class Robot:
             Si un argument n'est pas donné, la longueur par défaut sera 800 pixels et la hauteur par défaut sera 600 pixels.
         '''
         self.ecran = ecran.run(self, longueur, hauteur)
+        self.camera = Camera(self.ecran.surface)
         try:
-            self.ecran.initApp(self.webapp)
+            self.camera.initUserCardsTracker(self.webapp)
         except ValueError:
             self.message_erreur("L' application web doit être lancé avant d' allumer l'écran.")
 
@@ -83,6 +87,7 @@ class Robot:
             Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) il peut etre utilisé pour arrêter le programme.
         '''
         try:
+            self.camera.stop()
             self.ecran.stop()
             self.actif = False
         except AttributeError:
@@ -189,14 +194,15 @@ class Robot:
     def afficher_camera(self, position_x=0, position_y=0):
         """
             Affiche la caméra aux coordonées x et y.
-        """
         self.ecran.display_camera(x, y)
+        """
+        self.camera.display(position_x, position_y)
 
     def prendre_photo(self, nom_fichier):
         """
             Capture une image de la caméra au nom du fichier passé en paramètre et l'enregistre dans le dossier images.
         """
-        self.ecran.capture_photo(nom_fichier)
+        self.camera.capture(nom_fichier)
 
     def afficher_image(self, chemin_fichier, position_x, position_y):
         """
@@ -233,7 +239,7 @@ class Robot:
             self.message_avertissement(
                 "La fonction Robot.detecter_carte() a été appelée sans Robot.demarrer_webapp()")
             return ""
-        users = self.ecran.detect_card()
+        users = self.camera.detect_card()
         if len(users) > 0:
             u = users[0]
             return f"{u.first_name} {u.last_name}"
