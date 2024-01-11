@@ -92,7 +92,7 @@ To DO :
     Voir pour faire en sorte qu'il n'y ai que la partie écrite qui s'update et pas tout l'écran.
 
     Truc à dire dans la documentation sur le site :
-    La fonction recuperer_entree_utilisateur, bloque le fonctionnement de la fonction. verifier_evenement.
+    La fonction recuperer_entree_utilisateur, bloque le fonctionnement de la fonction verifier_evenement.
     Préciser comment on détecte la fin d'une entrée utilisateur (Enter is pressed).
     Préciser que la fonction repondre_question bloque le robot le temps qu'il "réfléchisse", et qu'elle imprime la réponse dans le terminal.
 """
