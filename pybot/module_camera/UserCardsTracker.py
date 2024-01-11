@@ -22,7 +22,7 @@ import pygame as pg
 class UserCardsTracker:
     def __init__(self, app: Flask):
         self.users, user_image_paths = self._get_users_info(app)
-        self.image_comparator = ImageComparator(user_image_paths, sim_min_threshold=0.78)
+        self.image_comparator = ImageComparator(user_image_paths, sim_min_thresholds=(0.75, 0.85))
 
     @staticmethod
     def _get_users_info(app: Flask):
