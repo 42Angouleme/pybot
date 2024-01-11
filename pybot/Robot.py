@@ -181,27 +181,34 @@ class Robot:
 
     ### CAMERA - PHOTOS ###
     
-    def afficher_camera(self, x=0, y=0):
+    def afficher_camera(self, position_x=0, position_y=0):
         """
-            ...
+            Affiche la caméra aux coordonées x et y.
         """
         self.ecran.display_camera(x, y)
 
     def prendre_photo(self, nom_fichier):
         """
-            ...
+            Capture une image de la caméra au nom du fichier passé en paramètre et l'enregistre dans le dossier images.
         """
         self.ecran.capture_photo(nom_fichier)
         
     def afficher_image(self, chemin_fichier, position_x, position_y):
         """
-            ...
+            Afficher une image. \n
+            Les paramètres attendus sont : \n
+                * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
+                * Les coordonnées x et y ou seront affiché l'image.
         """
         self.ecran.display_image(chemin_fichier, position_x, position_y)
 
     def appliquer_filtre(self, chemin_fichier, nom_filtre):
         """
-            ...
+            Applique un filtre sur une image. \n
+            Les paramètres attendus sont : \n
+                * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
+                * Le nom du filtre. (ex: cartoon, alien, tourner...) \n
+        (voir documentation pour la liste complète des filtres: https://42angouleme.github.io/ref/)
         """
         self.ecran.set_filter(chemin_fichier, nom_filtre)
 
