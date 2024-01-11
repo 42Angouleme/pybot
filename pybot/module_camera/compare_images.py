@@ -10,10 +10,8 @@ _warning = logging.getLogger("CompareImage").warning
 
 
 class ImageComparator:
-    def __init__(self, paths: List[str], compare_size=(64, 64), sim_min_thresholds=(0.8, 0.85)):
+    def __init__(self, paths: List[str], compare_size=(64, 64)):
         self.compare_size = compare_size
-        # Thresholds for interprating as: [0] partial or [1] perfect match
-        self.sim_min_thresholds = sim_min_thresholds
         self.ref_images: List[MatLike] = self._prepare_comparison_img(
             paths, compare_size
         )
@@ -33,8 +31,16 @@ class ImageComparator:
             imgs.append(img)
         return imgs
 
-    def get_match_idx(self, frame: MatLike) -> int | None:
-        """Return the index of the item in `self.ref_images` matching `frame`. None if no image satisfy the tolerance threshold."""
+    def get_match_idx(self, frame: MatLike, min_threshold=0.75, stop_threshold=0.85) -> int | None:
+        """
+        Params
+            - frame: 2D Frame of the card detected
+            - min_threshold: Sufficient threshold to interpret frame as similar card
+            - stop_threshold: Threshold to interpret frame as corresponding card
+        Returns
+            - index of the item in `self.ref_images` matching `frame`.
+            - None if no image satisfy the tolerance threshold.
+        """
         frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         small_frame_gray = cv2.resize(frame_gray, self.compare_size)
         best_score = (None, 0.0)
@@ -42,9 +48,9 @@ class ImageComparator:
             if ref_image is None:
                 continue
             similarity = ssim(small_frame_gray, ref_image)
-            if similarity > self.sim_min_thresholds[1]:
+            if similarity >= stop_threshold:
                 return i
-            elif similarity > self.sim_min_thresholds[0]:
+            elif similarity >= min_threshold:
                 if similarity > best_score[1]:
                     best_score = (i, similarity)
         return best_score[0]

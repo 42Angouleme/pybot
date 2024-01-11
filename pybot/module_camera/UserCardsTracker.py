@@ -22,7 +22,7 @@ import pygame as pg
 class UserCardsTracker:
     def __init__(self, app: Flask):
         self.users, user_image_paths = self._get_users_info(app)
-        self.image_comparator = ImageComparator(user_image_paths, sim_min_thresholds=(0.75, 0.85))
+        self.image_comparator = ImageComparator(user_image_paths)
 
     @staticmethod
     def _get_users_info(app: Flask):
@@ -39,11 +39,21 @@ class UserCardsTracker:
     def _get_user_fullname(u: UserResponse) -> str:
         return f"{u.first_name} {u.last_name}"
 
-    def draw(self, frame: MatLike) -> Tuple[MatLike, List[UserResponse]]:
+    def draw(self, frame: MatLike, min_threshold=0.75, stop_threshold=0.85) -> Tuple[MatLike, List[UserResponse]]:
+        """
+        Params
+            - frame: 2D Frame of the card detected
+            - min_threshold: Sufficient threshold to interpret frame as similar card
+            - stop_threshold: Threshold to interpret frame as corresponding card
+        Returns
+            Tuple:
+                - frame: with card framed detected card
+                - user found that matches the most
+        """
+
         """Find the matching user cards in the given `frame`. Highlighted the card contours and write their name next to it. Also return the array of matching users."""
         # Convert pygame.surface -> np_array
         frame = pg.surfarray.array3d(frame)
-        frame = cv2.flip(frame, 0)
         contours, candidate_images = scan(
             frame.copy(),
             keep_results=[
@@ -52,13 +62,13 @@ class UserCardsTracker:
             ],
         )
         frame = cv2.drawContours(frame, contours, -1, (0, 255, 255), 3)
-        user_matches = []
+        user_match = None
         for candidate_idx, candidate_img in enumerate(candidate_images):
-            user_idx = self.image_comparator.get_match_idx(candidate_img)
+            user_idx = self.image_comparator.get_match_idx(candidate_img, min_threshold, stop_threshold)
             if user_idx is None:
                 continue
             u = self.users[user_idx]
-            user_matches.append(u)
+            user_match = u
 
             #       --  Text handling  --
             #   Issue: Text written vertically
@@ -84,4 +94,4 @@ class UserCardsTracker:
 
         # convert np_array -> pyagame_surface
         frame = pg.surfarray.make_surface(frame)
-        return frame, user_matches
+        return frame, user_match

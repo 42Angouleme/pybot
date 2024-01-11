@@ -16,6 +16,8 @@ class Robot:
         self.events = []
         # camera
         self.camera = None
+        # Utilisateur connecté
+        self.utilisateur_connecte = None
 
     ### GENERAL - ECRAN ###
 
@@ -225,11 +227,9 @@ class Robot:
 
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
 
-    def detecter_carte(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
+    def connecter(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
         """
-            Affiche à l' écran un cadre autour de la carte.\n
-            Retourne 'nom prénom': soit le nom et prénom associé à la carte détectée\n
-            Retourne '': si aucune carte n' est détectée ou si Robot a mal été initalisé
+            Affiche à l' écran un cadre autour de la carte et connecte l'utilisateur si reconnu.
 
             Paramètres:
                 - seuil_minimal (défaut: 0.75) : score minimum pour qu' une carte détectée soit considérée comme valide.
@@ -239,11 +239,11 @@ class Robot:
             self.message_avertissement(
                 "La fonction Robot.detecter_carte() a été appelée sans Robot.demarrer_webapp()")
             return ""
-        users = self.camera.detect_card()
-        if len(users) > 0:
-            u = users[0]
-            return f"{u.first_name} {u.last_name}"
-        return ""
+        utilisateur_reconnu = self.camera.detect_user()
+        if utilisateur_reconnu and self.verifier_session():
+            self.message_avertissement("Un utilisateur est déjà connecté.")
+        elif utilisateur_reconnu:
+            self.utilisateur_connecte = utilisateur_reconnu
 
     def creer_session(self, nom_eleve):
         """
@@ -251,17 +251,19 @@ class Robot:
         """
         print("creer une session pour", nom_eleve)
 
-    def fermer_session(self):
+    def deconnecter(self):
         """
-            ...
+            Déconnecte la personne actuellement connectée.
         """
-        print("fermer une session")
+        self.utilisateur_connecte = None
 
     def verifier_session(self):
         """
-            ...
+            Retourne:
+                - True: Si une personne est connectée
+                - False: Sinon
         """
-        print("vérifier session")
+        return self.utilisateur_connecte is not None
 
     ### IA ###
 

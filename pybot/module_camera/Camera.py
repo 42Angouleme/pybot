@@ -30,7 +30,6 @@ class Camera:
         try:
             ret, self.frame = self.camera.read()
             self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-            self.frame = cv2.flip(self.frame, 1)
             self.frame = np.rot90(self.frame)
             self.frame = pg.surfarray.make_surface(self.frame)
             self.surface.blit(self.frame, (self.x, self.y))
@@ -46,10 +45,20 @@ class Camera:
         except:
             pass
 
-    def detect_card(self):
+    def detect_user(self, min_threshold=0.75, stop_threshold=0.85):
+        """
+        Detect user and if user found, the card is detected and framed in the frame
+
+        Params
+            - min_threshold: Sufficient threshold to interpret frame as similar card
+            - stop_threshold: Threshold to interpret frame as corresponding card
+        Returns
+            - matching_user: User that matches the most for detected card
+        """
         # Handle first launch of camera with 0 frame
         if self.frame is None:
             return []
-        frame, users = self.card_tracker.draw(self.frame)
-        self.surface.blit(frame, (self.x, self.y))
-        return users
+        frame, user_detected = self.card_tracker.draw(self.frame, min_threshold, stop_threshold)
+        if user_detected is not None:
+            self.surface.blit(frame, (self.x, self.y))
+        return user_detected
