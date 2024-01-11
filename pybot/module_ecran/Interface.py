@@ -31,7 +31,8 @@ class Button:
         
     def ajouter_texte(self, texte, position_x=0, position_y=0, taille=16, couleur=(0, 0, 0)):
         """
-            ...
+            Ajoute le texte dans le bouton, a la position x et y dans le bouton. \n
+            Il est aussi possible de fournir une taille et une couleur au texte.
         """
         self.text = texte
         self.text_size = taille
@@ -40,7 +41,7 @@ class Button:
 
     def verifier_contact(self):
         """
-            ...
+            Retourne vrai si le bouton a été cliqué.
         """
         try:
             if self.rect.collidepoint(pg.mouse.get_pos()):
@@ -55,7 +56,7 @@ class Button:
 
     def afficher(self):
         """
-            ...
+            Affiche le bouton dans la fenêtre principale.
         """
         pg.draw.rect(self.surface, self.color, self.rect)
         if self.text:
