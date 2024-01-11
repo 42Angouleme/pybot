@@ -188,7 +188,7 @@ class Robot:
         """
             Affiche la caméra aux coordonées x et y.
         """
-        self.ecran.display_camera(x, y)
+        self.ecran.display_camera(position_x, position_y=0)
 
     def prendre_photo(self, nom_fichier):
         """
@@ -247,7 +247,6 @@ class Robot:
         """
             Commence une discussion avec le robot
         """
-        self.isWriting = True
         self.chatBot = ChatBot()
     
     def arreter_discussion(self) :
@@ -255,19 +254,6 @@ class Robot:
             Arrete la discussion avec le robot
         """
         self.chatBot = None
-        self.isWriting = False
-
-    def recuperer_entree_utilisateur(self, texte) :
-        """
-            Active l'entree utilisateur pour pouvoir poser une question au robot
-        """
-        letter = Input.get_user_entry(self)
-        if (letter != None) :
-            if letter == "\b" :
-                texte = texte[:-1]
-            else :
-                texte += letter
-        return texte
 
     def repondre_question(self, question):
         """
@@ -321,7 +307,62 @@ class Robot:
             ...
         """
         print("entrainer avec", texte)
+    
+    ### ENTREE UTILISATEUR ###
 
+    def creer_zone_texte(self, longueur, hauteur, position_x, position_y, couleur):
+        """
+            Créer et retourner une zone de texte qui peut être affiché et vérifié plus tard. \n
+            Cela est utile pour récuperer les entrées utilisateur \n
+            Les paramètres attendus sont : \n
+                * la longueur et la hauteur du bouton. \n
+                * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. \n
+                * la couleur du bouton.
+        """
+        try:
+            return self.ecran.create_text_area(longueur, hauteur, position_x, position_y, couleur)
+        except AttributeError:
+            self.message_erreur("L'écran n'a pas été allumé.")
+    
+    def get_user_entry(self, texte) :
+        """
+        """
+        letter = Input.get_user_entry(self)
+        if (letter != None) :
+            if letter == "\b" :
+                texte = texte[:-1]
+            else :
+                texte += letter
+        return texte
+    
+    def ecrire(self, text_area) :
+        """
+            Creer un champs dans lequel l'utilisateur pourra ecrire
+            Renvoie le texte ecrit par l'utilisateur
+        """
+        text = ""
+        new_text = ""
+        self.isWriting = True
+        print("User start writing")
+        while self.isWriting :
+            if text_area.verifier_contact() :
+                self.isWriting = False
+            new_text = self.get_user_entry(text)
+            if (not self.actif) :
+                return None
+            if (new_text != text) :
+                if ("\r" in new_text) :
+                    self.isWriting = False
+                    text_area.pressed = False
+                text_area.add_text(new_text, 10, 10, 20, (52, 164, 235), text)
+                text_area.afficher()
+                self.dessiner_ecran() # Vraiment utile ??
+                text = new_text
+        text_area.add_text("", 10, 10, 20, (52, 164, 235), text)
+        text_area.afficher()
+        self.dessiner_ecran() # Vraiment utile ??
+        print("User end writing")
+        return text
 
     ### AUDIO ###
 

@@ -77,10 +77,11 @@ class Input:
     @staticmethod
     def get_user_entry(robot) :
         user_texte = ""
-        if (robot.isWriting):
+        if (robot.isWriting) :
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     robot.eteindre_ecran()
+                    return "stop"
                 if event.type == pg.KEYDOWN:
                     user_texte += event.unicode
         if (user_texte == "") :

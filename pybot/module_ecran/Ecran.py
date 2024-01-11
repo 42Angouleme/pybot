@@ -100,6 +100,9 @@ class Ecran:
     def create_button(self, w, h, x, y, c):
         return self.interface.create_button(w, h, x, y, c)
 
+    def create_text_area(self, w, h, x, y, c):
+        return self.interface.create_text_area(w, h, x, y, c)
+
     def display_camera(self, x, y):
         self.camera.display(x, y)
     
