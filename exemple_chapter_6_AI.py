@@ -64,7 +64,7 @@ def verifier_boutons(robot : Robot):
         robot.desactiver()
     if discussion_commencer and text_area.verifier_contact() :
         user_entry = robot.ecrire(text_area)
-        print("user_entry = ", user_entry)
+        robot.repondre_question(user_entry)
     if discussion_commencer and text_area_bis.verifier_contact() :
         user_entry = robot.ecrire(text_area_bis)
         print("user_entry = ", user_entry)
