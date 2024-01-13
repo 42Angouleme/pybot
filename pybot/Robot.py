@@ -2,12 +2,17 @@ from .module_ecran import module as ecran
 from .module_camera.Camera import Camera
 from .module_ecran.Input import Input
 from .module_webapp import create_app
+from cv2.typing import MatLike
 import os, sys
+from pathlib import Path
 import time
+import requests
+from dotenv import load_dotenv
 
 
 class Robot:
     def __init__(self):
+        self.load_env_file('.env_to_rename')
         self.webapp = None
         self.debug = True
         self.ecran = None
@@ -39,7 +44,7 @@ class Robot:
         self.ecran = ecran.run(self, longueur, hauteur)
         self.camera = Camera(self.ecran.surface)
         try:
-            self.camera.initUserCardsTracker(self.webapp)
+            self.camera.updateUserCardsTracker(self.webapp)
         except ValueError:
             self.message_erreur("L' application web doit être lancé avant d' allumer l'écran.")
 
@@ -213,7 +218,17 @@ class Robot:
                 * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
                 * Les coordonnées x et y ou seront affiché l'image.
         """
-        self.ecran.display_image(chemin_fichier, position_x, position_y)
+        print("afficher_image_from_path:", type())
+        self.ecran.display_image_from_path(chemin_fichier, position_x, position_y)
+
+    def afficher_carte_detectee(self, carte_detectee, position_x, position_y):
+        """
+            Afficher une image. \n
+            Les paramètres attendus sont : \n
+                * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
+                * Les coordonnées x et y ou seront affiché l'image.
+        """
+        self.ecran.display_image(carte_detectee, position_x, position_y)
 
     def appliquer_filtre(self, chemin_fichier, nom_filtre):
         """
@@ -232,24 +247,30 @@ class Robot:
             Affiche à l' écran un cadre autour de la carte et connecte l'utilisateur si reconnu.
 
             Paramètres:
-                - seuil_minimal (défaut: 0.75) : score minimum pour qu' une carte détectée soit considérée comme valide.
-                - seuil_arret_recherche (défaut: 0.85) : score pour qu' une carte détectée soit interprétée comme la bonne.
+                * seuil_minimal (défaut: 0.75) : score minimum pour qu' une carte détectée soit considérée comme valide.
+                * seuil_arret_recherche (défaut: 0.85) : score pour qu' une carte détectée soit interprétée comme la bonne.
         """
         if self.webapp is None:
             self.message_avertissement(
-                "La fonction Robot.detecter_carte() a été appelée sans Robot.demarrer_webapp()")
+                "La fonction Robot.connecter() a été appelée sans Robot.demarrer_webapp()")
             return ""
-        utilisateur_reconnu = self.camera.detect_user()
+        elif not self.camera.camera.isOpened():
+            return
+        utilisateur_reconnu, _ = self.camera.detect_user(min_threshold=seuil_minimal, stop_threshold=seuil_arret_recherche)
         if utilisateur_reconnu and self.verifier_session():
             self.message_avertissement("Un utilisateur est déjà connecté.")
         elif utilisateur_reconnu:
             self.utilisateur_connecte = utilisateur_reconnu
 
-    def creer_session(self, nom_eleve):
-        """
-            ...
-        """
-        print("creer une session pour", nom_eleve)
+    def detecter_carte(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
+        if self.webapp is None:
+            self.message_avertissement(
+                "La fonction Robot.detecter_carte() a été appelée sans Robot.demarrer_webapp()")
+            return ""
+        elif not self.camera.camera.isOpened():
+            return
+        carte_reconnue, _ = self.camera.detect_card(min_threshold=seuil_minimal, stop_threshold=seuil_arret_recherche)
+        return carte_reconnue
 
     def deconnecter(self):
         """
@@ -260,10 +281,28 @@ class Robot:
     def verifier_session(self):
         """
             Retourne:
-                - True: Si une personne est connectée
-                - False: Sinon
+                * True: Si une personne est connectée
+                * False: Sinon
         """
         return self.utilisateur_connecte is not None
+
+    def supprimer_utilisateur(self):
+        """
+           Supprime l' utilisateur connecté.
+        """
+        if not self.verifier_session():
+            self.message_avertissement("Aucun utilisateur n' est connecté")
+            return
+        try:
+            id = self.utilisateur_connecte.id
+            response = requests.delete(f"{APP_BASE_URL}/api/users/{id}")
+            if response.status_code != 200:
+                self.message_erreur("[HTTP REQUEST ERROR]" + str(response.content))
+            else:
+                self.deconnecter()
+                self.camera.updateUserCardsTracker(self.webapp)
+        except Exception as e:
+            self.message_erreur("[HTTP REQUEST EXCEPTION]" + str(e))
 
     ### IA ###
 
@@ -308,3 +347,12 @@ class Robot:
 
     def message_avertissement(self, msg):
         print(f"\033[33mAttention: {msg}\033[00m", file=sys.stderr)
+
+    APP_BASE_URL, APP_ADRESS, APP_PORT = [""] * 3
+    @staticmethod
+    def load_env_file(path_file: str = '.env'):
+        global APP_BASE_URL, APP_ADRESS, APP_PORT
+        load_dotenv(dotenv_path=Path(path_file))
+        APP_BASE_URL = os.getenv('WEBAPP_BASE_URI')
+        APP_ADRESS = APP_BASE_URL.split(':')[1][2:]
+        APP_PORT = APP_BASE_URL.split(':')[2]

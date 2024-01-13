@@ -39,7 +39,7 @@ class UserCardsTracker:
     def _get_user_fullname(u: UserResponse) -> str:
         return f"{u.first_name} {u.last_name}"
 
-    def draw(self, frame: MatLike, min_threshold=0.75, stop_threshold=0.85) -> Tuple[MatLike, List[UserResponse]]:
+    def get_detected_card(self, frame: MatLike, min_threshold, stop_threshold) -> Tuple[MatLike, MatLike]:
         """
         Params
             - frame: 2D Frame of the card detected
@@ -48,10 +48,8 @@ class UserCardsTracker:
         Returns
             Tuple:
                 - frame: with card framed detected card
-                - user found that matches the most
+                - card detected as image
         """
-
-        """Find the matching user cards in the given `frame`. Highlighted the card contours and write their name next to it. Also return the array of matching users."""
         # Convert pygame.surface -> np_array
         frame = pg.surfarray.array3d(frame)
         contours, candidate_images = scan(
@@ -62,6 +60,46 @@ class UserCardsTracker:
             ],
         )
         frame = cv2.drawContours(frame, contours, -1, (0, 255, 255), 3)
+        card_detected = None
+        for candidate_idx, candidate_img in enumerate(candidate_images):
+            user_idx = self.image_comparator.get_match_idx(candidate_img, min_threshold, stop_threshold)
+            if user_idx is not None:
+                continue
+            card_detected = candidate_img
+
+        # convert np_array -> pyagame_surface
+        frame = pg.surfarray.make_surface(frame)
+        if card_detected is not None:
+            card_detected = cv2.flip(card_detected, 0)
+            M = cv2.getRotationMatrix2D(center=(100, 100), angle=-90, scale=1.0)
+            # Perform the rotation
+            card_detected = cv2.warpAffine(card_detected, M, (200, 200))
+            card_detected = pg.surfarray.make_surface(card_detected)
+        return frame, card_detected
+
+    def draw(self, frame: MatLike, min_threshold, stop_threshold) -> Tuple[MatLike, List[UserResponse]]:
+        """
+        Find the matching user cards in the given `frame`. Highlighted the card contours and write their name next to it.
+
+        Params
+            - frame: 2D Frame of the card detected
+            - min_threshold: Sufficient threshold to interpret frame as similar card
+            - stop_threshold: Threshold to interpret frame as corresponding card
+        Returns
+            Tuple:
+                - frame: with card framed detected card
+                - user found that matches the most
+        """
+        # Convert pygame.surface -> np_array
+        frame = pg.surfarray.array3d(frame)
+        contours, candidate_images = scan(
+            frame.copy(),
+            keep_results=[
+                card_contours_transform,
+                rotate_top_left_corner_low_density_transform,
+            ],
+        )
+        frame = cv2.drawContours(frame, contours, -1, (0, 255, 0), 3)
         user_match = None
         for candidate_idx, candidate_img in enumerate(candidate_images):
             user_idx = self.image_comparator.get_match_idx(candidate_img, min_threshold, stop_threshold)
@@ -69,7 +107,6 @@ class UserCardsTracker:
                 continue
             u = self.users[user_idx]
             user_match = u
-
             #       --  Text handling  --
             #   Issue: Text written vertically
 

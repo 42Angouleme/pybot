@@ -1,4 +1,4 @@
-
+from cv2.typing import MatLike
 from .Interface import Interface
 from .filtres import Filtres
 import pygame as pg
@@ -95,10 +95,19 @@ class Ecran:
     def create_button(self, w, h, x, y, c):
         return self.interface.create_button(w, h, x, y, c)
 
-    def display_image(self, file_path, x, y):
+    def display_image_from_path(self, file_path, x, y):
         try:
             img = pg.image.load(os.getcwd() + file_path)
             self.surface.blit(img, (x, y))
+        except:
+            pass
+
+    def display_image(self, img: MatLike, x, y):
+        try:
+            if img is None:
+                self.draw_rect(200, 200, x, y, self.background_color)
+            else:
+                self.surface.blit(img, (x, y))
         except:
             pass
 

@@ -31,7 +31,7 @@ class ImageComparator:
             imgs.append(img)
         return imgs
 
-    def get_match_idx(self, frame: MatLike, min_threshold=0.75, stop_threshold=0.85) -> int | None:
+    def get_match_idx(self, frame: MatLike, min_threshold, stop_threshold) -> int | None:
         """
         Params
             - frame: 2D Frame of the card detected

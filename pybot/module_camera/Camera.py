@@ -14,7 +14,7 @@ class Camera:
         self.x = 0
         self.y = 0
 
-    def initUserCardsTracker(self, webapp: Flask):
+    def updateUserCardsTracker(self, webapp: Flask):
         # Handle Unintialized webapp
         if not isinstance(webapp, Flask):
             raise ValueError
@@ -45,7 +45,25 @@ class Camera:
         except:
             pass
 
-    def detect_user(self, min_threshold=0.75, stop_threshold=0.85):
+    def detect_card(self, min_threshold: float, stop_threshold: float):
+        """
+        Detect user and if user found, the card is detected and framed in the frame
+
+        Params
+            - min_threshold: Sufficient threshold to interpret frame as similar card
+            - stop_threshold: Threshold to interpret frame as corresponding card
+        Returns
+            - matching_user: User that matches the most for detected card
+        """
+        # Handle first launch of camera with 0 frame
+        if self.frame is None:
+            return []
+        frame, detected_card = self.card_tracker.get_detected_card(self.frame, min_threshold, stop_threshold)
+        if detected_card is not None:
+            self.surface.blit(frame, (self.x, self.y))
+        return detected_card, frame
+
+    def detect_user(self, min_threshold, stop_threshold):
         """
         Detect user and if user found, the card is detected and framed in the frame
 
@@ -61,4 +79,4 @@ class Camera:
         frame, user_detected = self.card_tracker.draw(self.frame, min_threshold, stop_threshold)
         if user_detected is not None:
             self.surface.blit(frame, (self.x, self.y))
-        return user_detected
+        return user_detected, frame
