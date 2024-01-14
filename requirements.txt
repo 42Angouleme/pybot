@@ -32,3 +32,4 @@ sqlalchemy-media==0.17.4
 tifffile==2023.12.9
 typing_extensions==4.9.0
 Werkzeug==3.0.1
+python-dotenv==1.0.0
