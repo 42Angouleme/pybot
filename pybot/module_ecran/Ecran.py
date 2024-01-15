@@ -95,6 +95,15 @@ class Ecran:
     def create_button(self, w, h, x, y, c):
         return self.interface.create_button(w, h, x, y, c)
 
+    def create_text_area(self, w, h, x, y, c):
+        return self.interface.create_text_area(w, h, x, y, c)
+
+    def display_camera(self, x, y):
+        self.camera.display(x, y)
+    
+    def capture_photo(self, file_name):
+        self.camera.capture(file_name)
+    
     def display_image_from_path(self, file_path, x, y):
         try:
             img = pg.image.load(os.getcwd() + file_path)
