@@ -221,15 +221,6 @@ class Robot:
         print("afficher_image_from_path:", type())
         self.ecran.display_image_from_path(chemin_fichier, position_x, position_y)
 
-    def afficher_carte_detectee(self, carte_detectee, position_x, position_y):
-        """
-            Afficher une image. \n
-            Les paramètres attendus sont : \n
-                * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
-                * Les coordonnées x et y ou seront affiché l'image.
-        """
-        self.ecran.display_image(carte_detectee, position_x, position_y)
-
     def appliquer_filtre(self, chemin_fichier, nom_filtre):
         """
             Applique un filtre sur une image. \n
@@ -244,19 +235,24 @@ class Robot:
 
     def connecter(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
         """
-            Affiche à l' écran un cadre autour de la carte et connecte l'utilisateur si reconnu.
+            Affiche à l' écran un cadre autour de la carte et
+            connecte l'utilisateur si reconnu.
 
             Paramètres:
-                * seuil_minimal (défaut: 0.75) : score minimum pour qu' une carte détectée soit considérée comme valide.
-                * seuil_arret_recherche (défaut: 0.85) : score pour qu' une carte détectée soit interprétée comme la bonne.
+                * seuil_minimal (défaut: 0.75) : score minimum pour
+                    qu' une carte détectée soit considérée comme valide.
+                * seuil_arret_recherche (défaut: 0.85) : score pour
+                    qu' une carte détectée soit interprétée comme la bonne.
         """
         if self.webapp is None:
             self.message_avertissement(
-                "La fonction Robot.connecter() a été appelée sans Robot.demarrer_webapp()")
+                "La fonction Robot.connecter() a été appelée"
+                "sans Robot.demarrer_webapp()")
             return ""
         elif not self.camera.camera.isOpened():
             return
-        utilisateur_reconnu, _ = self.camera.detect_user(min_threshold=seuil_minimal, stop_threshold=seuil_arret_recherche)
+        utilisateur_reconnu, _ = self.camera.detect_user(seuil_minimal,
+                                                         seuil_arret_recherche)
         if utilisateur_reconnu and self.verifier_session():
             self.message_avertissement("Un utilisateur est déjà connecté.")
         elif utilisateur_reconnu:
@@ -265,12 +261,23 @@ class Robot:
     def detecter_carte(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
         if self.webapp is None:
             self.message_avertissement(
-                "La fonction Robot.detecter_carte() a été appelée sans Robot.demarrer_webapp()")
+                "La fonction Robot.detecter_carte() a été appelée"
+                "sans Robot.demarrer_webapp()")
             return ""
         elif not self.camera.camera.isOpened():
             return
-        carte_reconnue, _ = self.camera.detect_card(min_threshold=seuil_minimal, stop_threshold=seuil_arret_recherche)
+        carte_reconnue, _ = self.camera.detect_card(seuil_minimal,
+                                                    seuil_arret_recherche)
         return carte_reconnue
+
+    def afficher_carte_detectee(self, carte_detectee, position_x, position_y):
+        """
+            Afficher la carte détectée. \n
+            Les paramètres attendus sont : \n
+                * L' image de la carte detectée par Robot.detecter_carte() \n
+                * Les coordonnées x et y ou seront affiché l'image.
+        """
+        self.ecran.display_image(carte_detectee, position_x, position_y)
 
     def deconnecter(self):
         """
@@ -280,6 +287,8 @@ class Robot:
 
     def verifier_session(self):
         """
+            Indique si un utilisateur est déjà connecté.
+
             Retourne:
                 * True: Si une personne est connectée
                 * False: Sinon
@@ -297,12 +306,14 @@ class Robot:
             id = self.utilisateur_connecte.id
             response = requests.delete(f"{APP_BASE_URL}/api/users/{id}")
             if response.status_code != 200:
-                self.message_erreur("[HTTP REQUEST ERROR]" + str(response.content))
+                self.message_erreur("[HTTP ERROR]" + str(response.content))
             else:
                 self.deconnecter()
+                # Update les cartes des sessions chargées lors
+                #   de la construction de CardsTracker
                 self.camera.updateUserCardsTracker(self.webapp)
         except Exception as e:
-            self.message_erreur("[HTTP REQUEST EXCEPTION]" + str(e))
+            self.message_erreur("[HTTP EXCEPTION]" + str(e))
 
     ### IA ###
 

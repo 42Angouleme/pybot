@@ -53,12 +53,16 @@ class Camera:
             - min_threshold: Sufficient threshold to interpret frame as similar card
             - stop_threshold: Threshold to interpret frame as corresponding card
         Returns
-            - matching_user: User that matches the most for detected card
+            - detected_card: card detected by algorithm and does not match any
+                user's card
         """
         # Handle first launch of camera with 0 frame
         if self.frame is None:
             return []
-        frame, detected_card = self.card_tracker.get_detected_card(self.frame, min_threshold, stop_threshold)
+        frame, detected_card = self.card_tracker.get_detected_card(
+                self.frame,
+                min_threshold,
+                stop_threshold)
         if detected_card is not None:
             self.surface.blit(frame, (self.x, self.y))
         return detected_card, frame
@@ -76,7 +80,10 @@ class Camera:
         # Handle first launch of camera with 0 frame
         if self.frame is None:
             return []
-        frame, user_detected = self.card_tracker.draw(self.frame, min_threshold, stop_threshold)
+        frame, user_detected = self.card_tracker.get_detected_user(
+                self.frame,
+                min_threshold,
+                stop_threshold)
         if user_detected is not None:
             self.surface.blit(frame, (self.x, self.y))
         return user_detected, frame

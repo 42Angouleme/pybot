@@ -70,19 +70,20 @@ class UserCardsTracker:
         # convert np_array -> pyagame_surface
         frame = pg.surfarray.make_surface(frame)
         if card_detected is not None:
+            # Perform image manip to get same image as real one
             card_detected = cv2.flip(card_detected, 0)
             M = cv2.getRotationMatrix2D(center=(100, 100), angle=-90, scale=1.0)
-            # Perform the rotation
             card_detected = cv2.warpAffine(card_detected, M, (200, 200))
+            # convert np_array -> pyagame_surface
             card_detected = pg.surfarray.make_surface(card_detected)
         return frame, card_detected
 
-    def draw(self, frame: MatLike, min_threshold, stop_threshold) -> Tuple[MatLike, List[UserResponse]]:
+    def get_detected_user(self, frame: MatLike, min_threshold, stop_threshold) -> Tuple[MatLike, List[UserResponse]]:
         """
         Find the matching user cards in the given `frame`. Highlighted the card contours and write their name next to it.
 
         Params
-            - frame: 2D Frame of the card detected
+            - frame: 2D Frame
             - min_threshold: Sufficient threshold to interpret frame as similar card
             - stop_threshold: Threshold to interpret frame as corresponding card
         Returns
@@ -92,6 +93,7 @@ class UserCardsTracker:
         """
         # Convert pygame.surface -> np_array
         frame = pg.surfarray.array3d(frame)
+        # Returns array of images in frame that seems to be a card
         contours, candidate_images = scan(
             frame.copy(),
             keep_results=[
