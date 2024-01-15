@@ -101,7 +101,7 @@ class TextArea(Button) :
         self.old_text = old_text
         self.text_position = (self.position[0] + position_x, self.position[1] + position_y)
     
-    def effacer_text(self) :
+    def effacer_texte(self) :
         """
             Permer d'effacer le contenue de la zone de texte
             Renvoi le texte contenue dans la zone de texte
