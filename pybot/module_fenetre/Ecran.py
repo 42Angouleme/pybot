@@ -5,7 +5,7 @@ import pygame as pg
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'  # need to be declared before to import pygame
 
-class Ecran:
+class Fenetre:
     def __init__(self, robot, debug=False):
         self.debug = debug
         self.title = "Pybot"

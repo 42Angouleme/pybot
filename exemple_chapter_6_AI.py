@@ -26,7 +26,7 @@ mettre_a_jour_affichage = True
 
 def preparer_programme():
     global bouton_question, bouton_stop, text_area, text_area_bis
-    robot.allumer_ecran(long, haut)
+    robot.creer_fenetre(long, haut)
     robot.changer_titre("Bonjour Robot!")
     robot.couleur_fond(noir)
     robot.ajouter_evenement("echap", "stop")
@@ -36,10 +36,10 @@ def preparer_programme():
     bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
     text_area = robot.creer_zone_texte(600, 100, 300, 250, blanc)
     text_area_bis = robot.creer_zone_texte(600, 100, 300, 400, blanc)
-    text_area.modifier_couleur_ecriture(vert)
+    text_area.modifier_couleur_police(vert)
     robot.ajouter_evenement("C", "C")
 
-def affichage_ecran():  
+def dessiner_fenetre():  
     global mettre_a_jour_affichage, discussion_commencer, text_area, text_area_bis
     if mettre_a_jour_affichage:
         robot.afficher_fond()
@@ -52,7 +52,7 @@ def affichage_ecran():
 
 def verifier_boutons(robot : Robot):
     global mettre_a_jour_affichage, discussion_commencer, text_area, text_area_bis
-    if bouton_question.verifier_contact():
+    if bouton_question.est_actif():
         discussion_commencer = not discussion_commencer
         if discussion_commencer :
             robot.demarrer_discussion()
@@ -61,13 +61,13 @@ def verifier_boutons(robot : Robot):
             bouton_question.ajouter_texte("Poser question")
             robot.arreter_discussion()
         mettre_a_jour_affichage = True
-    if bouton_stop.verifier_contact():
+    if bouton_stop.est_actif():
         robot.desactiver()
-    if discussion_commencer and text_area.verifier_contact() :
+    if discussion_commencer and text_area.est_actif() :
         user_entry = robot.ecrire(text_area)
         print("user_entry = ", user_entry)
         #robot.repondre_question(user_entry)
-    if discussion_commencer and text_area_bis.verifier_contact() :
+    if discussion_commencer and text_area_bis.est_actif() :
         user_entry = robot.ecrire(text_area_bis)
         print("user_entry = ", user_entry)
         text_area_bis.effacer_texte()
@@ -78,12 +78,12 @@ def boucle_programme():
     while robot.est_actif():
         events = robot.verifier_evenements()
         if "stop" in events:
-            robot.eteindre_ecran()
+            robot.fermer_fenetre()
         elif "C" in events:
             print("Vous appuyez sur C")
-        affichage_ecran()
+        dessiner_fenetre()
         verifier_boutons(robot)
-        robot.dessiner_ecran()
+        robot.actualiser_affichage()
 
 if __name__ == "__main__":
     preparer_programme()

@@ -36,7 +36,7 @@ zone = "menu"
 
 def preparer_programme():
     global bouton_menu, bouton_quitter, bouton_discussion, bouton_plus
-    robot.allumer_ecran(long, haut)
+    robot.creer_fenetre(long, haut)
     robot.changer_titre("Bonjour boutons!")
     robot.couleur_fond(rouge)
 
@@ -52,21 +52,21 @@ def preparer_programme():
 
 def verifier_boutons():
     global mettre_a_jour_affichage, paroles_index, zone
-    if bouton_menu.verifier_contact():
+    if bouton_menu.est_actif():
         zone = "menu"
         mettre_a_jour_affichage = True
-    if bouton_quitter.verifier_contact():
-        robot.eteindre_ecran()
-    if bouton_discussion.verifier_contact():
+    if bouton_quitter.est_actif():
+        robot.fermer_fenetre()
+    if bouton_discussion.est_actif():
         zone = "discussion"
         mettre_a_jour_affichage = True
-    if bouton_plus.verifier_contact():
+    if bouton_plus.est_actif():
         paroles_index = paroles_index + 1
         if paroles_index == len(paroles_robot):
             paroles_index = 0
         mettre_a_jour_affichage = True
 
-def affichage_ecran():
+def dessiner_fenetre():
     global mettre_a_jour_affichage
     if mettre_a_jour_affichage:
         if zone == "menu":
@@ -88,10 +88,10 @@ def boucle_programme():
     while robot.est_actif():
         events = robot.verifier_evenements()
         if "stop" in events:
-            robot.eteindre_ecran()
-        affichage_ecran()
+            robot.fermer_fenetre()
+        dessiner_fenetre()
         verifier_boutons()
-        robot.dessiner_ecran()
+        robot.actualiser_affichage()
 
 if __name__ == "__main__":
     preparer_programme()
