@@ -41,17 +41,21 @@ class UserCardsTracker:
 
     def get_detected_card(self, frame: MatLike, min_threshold, stop_threshold) -> Tuple[MatLike, MatLike]:
         """
-        Params
-            - frame: 2D Frame of the card detected
-            - min_threshold: Sufficient threshold to interpret frame as similar card
-            - stop_threshold: Threshold to interpret frame as corresponding card
-        Returns
-            Tuple:
-                - frame: with card framed detected card
-                - card detected as image
+            Find cards in the given `frame`.
+            Highlighted the cards contours.
+
+            Params
+                - frame: 2D Frame
+                - min_threshold: Sufficient threshold to interpret frame as similar card
+                - stop_threshold: Threshold to interpret frame as corresponding card
+            Returns
+                Tuple:
+                    - frame: with card framed detected card
+                    - card detected as image
         """
         # Convert pygame.surface -> np_array
         frame = pg.surfarray.array3d(frame)
+        # Returns array of images in frame that seems to be a card
         contours, candidate_images = scan(
             frame.copy(),
             keep_results=[
@@ -62,9 +66,13 @@ class UserCardsTracker:
         frame = cv2.drawContours(frame, contours, -1, (0, 255, 255), 3)
         card_detected = None
         for candidate_idx, candidate_img in enumerate(candidate_images):
-            user_idx = self.image_comparator.get_match_idx(candidate_img, min_threshold, stop_threshold)
+            user_idx = self.image_comparator.get_match_idx(
+                    candidate_img,
+                    min_threshold,
+                    stop_threshold)
             if user_idx is not None:
                 continue
+            # Store only card that does not match any user card
             card_detected = candidate_img
 
         # convert np_array -> pyagame_surface
@@ -80,7 +88,8 @@ class UserCardsTracker:
 
     def get_detected_user(self, frame: MatLike, min_threshold, stop_threshold) -> Tuple[MatLike, List[UserResponse]]:
         """
-        Find the matching user cards in the given `frame`. Highlighted the card contours and write their name next to it.
+        Find the matching user cards in the given `frame`.
+        Highlighted the card contours.
 
         Params
             - frame: 2D Frame
