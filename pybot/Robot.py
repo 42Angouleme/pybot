@@ -49,7 +49,7 @@ class Robot:
         try:
             self.camera.updateUserCardsTracker(self.webapp)
         except ValueError:
-            self.message_erreur("L' application web doit être lancé avant d' allumer l'écran.")
+            self.message_erreur("L'application web doit être lancée avant de créer la fenêtre.")
 
     def changer_titre(self, titre):
         '''
@@ -251,14 +251,14 @@ class Robot:
         """{
                         'first_name': ''
                         }
-            Affiche à l' écran un cadre autour de la carte et
+            Affiche à l'écran un cadre autour de la carte et
             connecte l'utilisateur si reconnu.
 
             Paramètres:
                 * seuil_minimal (défaut: 0.75) : score minimum pour
-                    qu' une carte détectée soit considérée comme valide.
+                    qu'une carte détectée soit considérée comme valide.
                 * seuil_arret_recherche (défaut: 0.85) : score pour
-                    qu' une carte détectée soit interprétée comme la bonne.
+                    qu'une carte détectée soit interprétée comme la bonne.
         """
         if self.webapp is None:
             self.message_avertissement(
@@ -290,10 +290,10 @@ class Robot:
         r"""
             Afficher la carte détectée. \n
             Les paramètres attendus sont : \n
-                * L' image de la carte detectée par Robot.detecter_carte() \n
+                * L'image de la carte detectée par Robot.detecter_carte() \n
                 * Les coordonnées x et y ou seront affiché l'image.
         """
-        self.ecran.display_image_from_path(carte_detectee, position_x, position_y)
+        self.fenetre.display_image_from_path(carte_detectee, position_x, position_y)
 
     def deconnecter(self):
         """
@@ -314,8 +314,8 @@ class Robot:
     def recuperer_utilisateur_connecte(self):
         """
             Méthode qui retourne un object contenant:
-                - prenom de l' utilisateur
-                - nom de l' utilisateur
+                - prenom de l'utilisateur
+                - nom de l'utilisateur
         """
         user = {}
         user['prenom'] = self.utilisateur_connecte.first_name
@@ -330,7 +330,7 @@ class Robot:
         Paramètres:
             - prenom: son prénom
             - nom: son nom de famille
-            - carte: l' image de sa carte (générée avec Robot.detecter_carte())
+            - carte: l'image de sa carte (générée avec Robot.detecter_carte())
         """
         if self.verifier_session():
             self.message_avertissement("Un utilisateur est déjà connecté")
@@ -366,10 +366,10 @@ class Robot:
 
     def supprimer_utilisateur(self):
         """
-           Supprime l' utilisateur connecté.
+           Supprime l'utilisateur connecté.
         """
         if not self.verifier_session():
-            self.message_avertissement("Aucun utilisateur n' est connecté")
+            self.message_avertissement("Aucun utilisateur n'est connecté")
             return
         try:
             id = self.utilisateur_connecte.id
