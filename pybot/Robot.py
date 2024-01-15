@@ -31,7 +31,7 @@ class Robot:
 
     def demarrer_webapp(self):
         '''
-            Cette méthode lance de manière non bloquante le serveur web qui s'occupe de la partie base de donnée.
+            Cette méthode lance de manière non bloquante le serveur web qui s'occupe de la partie base de données.
         '''
         self.webapp = create_app(root_dir=os.path.dirname(os.path.abspath(__file__)))
         pid = os.fork()
@@ -41,7 +41,7 @@ class Robot:
 
     def creer_fenetre(self, longueur=800, hauteur=600):
         '''
-            Crée une fenêtre avec une longueur et une hauteur passées en argument (en nombre de pixels). \n
+            Créé une fenêtre avec une longueur et une hauteur passées en argument (en nombre de pixels). \n
             Si un argument n'est pas donné, la longueur par défaut sera 800 pixels et la hauteur par défaut sera 600 pixels.
         '''
         self.fenetre = fenetre.run(self, longueur, hauteur)
@@ -93,8 +93,8 @@ class Robot:
 
     def fermer_fenetre(self):
         '''
-            Sert à fermer correctement la fenêtre (et la bibliothèque graphique), le robot est inactivé. \n
-            Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) elle peut etre utilisée pour arrêter le programme.
+            Sert à fermer correctement la fenêtre (et la bibliothèque graphique), le robot devient inactif. \n
+            Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) cette méthode peut etre utilisée pour arrêter le programme.
         '''
         try:
             self.camera.stop()
@@ -116,7 +116,7 @@ class Robot:
 
     def supprimer_evenement(self, nom):
         """
-            Supprime l'évènement donnée en paramètre de la liste des évènements.
+            Supprime l'évènement passé en paramètre de la liste des évènements.
         """
         for e in self.events:
             if e[1] == nom:
@@ -124,7 +124,7 @@ class Robot:
 
     def verifier_evenements(self):
         """
-            Vérifie chaque évènements et retourne un tableau avec les évènements détectés.
+            Vérifie chaque évènement et retourne un tableau avec les évènements détectés.
         """
         return Input.check(self.events, self)
 
@@ -144,8 +144,8 @@ class Robot:
 
     def afficher_fond(self):
         r"""
-            Affiche le fond d'écran avec la couleur enregistrée en dernier avec la fonction couleur_fond() \n
-            (par défaut, la couleur est noir).
+            Affiche le fond d'écran avec la dernière couleur enregistrée par la fonction couleur_fond() \n
+            (par défaut, la couleur est : noir).
         """
         try:
             self.fenetre.draw_background()
@@ -218,7 +218,7 @@ class Robot:
             Afficher une image. \n
             Les paramètres attendus sont : \n
                 * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
-                * Les coordonnées x et y ou seront affiché l'image.
+                * Les coordonnées x et y où sera affichée l'image.
         """
         print("afficher_image_from_path:", type())
         self.fenetre.display_image_from_path(chemin_fichier, position_x, position_y)
@@ -291,7 +291,7 @@ class Robot:
             Afficher la carte détectée. \n
             Les paramètres attendus sont : \n
                 * L'image de la carte detectée par Robot.detecter_carte() \n
-                * Les coordonnées x et y ou seront affiché l'image.
+                * Les coordonnées x et y où sera affichée l'image.
         """
         self.fenetre.display_image_from_path(carte_detectee, position_x, position_y)
 
@@ -337,7 +337,7 @@ class Robot:
             return
         elif carte is None:
             self.message_avertissement(
-                "Creation d'Utilisateur avec une carte invalide (=None)"
+                "Création d'un utilisateur avec une carte invalide (=None)"
             )
             return
         pg.image.save(carte, ".tmp_card.png")
@@ -394,14 +394,14 @@ class Robot:
     
     def arreter_discussion(self) :
         """
-            Arrete la discussion avec le robot
+            Arrête la discussion avec le robot
         """
         self.chatBot = None
 
     def repondre_question(self, question):
         """
             Permet de poser une question au robot.
-            Imprime la réponse du robot et renvoie la réponse du robot.
+            Imprime la réponse du robot dans le terminal et la renvoit.
         """
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
@@ -413,7 +413,7 @@ class Robot:
 
     def creer_historique(self) :
         """
-            Renvoi un nouvel historique de conversation
+            Renvoit un nouvel historique de conversation
         """
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
@@ -422,11 +422,11 @@ class Robot:
     def charger_historique(self, historique_de_conversation=None):
         """
             Commence la discussion avec le robot.
-            L'historique de la conversation passer en paramètre doit etre recuperer / cree avant d'appeler cette fonction pour pour le passer en paramètre à la fonction.
+            L'historique de la conversation passé en paramètre doit être récuperé / crée avant d'appeler cette fonction pour pour le passer en paramètre à la fonction.
             Sinon le robot n'aura pas de mémoire.
         """
         if (self.chatBot == None) :
-            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+            self.message_erreur("Aucune conversation n'a été commencée avec le robot")
         self.chatBot.load_history(historique_de_conversation)
            
     def supprimer_historique(self) :
@@ -435,12 +435,12 @@ class Robot:
             Après l'appel de cette fonction, le robot ne se souvient plus de la discussion.
         """
         if (self.chatBot == None) :
-            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+            self.message_erreur("Aucune conversation n'a été commencée avec le robot")
         self.chatBot.unload_history()
 
     def recuperer_historique_de_conversation(self):
         """
-            Permet de récupérer la discussion actuelle de l'utilisateur avec le robot.
+            Permet de récupérer la discussion actuelle de l'utilisateur.
         """
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
@@ -457,7 +457,7 @@ class Robot:
         """
             ...
         """
-        print("entrainer avec", texte)
+        print("entraîner avec", texte)
     
     ### ENTREE UTILISATEUR ###
 
@@ -491,7 +491,7 @@ class Robot:
     def ecrire(self, text_area) :
         """
             Permet à l'utilisateur d'écrire dans la zone de texte associé.
-            Renvoie le texte écrit par l'utilisateur.
+            Renvoit le texte écrit par l'utilisateur.
         """
         new_text = ""
         self.isWriting = True
