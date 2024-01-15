@@ -17,6 +17,16 @@ class Interface:
         }
         return Button(data, self.surface)
 
+    def create_text_area(self, w, h, x, y, c):
+        data = {
+            "width":w,
+            "height":h,
+            "x":x,
+            "y":y,
+            "color":c,  
+        }
+        return TextArea(data, self.surface)
+
 class Button:
     def __init__(self, data, surface):
         self.surface = surface
@@ -64,3 +74,74 @@ class Button:
             surf = font.render(self.text, True, self.text_color)
             self.surface.blit(surf, self.text_position)
         pg.display.update()
+
+class TextArea(Button) :
+    def __init__(self, data, surface):
+        super().__init__(data, surface)
+        self.old_text = ""
+        self.text = ""
+    
+    def afficher(self):
+        """
+            Affiche la zone de texte dans la fenêtre principale.
+        """
+        pg.draw.rect(self.surface, self.color, self.rect)
+        if self.text != "":
+            font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", self.text_size)
+            surf = font.render(self.old_text, True, self.color)
+            surf = font.render(self.text, True, self.text_color)
+            self.surface.blit(surf, self.text_position)
+        pg.display.update()
+
+    def add_text(self, texte,position_x=0, position_y=0, old_text = ""):
+        """
+            Permet d'afficher d'un texte dans la zone de texte
+        """
+        self.text = texte
+        self.old_text = old_text
+        self.text_position = (self.position[0] + position_x, self.position[1] + position_y)
+    
+    def effacer_texte(self) :
+        """
+            Permet d'effacer le contenu de la zone de texte.
+            Renvoi le texte contenue dans la zone de texte.
+        """
+        self.old_text = self.text
+        self.text = ""
+        self.afficher()
+        return self.old_text
+
+    def renvoi_texte(self) :
+        """
+            Renvoi le texte contenue dans la zone de texte.
+        """
+        return self.text
+
+    def modifier_taille_ecriture(self, taille=16) :
+        """
+            Permet de changer la taille de la police.
+            Utilisée sans paramètre, cela réinitialise la taille.
+        """
+        self.text_size = taille
+    
+    def modifier_couleur_ecriture(self, color=(0,0,0)) :
+        """
+            Permet de modifier la couleur de la police.
+            Utilisée sans paramètre, cela réinitialise la couleur.
+        """
+        self.text_color = color
+    
+    def check_is_outside(self, position):
+        """
+            Check if the mouse click is outside of the texte area.
+        """
+        if not self.rect.collidepoint(position) :
+            self.pressed = False
+            return True
+        return False
+
+    def is_pressed(self) :
+        """
+            Return self.pressed current value.
+        """
+        return self.pressed

@@ -1,6 +1,7 @@
 from .module_ecran import module as ecran
 from .module_ecran.Input import Input
 from .module_webapp import create_app
+from .module_ia.IA import ChatBot
 import os, sys
 import time
 
@@ -12,6 +13,8 @@ class Robot:
         self.titre = "Pybot"
         self.actif = True
         self.events = []
+        self.chatBot = None
+        self.isWriting = False
 
     ### GENERAL - ECRAN ###
 
@@ -185,7 +188,7 @@ class Robot:
         """
             Affiche la caméra aux coordonées x et y.
         """
-        self.ecran.display_camera(x, y)
+        self.ecran.display_camera(position_x, position_y=0)
 
     def prendre_photo(self, nom_fichier):
         """
@@ -239,25 +242,135 @@ class Robot:
         print("vérifier session")
 
     ### IA ###
-        
-    def entrainer(self, texte):
-        """
-            ...
-        """
-        print("entrainer avec", texte)
 
-    def repondre_question(self, texte):
+    def demarrer_discussion(self) :
         """
-            ...
+            Commence une discussion avec le robot
         """
-        print("envoyer question")
-        return "Réponse"
+        self.chatBot = ChatBot()
+    
+    def arreter_discussion(self) :
+        """
+            Arrete la discussion avec le robot
+        """
+        self.chatBot = None
 
+    def repondre_question(self, question):
+        """
+            Permet de poser une question au robot.
+            Imprime la réponse du robot et renvoie la réponse du robot.
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        reponse = self.chatBot.get_ai_answer(question)
+        print("Humain : " + question + "\nRobot : " + reponse)
+        return reponse
+        # En finalité la fonction n'imprimera plus la reponse
+        # return "Réponse"
+
+    def creer_historique(self) :
+        """
+            Renvoi un nouvel historique de conversation
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        return self.chatBot.create_conversation_history()
+    
+    def charger_historique(self, historique_de_conversation=None):
+        """
+            Commence la discussion avec le robot.
+            L'historique de la conversation passer en paramètre doit etre recuperer / cree avant d'appeler cette fonction pour pour le passer en paramètre à la fonction.
+            Sinon le robot n'aura pas de mémoire.
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        self.chatBot.load_history(historique_de_conversation)
+           
+    def supprimer_historique(self) :
+        """
+            Arrête la discussion actuelle avec le robot.
+            Après l'appel de cette fonction, le robot ne se souvient plus de la discussion.
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        self.chatBot.unload_history()
+
+    def recuperer_historique_de_conversation(self):
+        """
+            Permet de récupérer la discussion actuelle de l'utilisateur avec le robot.
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        memory = self.chatBot.getCurrentConversationHistory()
+        return memory
+    
     def choisir_emotion(texte, liste_emotions):
         """
             ...
         """
         print("avec", texte, "choisir emotion dans", liste_emotions)
+    
+    def entrainer(self, texte):
+        """
+            ...
+        """
+        print("entrainer avec", texte)
+    
+    ### ENTREE UTILISATEUR ###
+
+    def creer_zone_texte(self, longueur, hauteur, position_x, position_y, couleur):
+        """
+            Créer et retourner une zone de texte qui peut être affichée et vérifiée plus tard. \n
+            Cela est utile pour récupérer les entrées utilisateur \n
+            Les paramètres attendus sont : \n
+                * la longueur et la hauteur du bouton. \n
+                * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. \n
+                * la couleur du bouton.
+        """
+        try:
+            return self.ecran.create_text_area(longueur, hauteur, position_x, position_y, couleur)
+        except AttributeError:
+            self.message_erreur("L'écran n'a pas été allumé.")
+    
+    def get_user_entry(self, texte, text_area) :
+        """
+            Ne pas utiliser
+            Allow to get the user_entry, use in texte_area and in fuction ecrire
+        """
+        letter = Input.get_user_entry(self, text_area)
+        if (letter != None) :
+            if letter == "\b" :
+                texte = texte[:-1]
+            else :
+                texte += letter
+        return texte
+    
+    def ecrire(self, text_area) :
+        """
+            Permet à l'utilisateur d'écrire dans la zone de texte associé.
+            Renvoie le texte écrit par l'utilisateur.
+        """
+        new_text = ""
+        self.isWriting = True
+        text = text_area.renvoi_texte()
+        print("User start writing")
+        while self.isWriting :
+            if not text_area.is_pressed() :
+                self.isWriting = False
+            new_text = self.get_user_entry(text, text_area)
+            if (not self.actif) :
+                return ""
+            if (new_text != text) :
+                if ("\r" in new_text) :
+                    self.isWriting = False
+                    text_area.pressed = False
+                    break
+                text_area.add_text(new_text, 10, 10, text)
+                text_area.afficher()
+                self.dessiner_ecran() # Vraiment utile ??
+                text = new_text
+        print("User end writing")
+        return text
 
     ### AUDIO ###
 
