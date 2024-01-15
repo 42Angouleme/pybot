@@ -2,8 +2,8 @@ from .module_ecran import module as ecran
 from .module_camera.Camera import Camera
 from .module_ecran.Input import Input
 from .module_webapp import create_app
-from cv2.typing import MatLike
-import os, sys
+import pygame as pg
+import io, os, sys
 from pathlib import Path
 import time
 import requests
@@ -129,7 +129,7 @@ class Robot:
     ### INTERFACE - BOUTONS ###
 
     def couleur_fond(self, couleur):
-        """
+        r"""
             Change la couleur du fond d'écran. \n
             La couleur passée en paramètre doit être au format: (R, G, B). \n
             R, G et B sont des nombres entre 0 et 255.
@@ -140,7 +140,7 @@ class Robot:
             self.message_erreur("L'écran n'a pas été allumé.")
 
     def afficher_fond(self):
-        """
+        r"""
             Affiche le fond d'écran avec la couleur enregistrée en dernier avec la fonction couleur_fond() \n
             (par défaut, la couleur est noir).
         """
@@ -151,7 +151,7 @@ class Robot:
 
 
     def creer_bouton(self, longueur, hauteur, position_x, position_y, couleur):
-        """
+        r"""
             Créer et retourner un bouton qui peut être affiché et vérifié plus tard. \n
             Les paramètres attendus sont : \n
                 * la longueur et la hauteur du bouton. \n
@@ -165,7 +165,7 @@ class Robot:
 
 
     def dessiner_rectangle(self, longueur, hauteur, position_x, position_y, couleur):
-        """
+        r"""
             Dessine un rectangle dans la fenêtre. \n
         
             Les paramètres attendus sont : \n
@@ -180,7 +180,7 @@ class Robot:
 
     
     def afficher_texte(self, texte, position_x=0, position_y=0, taille=16, couleur=(0, 0, 0)):
-        """
+        r"""
             Affiche un texte dans la fenêtre. \n
 
             Les paramètres attendus sont : \n
@@ -212,7 +212,7 @@ class Robot:
         self.camera.capture(nom_fichier)
 
     def afficher_image(self, chemin_fichier, position_x, position_y):
-        """
+        r"""
             Afficher une image. \n
             Les paramètres attendus sont : \n
                 * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
@@ -222,7 +222,7 @@ class Robot:
         self.ecran.display_image_from_path(chemin_fichier, position_x, position_y)
 
     def appliquer_filtre(self, chemin_fichier, nom_filtre):
-        """
+        r"""
             Applique un filtre sur une image. \n
             Les paramètres attendus sont : \n
                 * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
@@ -234,7 +234,9 @@ class Robot:
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
 
     def connecter(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
-        """
+        """{
+                        'first_name': ''
+                        }
             Affiche à l' écran un cadre autour de la carte et
             connecte l'utilisateur si reconnu.
 
@@ -271,7 +273,7 @@ class Robot:
         return carte_reconnue
 
     def afficher_carte_detectee(self, carte_detectee, position_x, position_y):
-        """
+        r"""
             Afficher la carte détectée. \n
             Les paramètres attendus sont : \n
                 * L' image de la carte detectée par Robot.detecter_carte() \n
@@ -294,6 +296,47 @@ class Robot:
                 * False: Sinon
         """
         return self.utilisateur_connecte is not None
+
+    def creer_utilisateur(self, prenom: str, nom: str, carte):
+        """
+            Créer un utilisateur avec les données renseignées en paramètres
+
+        Paramètres:
+            - prenom: son prénom
+            - nom: son nom de famille
+            - carte: l' image de sa carte ( générée avec Robot.detecter_carte())
+        """
+        if self.verifier_session():
+            self.message_avertissement("Un utilisateur est déjà connecté")
+            return
+        elif carte is None:
+            self.message_avertissement(
+                "Creation d'Utilisateur avec une carte invalide (=None)"
+            )
+            return
+        pg.image.save(carte, ".tmp_card.png")
+        with open(".tmp_card.png", "rb") as img:
+            files = {
+                "picture": ("picture.png", img, "image/png"),
+            }
+            new_user = {
+                "first_name": prenom,
+                "last_name": nom,
+            }
+            os.unlink(".tmp_card.png")
+            try:
+                response = requests.post(
+                    f"{APP_BASE_URL}/api/users", data=new_user, files=files
+                )
+                if response.status_code != 201:
+                    self.message_erreur("[HTTP ERROR]" + str(response.content))
+                else:
+                    print("Success")
+                    # Update les cartes des sessions chargées lors
+                    #   de la construction de CardsTracker
+                    self.camera.updateUserCardsTracker(self.webapp)
+            except Exception as e:
+                self.message_erreur("[HTTP EXCEPTION]" + str(e))
 
     def supprimer_utilisateur(self):
         """
