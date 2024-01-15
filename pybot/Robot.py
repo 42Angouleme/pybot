@@ -267,6 +267,14 @@ class Robot:
         return reponse
         # En finalité la fonction n'imprimera plus la reponse
         # return "Réponse"
+
+    def creer_historique(self) :
+        """
+            Renvoi un nouvel historique de conversation
+        """
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        return self.chatBot.create_conversation_history()
     
     def charger_historique(self, historique_de_conversation=None):
         """
@@ -295,14 +303,6 @@ class Robot:
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
         memory = self.chatBot.getCurrentConversationHistory()
         return memory
-
-    def creer_historique(self) :
-        """
-            Renvoi un nouvel historique de conversation
-        """
-        if (self.chatBot == None) :
-            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
-        return self.chatBot.create_conversation_history()
     
     def choisir_emotion(texte, liste_emotions):
         """
