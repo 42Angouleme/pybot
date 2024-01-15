@@ -49,7 +49,7 @@ class Button:
         self.text_color = couleur
         self.text_position = (self.text_position[0] + position_x, self.text_position[1] + position_y)
 
-    def verifier_contact(self):
+    def est_actif(self):
         """
             Retourne vrai si le bouton a été cliqué.
         """
@@ -104,27 +104,26 @@ class TextArea(Button) :
     def effacer_texte(self) :
         """
             Permet d'effacer le contenu de la zone de texte.
-            Renvoi le texte contenue dans la zone de texte.
         """
         self.old_text = self.text
         self.text = ""
         self.afficher()
         return self.old_text
 
-    def renvoi_texte(self) :
+    def recuperer_texte(self) :
         """
-            Renvoi le texte contenue dans la zone de texte.
+            Renvoie le texte contenu dans la zone de texte.
         """
         return self.text
 
-    def modifier_taille_ecriture(self, taille=16) :
+    def modifier_taille_police(self, taille=16) :
         """
             Permet de changer la taille de la police.
             Utilisée sans paramètre, cela réinitialise la taille.
         """
         self.text_size = taille
     
-    def modifier_couleur_ecriture(self, color=(0,0,0)) :
+    def modifier_couleur_police(self, color=(0,0,0)) :
         """
             Permet de modifier la couleur de la police.
             Utilisée sans paramètre, cela réinitialise la couleur.

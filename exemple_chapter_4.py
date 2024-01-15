@@ -37,7 +37,7 @@ def preparer_programme():
     global bouton_camera, bouton_capture, bouton_photo, bouton_stop, \
     bouton_filter_1, bouton_filter_2, bouton_filter_3, bouton_filter_4, \
     bouton_filter_5, bouton_filter_6, bouton_filter_7, bouton_filter_8
-    robot.allumer_ecran(long, haut)
+    robot.creer_fenetre(long, haut)
     robot.changer_titre("Bonjour camera!")
     robot.couleur_fond(noir)
 
@@ -67,7 +67,7 @@ def preparer_programme():
     bouton_stop = robot.creer_bouton(180, 60, 10, 900, vert)
     bouton_stop.ajouter_texte("quitter", 10, 10, 20)
 
-def affichage_ecran():  
+def dessiner_fenetre():  
     global mettre_a_jour_affichage
     if mettre_a_jour_affichage:
         robot.afficher_fond()
@@ -88,7 +88,7 @@ def affichage_ecran():
 
 def verifier_boutons():
     global mettre_a_jour_affichage, afficher_camera, afficher_photo
-    if bouton_camera.verifier_contact():
+    if bouton_camera.est_actif():
         afficher_camera = not afficher_camera
         if afficher_camera:
             bouton_camera.ajouter_texte("camera - eteindre")
@@ -100,35 +100,35 @@ def verifier_boutons():
             bouton_photo.ajouter_texte("afficher photo")
         mettre_a_jour_affichage = True
     if afficher_camera:
-        if bouton_capture.verifier_contact():
+        if bouton_capture.est_actif():
             robot.prendre_photo("photo")
-    if bouton_photo.verifier_contact():
+    if bouton_photo.est_actif():
         afficher_photo = not afficher_photo
         mettre_a_jour_affichage = True
-    if bouton_stop.verifier_contact():
+    if bouton_stop.est_actif():
         robot.desactiver()
-    if bouton_filter_1.verifier_contact():
+    if bouton_filter_1.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "ocean")
         mettre_a_jour_affichage = True
-    if bouton_filter_2.verifier_contact():
+    if bouton_filter_2.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "cartoon")
         mettre_a_jour_affichage = True
-    if bouton_filter_3.verifier_contact():
+    if bouton_filter_3.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "alien")
         mettre_a_jour_affichage = True
-    if bouton_filter_4.verifier_contact():
+    if bouton_filter_4.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "rose")
         mettre_a_jour_affichage = True
-    if bouton_filter_5.verifier_contact():
+    if bouton_filter_5.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "flou")
         mettre_a_jour_affichage = True
-    if bouton_filter_6.verifier_contact():
+    if bouton_filter_6.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "noir_et_blanc")
         mettre_a_jour_affichage = True
-    if bouton_filter_7.verifier_contact():
+    if bouton_filter_7.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "tourner")
         mettre_a_jour_affichage = True
-    if bouton_filter_8.verifier_contact():
+    if bouton_filter_8.est_actif():
         robot.appliquer_filtre("/images/photo.jpg", "vernis")
         mettre_a_jour_affichage = True
 
@@ -136,15 +136,15 @@ def boucle_programme():
     while robot.est_actif():
         events = robot.verifier_evenements()
         if "stop" in events:
-            robot.eteindre_ecran()
-        affichage_ecran()
+            robot.fermer_fenetre()
+        dessiner_fenetre()
         if afficher_camera:
             robot.afficher_camera(300, 10)
         if afficher_photo:
             robot.afficher_image("/images/photo.jpg", 300, 500)
             robot.afficher_image("/images/fier.png", 1000, 500)
         verifier_boutons()
-        robot.dessiner_ecran()
+        robot.actualiser_affichage()
 
 if __name__ == "__main__":
     preparer_programme()

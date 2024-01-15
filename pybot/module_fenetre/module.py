@@ -1,6 +1,6 @@
-from .Ecran import Ecran
+from .Fenetre import Fenetre
 
 
 def run(robot, width, height):
-    win = Ecran(robot)
+    win = Fenetre(robot)
     return win.run(width, height)

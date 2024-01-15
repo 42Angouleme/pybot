@@ -8,7 +8,7 @@ def ecrire_nom_evenement(event_name):
     print("L'évènement est:", event_name)
 
 def preparer_robot():
-    robot.allumer_ecran(long, haut)
+    robot.creer_fenetre(long, haut)
     robot.changer_titre("Bonjour!")
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("B", "banane")
@@ -21,7 +21,7 @@ nom = "poireau"
 while robot.est_actif():
     events = robot.verifier_evenements()    
     if "stop" in events:
-        robot.eteindre_ecran()
+        robot.fermer_fenetre()
     elif "carotte" in events:
         print("Vous pouvez maintenant utiliser P")
         ecrire_nom_evenement("carotte")
@@ -38,4 +38,4 @@ while robot.est_actif():
             robot.supprimer_evenement("stop")
             robot.supprimer_evenement("banane")
             robot.ajouter_evenement("Q", "stop")
-    robot.dessiner_ecran()
+    robot.actualiser_affichage()

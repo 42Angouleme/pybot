@@ -1,5 +1,5 @@
-from .module_ecran import module as ecran
-from .module_ecran.Input import Input
+from .module_fenetre import module as fenetre
+from .module_fenetre.Input import Input
 from .module_webapp import create_app
 from .module_ia.IA import ChatBot
 import os, sys
@@ -9,18 +9,18 @@ import time
 class Robot:
     def __init__(self):
         self.debug = True
-        self.ecran = None
+        self.fenetre = None
         self.titre = "Pybot"
         self.actif = True
         self.events = []
         self.chatBot = None
         self.isWriting = False
 
-    ### GENERAL - ECRAN ###
+    ### GENERAL - FENETRE ###
 
     def demarrer_webapp(self):
         '''
-            Cette méthode lance de manière non bloquant le serveur web qui s'occupe de la partie base de donnée.
+            Cette méthode lance de manière non bloquante le serveur web qui s'occupe de la partie base de donnée.
         '''
         pid = os.fork()
         if pid:
@@ -28,37 +28,37 @@ class Robot:
             webapp.run()
             sys.exit()
 
-    def allumer_ecran(self, longueur=800, hauteur=600):
+    def creer_fenetre(self, longueur=800, hauteur=600):
         '''
-            Créer un écran avec une longueur et une hauteur de fenêtre passée en argument (en nombre de pixels). \n
+            Crée une fenêtre avec une longueur et une hauteur passées en argument (en nombre de pixels). \n
             Si un argument n'est pas donné, la longueur par défaut sera 800 pixels et la hauteur par défaut sera 600 pixels.
         '''
-        self.ecran = ecran.run(self, longueur, hauteur)
+        self.fenetre = fenetre.run(self, longueur, hauteur)
 
     def changer_titre(self, titre):
         '''
             Changer le titre de la fenêtre.
         '''
         try:
-            self.ecran.update_title(titre)
+            self.fenetre.update_title(titre)
         except AttributeError:
-            self.message_erreur("Le titre doit être défini aprés création de l'écran.")
+            self.message_erreur("Le titre doit être défini après création de la fenêtre.")
 
-    def dessiner_ecran(self):
+    def actualiser_affichage(self):
         '''
-            Fonction nécessaire dans une boucle pour mettre à jour l'affichage de l'écran.
+            Fonction nécessaire dans une boucle pour mettre à jour l'affichage de la fenêtre.
         '''
-        self.ecran.render()
+        self.fenetre.render()
 
     def plein_ecran(self, changer):
         '''
-            Passer l'ecran en plein ecran (changer=True) ou en sortir (changer=False).
+            Passer la fenêtre en plein écran (changer=True) ou en sortir (changer=False).
         '''
-        self.ecran.update_fullscreen(changer)
+        self.fenetre.update_fullscreen(changer)
 
     def dort(self, secondes):
         '''
-            Le programme restera en attente le nombre de seconde passé en argument.
+            Le programme restera en attente le nombre de secondes passé en argument.
         '''
         time.sleep(secondes)
     
@@ -71,20 +71,20 @@ class Robot:
     
     def desactiver(self):
         '''
-            Passe la variable self.actif du robot avec la valeur False.
+            Passe la variable self.actif du robot à la valeur False.
         '''
         self.actif = False
 
-    def eteindre_ecran(self):
+    def fermer_fenetre(self):
         '''
-            Sert à éteindre correctement l'écran (et la bibliothèque graphique), le robot est inactivé. \n
-            Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) il peut etre utilisé pour arrêter le programme.
+            Sert à fermer correctement la fenêtre (et la bibliothèque graphique), le robot est inactivé. \n
+            Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) elle peut etre utilisée pour arrêter le programme.
         '''
         try:
-            self.ecran.stop()
+            self.fenetre.stop()
             self.actif = False
         except AttributeError:
-                self.message_erreur("L'écran n'a pas été allumé.")
+                self.message_erreur("la fenêtre n'a pas été ouvertee.")
 
     ### GENERAL - EVENEMENTS ###
 
@@ -99,7 +99,7 @@ class Robot:
 
     def supprimer_evenement(self, nom):
         """
-            Supprimer l'évènement donnée en paramètre de la liste des évènements.
+            Supprime l'évènement donnée en paramètre de la liste des évènements.
         """
         for e in self.events:
             if e[1] == nom:
@@ -121,9 +121,9 @@ class Robot:
             R, G et B sont des nombres entre 0 et 255.
         """
         try:
-            self.ecran.change_background_color(couleur[0], couleur[1], couleur[2])
+            self.fenetre.change_background_color(couleur[0], couleur[1], couleur[2])
         except AttributeError:
-            self.message_erreur("L'écran n'a pas été allumé.")
+            self.message_erreur("la fenêtre n'a pas été ouverte.")
 
     def afficher_fond(self):
         """
@@ -131,23 +131,23 @@ class Robot:
             (par défaut, la couleur est noir).
         """
         try:
-            self.ecran.draw_background()
+            self.fenetre.draw_background()
         except AttributeError:
-            self.message_erreur("L'écran n'a pas été allumé.")
+            self.message_erreur("la fenêtre n'a pas été ouverte.")
 
 
     def creer_bouton(self, longueur, hauteur, position_x, position_y, couleur):
         """
-            Créer et retourner un bouton qui peut être affiché et vérifié plus tard. \n
+            Crée et retourne un bouton qui peut être affiché et vérifié plus tard. \n
             Les paramètres attendus sont : \n
                 * la longueur et la hauteur du bouton. \n
                 * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. \n
                 * la couleur du bouton.
         """
         try:
-            return self.ecran.create_button(longueur, hauteur, position_x, position_y, couleur)
+            return self.fenetre.create_button(longueur, hauteur, position_x, position_y, couleur)
         except AttributeError:
-            self.message_erreur("L'écran n'a pas été allumé.")
+            self.message_erreur("la fenêtre n'a pas été ouverte.")
 
 
     def dessiner_rectangle(self, longueur, hauteur, position_x, position_y, couleur):
@@ -160,9 +160,9 @@ class Robot:
                 * la couleur du rectangle.
         """
         try:
-            self.ecran.draw_rect(longueur, hauteur, position_x, position_y, couleur)
+            self.fenetre.draw_rect(longueur, hauteur, position_x, position_y, couleur)
         except AttributeError:
-            self.message_erreur("L'écran n'a pas été allumé.")
+            self.message_erreur("la fenêtre n'a pas été ouverte.")
 
     
     def afficher_texte(self, texte, position_x=0, position_y=0, taille=16, couleur=(0, 0, 0)):
@@ -178,9 +178,9 @@ class Robot:
 
         try:
 
-            self.ecran.draw_text(texte, position_x, position_y, taille, couleur)
+            self.fenetre.draw_text(texte, position_x, position_y, taille, couleur)
         except AttributeError:
-            self.message_erreur("L'écran n'a pas été allumé.")
+            self.message_erreur("la fenêtre n'a pas été ouverte.")
 
     ### CAMERA - PHOTOS ###
     
@@ -188,13 +188,13 @@ class Robot:
         """
             Affiche la caméra aux coordonées x et y.
         """
-        self.ecran.display_camera(position_x, position_y=0)
+        self.fenetre.display_camera(position_x, position_y=0)
 
     def prendre_photo(self, nom_fichier):
         """
             Capture une image de la caméra au nom du fichier passé en paramètre et l'enregistre dans le dossier images.
         """
-        self.ecran.capture_photo(nom_fichier)
+        self.fenetre.capture_photo(nom_fichier)
         
     def afficher_image(self, chemin_fichier, position_x, position_y):
         """
@@ -203,7 +203,7 @@ class Robot:
                 * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
                 * Les coordonnées x et y ou seront affiché l'image.
         """
-        self.ecran.display_image(chemin_fichier, position_x, position_y)
+        self.fenetre.display_image(chemin_fichier, position_x, position_y)
 
     def appliquer_filtre(self, chemin_fichier, nom_filtre):
         """
@@ -213,7 +213,7 @@ class Robot:
                 * Le nom du filtre. (ex: cartoon, alien, tourner...) \n
         (voir documentation pour la liste complète des filtres: https://42angouleme.github.io/ref/)
         """
-        self.ecran.set_filter(chemin_fichier, nom_filtre)
+        self.fenetre.set_filter(chemin_fichier, nom_filtre)
 
     ### RECONNAISANCE CARTES - SESSION UTILISATEUR ###
         
@@ -221,7 +221,7 @@ class Robot:
         """
             ...
         """
-        return self.ecran.detect_card()
+        return self.fenetre.detect_card()
     
     def creer_session(self, nom_eleve):
         """
@@ -328,9 +328,9 @@ class Robot:
                 * la couleur du bouton.
         """
         try:
-            return self.ecran.create_text_area(longueur, hauteur, position_x, position_y, couleur)
+            return self.fenetre.create_text_area(longueur, hauteur, position_x, position_y, couleur)
         except AttributeError:
-            self.message_erreur("L'écran n'a pas été allumé.")
+            self.message_erreur("la fenêtre n'a pas été ouverte.")
     
     def get_user_entry(self, texte, text_area) :
         """
@@ -352,7 +352,7 @@ class Robot:
         """
         new_text = ""
         self.isWriting = True
-        text = text_area.renvoi_texte()
+        text = text_area.recuperer_texte()
         print("User start writing")
         while self.isWriting :
             if not text_area.is_pressed() :
@@ -367,7 +367,7 @@ class Robot:
                     break
                 text_area.add_text(new_text, 10, 10, text)
                 text_area.afficher()
-                self.dessiner_ecran() # Vraiment utile ??
+                self.actualiser_affichage() # Vraiment utile ??
                 text = new_text
         print("User end writing")
         return text

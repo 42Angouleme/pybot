@@ -28,7 +28,7 @@ def main():
     micro.run()
     # audio.run()
     # ia.run()
-    # ecran.run()
+    # fenetre.run()
 
 
 if __name__ == "__main__":

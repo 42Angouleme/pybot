@@ -66,7 +66,7 @@ class Input:
         if (robot.isWriting == False):
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    robot.eteindre_ecran()
+                    robot.fermer_fenetre()
                 if event.type == pg.KEYDOWN:
                     for e in events:
                         k = keys[e[0]]
@@ -80,7 +80,7 @@ class Input:
         if (robot.isWriting) :
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    robot.eteindre_ecran()
+                    robot.fermer_fenetre()
                     return "stop"
                 if event.type == pg.KEYDOWN:
                     user_texte += event.unicode
