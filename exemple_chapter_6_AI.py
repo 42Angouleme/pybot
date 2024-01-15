@@ -88,17 +88,3 @@ def boucle_programme():
 if __name__ == "__main__":
     preparer_programme()
     boucle_programme()
-
-"""
-To DO :
-    Faire la documentation sur le site.
-    Avoir plus de flexibilité sur la personalisation de la zone de texte
-
-    Truc à dire dans la documentation sur le site :
-    La fonction ecrire, bloque le fonctionnement du robot en général.
-    Préciser que l'on arrete d'écrire si on tape sur entrée ou que l'on clique à nouveau sur la zone de texte
-    Préciser que la fonction repondre_question bloque le robot le temps qu'il "réfléchisse", et qu'elle imprime la réponse dans le terminal.
-    Préciser qu'il faut mettre une petite taille d'écriture
-
-    S'occuper de pouvoir sortir de la zone de texte en cliquant à l'exterieur
-"""
