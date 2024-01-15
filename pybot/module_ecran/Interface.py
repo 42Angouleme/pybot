@@ -95,7 +95,7 @@ class TextArea(Button) :
 
     def add_text(self, texte,position_x=0, position_y=0, old_text = ""):
         """
-            Permet l'affiche d'un texte dans la zone de texte
+            Permet d'afficher d'un texte dans la zone de texte
         """
         self.text = texte
         self.old_text = old_text
@@ -103,8 +103,8 @@ class TextArea(Button) :
     
     def effacer_texte(self) :
         """
-            Permer d'effacer le contenue de la zone de texte
-            Renvoi le texte contenue dans la zone de texte
+            Permet d'effacer le contenu de la zone de texte.
+            Renvoi le texte contenue dans la zone de texte.
         """
         self.old_text = self.text
         self.text = ""
@@ -113,27 +113,27 @@ class TextArea(Button) :
 
     def renvoi_texte(self) :
         """
-            Renvoi le texte contenue dans la zone de texte
+            Renvoi le texte contenue dans la zone de texte.
         """
         return self.text
 
     def modifier_taille_ecriture(self, taille=16) :
         """
-            Permet de changer la taille de la police
-            Utiliser sans parametre cela renitialise la taille
+            Permet de changer la taille de la police.
+            Utilisée sans paramètre, cela réinitialise la taille.
         """
         self.text_size = taille
     
     def modifier_couleur_ecriture(self, color=(0,0,0)) :
         """
-            Permet de modifier la couleur de la police
-            Utiliser sans parametre cela renitialise la couleur
+            Permet de modifier la couleur de la police.
+            Utilisée sans paramètre, cela réinitialise la couleur.
         """
         self.text_color = color
     
     def check_is_outside(self, position):
         """
-            Check if the mouse click is outside of the texte area
+            Check if the mouse click is outside of the texte area.
         """
         if not self.rect.collidepoint(position) :
             self.pressed = False
@@ -142,6 +142,6 @@ class TextArea(Button) :
 
     def is_pressed(self) :
         """
-            Return self.pressed current value
+            Return self.pressed current value.
         """
         return self.pressed

@@ -258,7 +258,7 @@ class Robot:
     def repondre_question(self, question):
         """
             Permet de poser une question au robot.
-            Imprime la réponse du robot
+            Imprime la réponse du robot et renvoie la réponse du robot.
         """
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
@@ -279,7 +279,7 @@ class Robot:
     def charger_historique(self, historique_de_conversation=None):
         """
             Commence la discussion avec le robot.
-            L'historique de la conversation passer en parametre doit etre recuperer / cree avant d'appeler cette fonction pour pour le passer en parametre a la fonction.
+            L'historique de la conversation passer en paramètre doit etre recuperer / cree avant d'appeler cette fonction pour pour le passer en paramètre à la fonction.
             Sinon le robot n'aura pas de mémoire.
         """
         if (self.chatBot == None) :
@@ -288,8 +288,8 @@ class Robot:
            
     def supprimer_historique(self) :
         """
-            Arrete la discussion actuel avec le robot
-            Après l'appelle de cette fonction le robot ne se souvient plus de la discussion
+            Arrête la discussion actuelle avec le robot.
+            Après l'appel de cette fonction, le robot ne se souvient plus de la discussion.
         """
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
@@ -297,7 +297,7 @@ class Robot:
 
     def recuperer_historique_de_conversation(self):
         """
-            Permet de recuperer la discussion actuel de l'utilisateur avec le robot
+            Permet de récupérer la discussion actuelle de l'utilisateur avec le robot.
         """
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
@@ -320,8 +320,8 @@ class Robot:
 
     def creer_zone_texte(self, longueur, hauteur, position_x, position_y, couleur):
         """
-            Créer et retourner une zone de texte qui peut être affiché et vérifié plus tard. \n
-            Cela est utile pour récuperer les entrées utilisateur \n
+            Créer et retourner une zone de texte qui peut être affichée et vérifiée plus tard. \n
+            Cela est utile pour récupérer les entrées utilisateur \n
             Les paramètres attendus sont : \n
                 * la longueur et la hauteur du bouton. \n
                 * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. \n
@@ -334,6 +334,8 @@ class Robot:
     
     def get_user_entry(self, texte, text_area) :
         """
+            Ne pas utiliser
+            Allow to get the user_entry, use in texte_area and in fuction ecrire
         """
         letter = Input.get_user_entry(self, text_area)
         if (letter != None) :
@@ -345,8 +347,8 @@ class Robot:
     
     def ecrire(self, text_area) :
         """
-            Permet à l'utilisateur d'ecrire dans la zone de texte associé
-            Renvoie le texte ecrit par l'utilisateur
+            Permet à l'utilisateur d'écrire dans la zone de texte associé.
+            Renvoie le texte écrit par l'utilisateur.
         """
         new_text = ""
         self.isWriting = True
