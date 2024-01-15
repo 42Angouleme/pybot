@@ -296,7 +296,10 @@ class Robot:
         memory = self.chatBot.getCurrentConversationHistory()
         return memory
 
-    def creer_historique(self)
+    def creer_historique(self) :
+        """
+            Renvoi un nouvel historique de conversation
+        """
         if (self.chatBot == None) :
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
         return self.chatBot.create_conversation_history()
