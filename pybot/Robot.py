@@ -295,6 +295,11 @@ class Robot:
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
         memory = self.chatBot.getCurrentConversationHistory()
         return memory
+
+    def creer_historique(self)
+        if (self.chatBot == None) :
+            self.message_erreur("Aucune conversation n'a été commencé avec le robot")
+        return self.chatBot.create_conversation_history()
     
     def choisir_emotion(texte, liste_emotions):
         """
