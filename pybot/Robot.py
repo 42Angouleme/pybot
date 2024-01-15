@@ -297,6 +297,18 @@ class Robot:
         """
         return self.utilisateur_connecte is not None
 
+    def recuperer_utilisateur_connecte(self):
+        """
+            Méthode qui retourne un object contenant:
+                - prenom de l' utilisateur
+                - nom de l' utilisateur
+        """
+        user = {}
+        user['prenom'] = self.utilisateur_connecte.first_name
+        user['nom'] = self.utilisateur_connecte.last_name
+        # user['carte'] = self.utilisateur_connecte.picture
+        return user
+
     def creer_utilisateur(self, prenom: str, nom: str, carte):
         """
             Créer un utilisateur avec les données renseignées en paramètres
@@ -304,7 +316,7 @@ class Robot:
         Paramètres:
             - prenom: son prénom
             - nom: son nom de famille
-            - carte: l' image de sa carte ( générée avec Robot.detecter_carte())
+            - carte: l' image de sa carte (générée avec Robot.detecter_carte())
         """
         if self.verifier_session():
             self.message_avertissement("Un utilisateur est déjà connecté")
