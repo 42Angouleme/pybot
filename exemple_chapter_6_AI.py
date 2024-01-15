@@ -70,7 +70,7 @@ def verifier_boutons(robot : Robot):
     if discussion_commencer and text_area_bis.verifier_contact() :
         user_entry = robot.ecrire(text_area_bis)
         print("user_entry = ", user_entry)
-        text_area_bis.effacer_text()
+        text_area_bis.effacer_texte()
         #robot.repondre_question(user_entry)
 
 def boucle_programme():
