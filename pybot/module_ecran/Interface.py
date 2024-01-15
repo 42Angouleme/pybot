@@ -92,7 +92,7 @@ class TextArea(Button) :
             surf = font.render(self.text, True, self.text_color)
             self.surface.blit(surf, self.text_position)
         pg.display.update()
-        
+
     def add_text(self, texte,position_x=0, position_y=0, old_text = ""):
         """
             Permet l'affiche d'un texte dans la zone de texte
@@ -130,3 +130,18 @@ class TextArea(Button) :
             Utiliser sans parametre cela renitialise la couleur
         """
         self.text_color = color
+    
+    def check_is_outside(self, position):
+        """
+            Check if the mouse click is outside of the texte area
+        """
+        if not self.rect.collidepoint(position) :
+            self.pressed = False
+            return True
+        return False
+
+    def is_pressed(self) :
+        """
+            Return self.pressed current value
+        """
+        return self.pressed

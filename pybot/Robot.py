@@ -324,10 +324,10 @@ class Robot:
         except AttributeError:
             self.message_erreur("L'écran n'a pas été allumé.")
     
-    def get_user_entry(self, texte) :
+    def get_user_entry(self, texte, text_area) :
         """
         """
-        letter = Input.get_user_entry(self)
+        letter = Input.get_user_entry(self, text_area)
         if (letter != None) :
             if letter == "\b" :
                 texte = texte[:-1]
@@ -345,11 +345,11 @@ class Robot:
         text = text_area.renvoi_texte()
         print("User start writing")
         while self.isWriting :
-            if text_area.verifier_contact() :
+            if not text_area.is_pressed() :
                 self.isWriting = False
-            new_text = self.get_user_entry(text)
+            new_text = self.get_user_entry(text, text_area)
             if (not self.actif) :
-                return None
+                return ""
             if (new_text != text) :
                 if ("\r" in new_text) :
                     self.isWriting = False

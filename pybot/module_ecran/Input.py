@@ -75,7 +75,7 @@ class Input:
         return result
 
     @staticmethod
-    def get_user_entry(robot) :
+    def get_user_entry(robot, text_area) :
         user_texte = ""
         if (robot.isWriting) :
             for event in pg.event.get():
@@ -84,6 +84,10 @@ class Input:
                     return "stop"
                 if event.type == pg.KEYDOWN:
                     user_texte += event.unicode
+                if event.type == pg.MOUSEBUTTONDOWN :
+                    if event.button == 1 :
+                        print("HERE")
+                        text_area.check_is_outside(event.pos) 
         if (user_texte == "") :
             return None
         else :
