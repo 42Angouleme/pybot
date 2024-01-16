@@ -1,11 +1,6 @@
 #!/bin/bash
 
-cd
-
-git clone https://github.com/42Angouleme/pybot.git
-cd pybot
-
-su - 
+su prof
 
 apt install python3.10-venv python3-pip code
 
