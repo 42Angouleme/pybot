@@ -205,7 +205,7 @@ class Robot:
         """
             Affiche la caméra aux coordonées x et y.
         """
-        self.fenetre.display_camera(position_x, position_y=0)
+        self.camera.display(position_x, position_y)
 
     def prendre_photo(self, nom_fichier):
         """
@@ -248,9 +248,7 @@ class Robot:
         print("creer une session pour", nom_eleve)
 
     def connecter(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
-        """{
-                        'first_name': ''
-                        }
+        """
             Affiche à l'écran un cadre autour de la carte et
             connecte l'utilisateur si reconnu.
 
@@ -275,13 +273,23 @@ class Robot:
             self.utilisateur_connecte = utilisateur_reconnu
 
     def detecter_carte(self, seuil_minimal=0.75, seuil_arret_recherche=0.85):
+        """
+            Methode permettant de récupérer la carte détectée à l' écran.
+            Carte qui n est pas une carte déjà enregistrée.
+
+            Paramètres:
+                * seuil_minimal (défaut: 0.75) : score minimum pour
+                    qu'une carte détectée soit considérée comme valide.
+                * seuil_arret_recherche (défaut: 0.85) : score pour
+                    qu'une carte détectée soit interprétée comme la bonne.
+        """
         if self.webapp is None:
             self.message_avertissement(
                 "La fonction Robot.detecter_carte() a été appelée"
                 "sans Robot.demarrer_webapp()")
-            return ""
+            return None
         elif not self.camera.camera.isOpened():
-            return
+            return None
         carte_reconnue, _ = self.camera.detect_card(seuil_minimal,
                                                     seuil_arret_recherche)
         return carte_reconnue
