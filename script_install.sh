@@ -1,10 +1,10 @@
 #!/bin/bash
 
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install -y flathub com.visualstudio.code
+wget https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64 -O code
+sudo dpkg -i code
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 sudo apt update
-sudo apt install -y apt-transport-https python3.10 python3.10-venv python3-pip
+sudo apt install -y python3.10 python3.10-venv python3-pip
 
 code --install-extension ms-python.python
 code --install-extension MS-CEINTL.vscode-language-pack-fr
