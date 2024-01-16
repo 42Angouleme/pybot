@@ -205,7 +205,7 @@ class Robot:
         """
             Affiche la caméra aux coordonées x et y.
         """
-        self.fenetre.display_camera(position_x, position_y=0)
+        self.camera.display(position_x, position_y)
 
     def prendre_photo(self, nom_fichier):
         """

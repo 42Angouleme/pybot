@@ -13,7 +13,7 @@ session_ouverte = False
 mettre_a_jour_affichage = True
 derniere_carte_detectee = None
 
-robot.allumer_ecran(1200, 500)
+robot.creer_fenetre(1200, 500)
 robot.couleur_fond(noir)
 
 # Ajout des boutons
@@ -46,15 +46,15 @@ def verifier_boutons():
         mettre_a_jour_affichage = True
     elif session_ouverte:
         # Vérification des boutons de session
-        if bouton_suppression.verifier_contact():
+        if bouton_suppression.est_actif():
             robot.supprimer_utilisateur()
             session_ouverte = False
             mettre_a_jour_affichage = True
-        if bouton_deconnexion.verifier_contact():
+        if bouton_deconnexion.est_actif():
             robot.deconnecter()
             session_ouverte = False
             mettre_a_jour_affichage = True
-    if bouton_creation.verifier_contact():
+    if bouton_creation.est_actif():
         nom_utilisateur = "Ada"
         prenom_utilisateur = "Lovelace"
         robot.creer_utilisateur(prenom_utilisateur,
@@ -68,7 +68,7 @@ def boucle_programme():
     while robot.est_actif():
         events = robot.verifier_evenements()
         if "stop" in events:
-            robot.eteindre_ecran()
+            robot.fermer_fenetre()
         robot.afficher_camera(300, 10)
         if not session_ouverte:
             # Essai de connexion
@@ -83,7 +83,7 @@ def boucle_programme():
                     derniere_carte_detectee = carte_detectee
         affichage_ecran()
         verifier_boutons()
-        robot.dessiner_ecran()
+        robot.actualiser_affichage()
 
 
 if __name__ == "__main__":
