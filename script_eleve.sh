@@ -1,5 +1,7 @@
 #!/bin/bash
 
+code --install-extension ms-python.python
+code --install-extension MS-CEINTL.vscode-language-pack-fr
 rm -rf .venv
 /usr/bin/python3.10 -m venv .venv
 source .venv/bin/activate
