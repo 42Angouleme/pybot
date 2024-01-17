@@ -1,35 +1,38 @@
-from .speech_to_text import listen, AudioProcessor
+from .microphone import ecoute
+from .traitement_audio import TraitementAudio
 import logging
 
 # Uncomment for debug message
 # logging.basicConfig(level=logging.DEBUG)
 
 
-def print_speech(audio: AudioProcessor):
+def print_speech(audio: TraitementAudio):
     print("Je réfléchis...")
-    print("Tu as dis: " + audio.as_text())
+    print("Tu as dis: " + audio.transcrire())
 
 
 def scrib():
-    listen.for_each_phrase(print_speech)
+    ecoute.pour_chaque_phrase(print_speech)
     print("Le microphone écoute en arrière plan, il écrira ce que tu dis.\n")
     input("Appuies sur une touche pour arrêter.")
-    listen.stop()
+    ecoute.stop()
     print("Arrêt en cours...")
 
 
 def text_to_speech_5_sec():
     print("J'écoute pendant 5 secondes...")
-    print("Tu as dis: " + listen.during("5 secondes").as_text())
+    print("Tu as dis: " + ecoute.pendant("5 secondes").transcrire())
 
 
 def save_one_phrase():
     """Record one spoken sentence and save it at default path."""
-    filepath = (
-        listen.one_phrase().save("/tmp/my_sentence_%Y-%m-%d_%Hh%Mm%Ss.wav").filepath
+    chemin = (
+        ecoute.une_phrase()
+        .enregistrer_sous("/tmp/my_sentence_%Y-%m-%d_%Hh%Mm%Ss.wav")
+        .chemin
     )
 
-    print("Fichier sauvegardé au chemin " + filepath)
+    print("Fichier sauvegardé au chemin " + chemin)
 
 
 def run():

@@ -52,51 +52,51 @@ jupyter lab notebooks/modules/microphone.ipynb
 
 ## Usage
 
-`listen` is an instance of `SpeechToText`. Method chaining make it easy to trigger an audio record then transcribe the spoken text.
+`ecoute` is an instance of `SpeechToText`. Method chaining make it easy to trigger an audio record then transcribe the spoken text.
 
 ``` py
-from module_microphone import listen
+from module_microphone import ecoute
 
 print("J'écoute pendant 5 secondes...")
-print("Tu as dis: " + listen.during("5 secondes").as_text())
+print("Tu as dis: " + ecoute.pendant("5 secondes").transcrire())
 ```
 
-`one_phrase()` records audio and stop when the speaker takes a break.
-`save(filepath)` save the audio file and can format timestamp.
+`une_phrase()` records audio and stop when the speaker takes a break.
+`enregistrer_sous(chemin)` save the audio file and can format timestamp.
 
 ``` py
-from module_microphone import listen
+from module_microphone import ecoute
 
-filepath = listen.one_phrase().save("/tmp/my_sentence_%Y-%m-%d_%Hh%Mm%Ss.wav").filepath
-print(filepath)
+chemin = ecoute.une_phrase().enregistrer_sous("/tmp/my_sentence_%Y-%m-%d_%Hh%Mm%Ss.wav").chemin
+print(chemin)
 ```
 
-The return of `one_phrase()` and `one_sentence()` are instance of `AudioProcessor`
+The return of `une_phrase()` and `une_phrase()` are instance of `TraitementAudio`
 
 ``` py
-from module_microphone import listen
+from module_microphone import ecoute
 
-audio_processor: AudioProcessor = listen.one_phrase()
-txt: str = audio_processor.as_text()
-print(txt)
+audio: TraitementAudio = ecoute.une_phrase()
+texte: str = audio.transcrire()
+print(texte)
 ```
 
-`for_each_phrase(callback)` repeatedly record in the background and every time you take a break, it calls the callback with a configured AudioProcessor instance as argument. This method is non-blocking.
+`pour_chaque_phrase(callback)` repeatedly record in the background and every time you take a break, it calls the callback with a configured TraitementAudio instance as argument. This method is non-blocking.
 
 ``` py
-from module_microphone import listen
+from module_microphone import ecoute
 
-def print_speech(audio: AudioProcessor):
+def print_speech(audio: TraitementAudio):
     print("Je réfléchis...")
-    print("Tu as dis: " + audio.as_text())
+    print("Tu as dis: " + audio.transcrire())
 
 
-listen.for_each_phrase(print_speech)
+ecoute.pour_chaque_phrase(print_speech)
 print("Le microphone écoute en arrière plan, il écrira ce que tu dis.\n")
 
 input("Appuies sur une touche pour arrêter.")
 
-listen.stop()
+ecoute.stop()
 print("Arrêt en cours...")
 ```
 
