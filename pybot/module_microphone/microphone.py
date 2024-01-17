@@ -25,7 +25,7 @@ def _get_default_recognizer() -> Recognizer:
 
 class Microphone:
     """
-    Permet d'enregistrer l'audio de différentes manière. Les méthodes sont châinable pour ensuite pour effectuer des traitements sur le fichier audio comme l'enregistrer dans un fichier, ou le transcrire.
+    Permet d'enregistrer l'audio de différentes manières. Les méthodes sont châinables pour ensuite pour effectuer des traitements sur le fichier audio comme l'enregistrer dans un fichier, ou le transcrire.
     """
 
     is_recording: bool = False
@@ -60,8 +60,8 @@ class Microphone:
         """
         Enregistre uniquement une phrase. L'enregistrement commence quand cette méthode est appellée, et s'arrête quand la personne arrête de parler pendant plus d'une seconde.
 
-        Returns:
-            TraitementAudio: An TraitementAudio instance that can manipulate the recording.
+        Retour:
+            TraitementAudio: L'enregistrement prêt à être manipulé.
         """
         with SrMicrophone() as source:
             _debug("Écoute d'une phrase")
@@ -78,11 +78,11 @@ class Microphone:
         Enregistre l'audio pendant la durée specifiée, avec un délai optionel. Le délai, permet d'attendre un certain temps avant que l'enregistrement ne commence.
         La durée et le délai peuvent être données soit en secondes (exemple: 5), soit en toutes lettres (exemple: "1 minute et 30 secondes").
 
-        Args:
+        Paramètres:
             duree (str|float): Soit un nombre qui représente la durée de l'enregistrement en secondes, soit une durée en toutes lettres comme "1 minute et 30 secondes".
             decalage (float): Un délai avant que l'enregistrement ne commence.
 
-        Returns:
+        Retour:
             TraitementAudio: L'enregistrement prêt à être manipulé.
         """
         if isinstance(duree, str):
@@ -90,7 +90,7 @@ class Microphone:
                 duree = textual_duration_to_seconds(duree)
             except ValueError as e:
                 _error(
-                    f'L\'enregistrement n\'a pas pu commencé. Erreur dans la fonction "pendant", argument "duree" invalide: {e}',
+                    f'L\'enregistrement n\'a pas pu commencer. Erreur dans la fonction "pendant", argument "duree" invalide: {e}',
                 )  # TODO humanize date
                 return TraitementAudio()
 
@@ -99,7 +99,7 @@ class Microphone:
                 delai = textual_duration_to_seconds(delai)
             except ValueError as e:
                 _error(
-                    f'L\'enregistrement n\'a pas pu commencé. Erreur dans la fonction "pendant", argument "delai" invalide: {e}',
+                    f'L\'enregistrement n\'a pas pu commencer. Erreur dans la fonction "pendant", argument "delai" invalide: {e}',
                 )  # TODO humanize date
                 return TraitementAudio()
 
@@ -112,4 +112,4 @@ class Microphone:
 
 
 ecoute = Microphone()
-"""Un microphone prêt à être utilisée."""
+"""Un microphone prêt à être utilisé."""
