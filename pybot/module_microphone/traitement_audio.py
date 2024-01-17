@@ -19,7 +19,7 @@ class TraitementAudio(FilepathSchema):
     """
     Effectue des actions sur un fichier audio tel que sauvegarder le fichier ou transcrire la parole en texte.
 
-    Attributes:
+    Attributs:
         recording (AudioData): Donnée audio d'entrée.
         filepath (str): Le chemin par défaut où sauvegarder le fichier.
         start_time (datetime|None): Le temps du début d'enregistrement.
@@ -41,9 +41,9 @@ class TraitementAudio(FilepathSchema):
 
     def transcrire(self) -> str:
         """
-        Retranscrit l'enregstrement audio en texte. Cette méthode est bloquante.
+        Retranscrit l'enregistrement audio en texte. Cette méthode est bloquante.
 
-        Returns:
+        Retour:
             str: Le texte reconnu dans l'enregistrement.
         """
         if self.recording is None:
@@ -63,14 +63,14 @@ class TraitementAudio(FilepathSchema):
 
     def enregistrer_sous(self, filepath: str | None = None) -> "TraitementAudio":
         """
-        Enregstre le fichier audio dans un fichier au chemin spécifié. Un chemin par défaut existe si celui-ci n'est pas précisé.
-        Il est possible d'insérer l'heure est la date dans le chemin du fichier "./mon_fichier_%Y-%m-%d_%Hh%Mm.wav" sera par exemple remplacé par "./mon_fichier_2024-01-01_10h30m.wav" avec l'heure et la date du début de l'enregistrement.
+        Enregistre le fichier audio dans un fichier au chemin spécifié. Un chemin par défaut existe si celui-ci n'est pas précisé.
+        Il est possible d'insérer l'heure et la date dans le chemin du fichier : "./mon_fichier_%Y-%m-%d_%Hh%Mm.wav" sera par exemple remplacé par "./mon_fichier_2024-01-01_10h30m.wav" avec l'heure et la date du début de l'enregistrement.
         Voir [https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior] pour la liste des substitutions possibles.
 
-        Args:
+        Paramètres:
             filepath (str|None): Le chemin où sauvegarder le fichier.
 
-        Returns:
+        Retour:
             AudioProcessor: Retourne sa propre instance pour le chaînage de méthodes.
         """
         if self.recording is None:
