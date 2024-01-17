@@ -1,4 +1,4 @@
-from module_microphone.speech_to_text import AudioProcessor
+from module_microphone.traitement_audio import TraitementAudio
 from os import path
 from speech_recognition import Recognizer, AudioFile
 import re
@@ -12,5 +12,5 @@ def test_audiofile_to_text():
     with AudioFile(AUDIO_FILE) as source:  # use the audio file as the audio source
         recording = Recognizer().record(source)  # read the entire audio file
 
-    ANSWER = AudioProcessor(recording).as_text()
+    ANSWER = TraitementAudio(recording).transcrire()
     assert re.search(EXPECT_REG, ANSWER, flags=re.I)
