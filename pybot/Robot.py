@@ -11,10 +11,10 @@ import requests
 from dotenv import load_dotenv
 # Typing
 from typing import List, Dict
-from cv2 import MatLike
-from module_fenetre.Interface import Button
+from .types import Couleur, User
+from cv2.typing import MatLike
+from .module_fenetre.Interface import Button
 
-Couleur = (int, int, int)
 
 class Robot:
     def __init__(self):
@@ -307,17 +307,17 @@ class Robot:
         """
         return self.utilisateur_connecte is not None
 
-    def recuperer_utilisateur_connecte(self) -> Dict:
+    def recuperer_utilisateur_connecte(self) -> User:
         """
             Méthode qui retourne un object contenant:
                 - prenom de l'utilisateur
                 - nom de l'utilisateur
         """
-        user = dict()
-        user['prenom'] = self.utilisateur_connecte.first_name
-        user['nom'] = self.utilisateur_connecte.last_name
+        utilisateur = User()
+        utilisateur.nom = self.utilisateur_connecte.last_name
+        utilisateur.prenom = self.utilisateur_connecte.first_name
         # user['carte'] = self.utilisateur_connecte.picture
-        return user
+        return utilisateur
 
     def creer_utilisateur(self, prenom: str, nom: str, carte: MatLike):
         """
