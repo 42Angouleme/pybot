@@ -2,21 +2,21 @@ import os
 from datetime import datetime
 from typing import List
 
-ERROR_EMPTY_FILEPATH = "Filepath cannot be empty."
-ERROR_EMPTY_BASENAME = "Filename (without extension) cannot be empty."
-ERROR_EMPTY_EXT = "Extension cannot be empty."
-ERROR_EXT_NOT_ALLOWED = 'Extension "{ext}" not allowed. Should be one of {allowed_ext}.'
+ERROR_EMPTY_FILEPATH = "Le chemin de fichier peut pas être vide."
+ERROR_EMPTY_BASENAME = "Le nom du fichier ne peut pas être vide."
+ERROR_EMPTY_EXT = "L'extension ne doit pas être vide."
+ERROR_EXT_NOT_ALLOWED = "L'extension \"{ext}\" n'est pas autorisée. Les valeurs autorisées sont: {allowed_ext}."
 
 
 class FilepathSchema:
     def __init__(
         self,
-        filepath: str = "/tmp/file_%Y-%m-%d_%Hh%Mm%Ss",
+        chemin: str = "/tmp/file_%Y-%m-%d_%Hh%Mm%Ss",
         allowed_extensions: List[str] = ["*"],
         timestamp=None,
     ) -> None:
         self.allowed_extensions = allowed_extensions
-        self.filepath_schema = filepath
+        self.filepath_schema = chemin
         self._last_timestamp = timestamp
 
     @property
@@ -34,12 +34,12 @@ class FilepathSchema:
         self._last_timestamp = datetime.now()
 
     @property
-    def filepath(self) -> str:
+    def chemin(self) -> str:
         """Get the formatted filepath according to the schema and the current timestamp."""
         return FilepathSchema.expand_filepath(self.filepath_schema, self.timestamp)
 
-    @filepath.setter
-    def filepath(self, new_filepath: str):
+    @chemin.setter
+    def chemin(self, new_filepath: str):
         """Set the filepath schema. It cannot be empty and the extension must comply with `self.allowed_extensions`."""
         FilepathSchema.expect_valid_filepath(
             new_filepath, allowed_extensions=self.allowed_extensions
