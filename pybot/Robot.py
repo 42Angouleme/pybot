@@ -301,7 +301,7 @@ class Robot:
                 * L'image de la carte detectée par Robot.detecter_carte() \n
                 * Les coordonnées x et y où sera affichée l'image.
         """
-        self.fenetre.display_image_from_path(carte_detectee, position_x, position_y)
+        self.fenetre.display_image(carte_detectee, position_x, position_y)
 
     def deconnecter(self):
         """
