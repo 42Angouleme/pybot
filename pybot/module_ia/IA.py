@@ -1,10 +1,7 @@
 import os
 
-<<<<<<< HEAD
-import openai
-=======
+#import openai
 from openai import OpenAI
->>>>>>> ddb9e91 (Merge done)
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
