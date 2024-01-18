@@ -6,6 +6,7 @@ haut = 1000
 
 blanc = (255, 255, 255)
 noir = (0, 0, 0)
+noir_clair = (30, 30, 30)
 rouge = (235, 64, 52)
 rouge_sombre = (117, 23, 16)
 bleu = (52, 164, 235)
@@ -18,14 +19,13 @@ jaune_sombre = (171, 128, 19)
 bouton_question = None
 bouton_stop = None
 text_area = None
-text_area_bis = None
 
 discussion_commencer = False
 
 mettre_a_jour_affichage = True
 
 def preparer_programme():
-    global bouton_question, bouton_stop, text_area, text_area_bis
+    global bouton_question, bouton_stop, text_area
     robot.creer_fenetre(long, haut)
     robot.changer_titre("Bonjour Robot!")
     robot.couleur_fond(noir)
@@ -34,24 +34,21 @@ def preparer_programme():
     bouton_question.ajouter_texte("Poser question", 5, 20)
     bouton_stop = robot.creer_bouton(200, 60, 10, 900, vert)
     bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
-    text_area = robot.creer_zone_texte(600, 100, 300, 250, blanc)
-    text_area_bis = robot.creer_zone_texte(600, 100, 300, 400, blanc)
-    text_area.modifier_couleur_police(vert)
-    robot.ajouter_evenement("C", "C")
+    text_area = robot.creer_zone_texte(600, 100, 300, 250, noir_clair)
+    text_area.modifier_couleur_police(bleu_sombre)
 
 def dessiner_fenetre():  
-    global mettre_a_jour_affichage, discussion_commencer, text_area, text_area_bis
+    global mettre_a_jour_affichage, discussion_commencer, text_area
     if mettre_a_jour_affichage:
         robot.afficher_fond()
         bouton_question.afficher()
         bouton_stop.afficher()
         if (discussion_commencer) :
             text_area.afficher()
-            text_area_bis.afficher()
         mettre_a_jour_affichage = False
 
 def verifier_boutons(robot : Robot):
-    global mettre_a_jour_affichage, discussion_commencer, text_area, text_area_bis
+    global mettre_a_jour_affichage, discussion_commencer, text_area
     if bouton_question.est_actif():
         discussion_commencer = not discussion_commencer
         if discussion_commencer :
@@ -64,14 +61,13 @@ def verifier_boutons(robot : Robot):
     if bouton_stop.est_actif():
         robot.desactiver()
     if discussion_commencer and text_area.est_actif() :
-        user_entry = robot.ecrire(text_area)
+        robot.ecrire(text_area)
+        user_entry = text_area.effacer_texte()
         print("user_entry = ", user_entry)
-        #robot.repondre_question(user_entry)
-    if discussion_commencer and text_area_bis.est_actif() :
-        user_entry = robot.ecrire(text_area_bis)
-        print("user_entry = ", user_entry)
-        text_area_bis.effacer_texte()
-        #robot.repondre_question(user_entry)
+        robot.repondre_question(user_entry)
+        # emotion = robot.emotion(user_entry)
+        # image = robot.avoir_image_emotion(emotion)
+        # robot.afficher_image(image, 550, 550)
 
 def boucle_programme():
     global discussion_commencer, mettre_a_jour_affichage
@@ -79,8 +75,6 @@ def boucle_programme():
         events = robot.verifier_evenements()
         if "stop" in events:
             robot.fermer_fenetre()
-        elif "C" in events:
-            print("Vous appuyez sur C")
         dessiner_fenetre()
         verifier_boutons(robot)
         robot.actualiser_affichage()

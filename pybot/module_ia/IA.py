@@ -1,5 +1,6 @@
 import os
 
+from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
@@ -116,4 +117,26 @@ class ChatBot:
             return
         PROMPT = PromptTemplate(input_variables=["history", "input"], template=self.__template)
         self.__conversation.prompt = PROMPT
-        
+    
+    def get_emotion(self, sentence: str, choices: list[str]):
+        """
+            Allow the user to make robot have emotion.
+            Return robot emotion base on the sentence and list of emotion it gets.
+            If no emotion match with the emotions in list then it return neutre
+        """
+        choices_str = ", ".join(choices)
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_API_ORG_ID"))
+        preprompt = f"""Pick one word from [ {choices_str} ] that fits well with the following sentence: {sentence}.
+        Answer only one word. Answer 'neutre' if you really can't find any match"""
+
+        reponse = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": preprompt},
+                {"role": "user", "content": sentence},
+            ],
+        )
+        emotion = reponse.choices[0].message.content
+        if not emotion in choices:
+            return "neutre"
+        return emotion

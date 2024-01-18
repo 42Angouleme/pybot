@@ -86,7 +86,6 @@ class Input:
                     user_texte += event.unicode
                 if event.type == pg.MOUSEBUTTONDOWN :
                     if event.button == 1 :
-                        print("HERE")
                         text_area.check_is_outside(event.pos) 
         if (user_texte == "") :
             return None

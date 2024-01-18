@@ -26,6 +26,43 @@ class Robot:
         self.utilisateur_connecte = None
         self.chatBot = None
         self.isWriting = False
+        self.emotion_dict = {
+
+            "neutre" : "/images_emotions/neutre.png",
+            "Amour" : "/images_emotions/amour.png",
+            "Amuser" : "/images_emotions/amuser.png",
+            "Anxiete" : "/images_emotions/anxiete.png",
+            "Celebration" : "/images_emotions/celebration.png",
+            "Chagrin" : "/images_emotions/chagrin.png",
+            "Colere" : "/images_emotions/colere.png",
+            "Confusion" : "/images_emotions/confusion.png",
+            "Content" : "/images_emotions/content.png",
+            "Contrariete" : "/images_emotions/contrariete.png",
+            "Deception" : "/images_emotions/deception.png",
+            "Degout" : "/images_emotions/degout.png",
+            "Desespoir" : "/images_emotions/desespoir.png",
+            "Embarras" : "/images_emotions/embarras.png",
+            "Emerveillement" : "/images_emotions/emerveillement.png",
+            "Enthousiasme" : "/images_emotions/enthousiasme.png",
+            "Etonnement" : "/images_emotions/etonnement.png",
+            "Fatigue" : "/images_emotions/fatigue.png",
+            "Fierte" : "/images_emotions/fierte.png",
+            "Frustration" : "/images_emotions/frustration.png",
+            "Fureur" : "/images_emotions/fureur.png",
+            "Incomprehension" : "/images_emotions/incomprehension.png",
+            "Inquietude" : "/images_emotions/inquietude.png",
+            "Ironie" : "/images_emotions/ironie.png",
+            "Joie" : "/images_emotions/joie.png",
+            "Mefiance" : "/images_emotions/mefiance.png",
+            "Peur" : "/images_emotions/peur.png",
+            "Reflexion" : "/images_emotions/reflexion.png",
+            "Soulagement" : "/images_emotions/soulagment.png",
+            "Supplique" : "/images_emotions/supplique.png",
+            "Surprise" : "/images_emotions/surprise.png",
+            "Tristesse" : "/images_emotions/tristesse.png",
+        }
+
+
 
     ### GENERAL - FENETRE ###
 
@@ -220,7 +257,7 @@ class Robot:
                 * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
                 * Les coordonnées x et y où sera affichée l'image.
         """
-        print("afficher_image_from_path:", type())
+        #print("afficher_image_from_path:", type())
         self.fenetre.display_image_from_path(chemin_fichier, position_x, position_y)
 
     def appliquer_filtre(self, chemin_fichier, nom_filtre):
@@ -455,18 +492,28 @@ class Robot:
         memory = self.chatBot.getCurrentConversationHistory()
         return memory
     
-    def choisir_emotion(texte, liste_emotions):
-        """
-            ...
-        """
-        print("avec", texte, "choisir emotion dans", liste_emotions)
-    
     def entrainer(self, texte):
         """
             ...
         """
         print("entraîner avec", texte)
     
+    ### EMOTIONS ###
+    
+    def emotion(self, texte : str):
+        """
+            Renvoi l'emotion qui correspond la plus au texte donne en parametre
+            Si aucune emotion ne correspond au texte cela renvoi neutre
+        """
+        return self.chatBot.get_emotion(texte, list(self.emotion_dict.keys()))
+    
+    def avoir_image_emotion(self, emotion : str):
+        """
+            Renvoi l'image correspondant à l'emotion passer en paramètre
+            Si aucune image correspond à l'émotion paseer en paramètre renvoi l'image neutre
+        """
+        return self.emotion_dict[emotion]
+
     ### ENTREE UTILISATEUR ###
 
     def creer_zone_texte(self, longueur, hauteur, position_x, position_y, couleur):
