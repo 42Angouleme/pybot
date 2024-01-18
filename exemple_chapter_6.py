@@ -64,10 +64,10 @@ def verifier_boutons(robot : Robot):
         robot.ecrire(text_area)
         user_entry = text_area.effacer_texte()
         print("user_entry = ", user_entry)
-        robot.repondre_question(user_entry)
-        # emotion = robot.emotion(user_entry)
-        # image = robot.avoir_image_emotion(emotion)
-        # robot.afficher_image(image, 550, 550)
+        #robot.repondre_question(user_entry)
+        emotion = robot.emotion(user_entry)
+        image = robot.avoir_image_emotion(emotion)
+        robot.afficher_image(image, 550, 550)
 
 def boucle_programme():
     global discussion_commencer, mettre_a_jour_affichage

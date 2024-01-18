@@ -1,6 +1,6 @@
 import os
 
-from openai import OpenAI
+import openai
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
@@ -125,11 +125,13 @@ class ChatBot:
             If no emotion match with the emotions in list then it return neutre
         """
         choices_str = ", ".join(choices)
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_API_ORG_ID"))
+        openai.api_key = os.getenv("OPENAI_API_KEY")
+        openai.organization = os.getenv("OPENAI_API_ORG_ID")
+        #client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_API_ORG_ID"))
         preprompt = f"""Pick one word from [ {choices_str} ] that fits well with the following sentence: {sentence}.
         Answer only one word. Answer 'neutre' if you really can't find any match"""
 
-        reponse = client.chat.completions.create(
+        reponse =  openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": preprompt},
