@@ -10,7 +10,7 @@ from langchain.prompts.prompt import PromptTemplate
 class ChatBot:
     def __init__(self) :
         """
-            Start connection with AI API (ChatGpt 3.5 turbo)
+            Set connection with AI API (ChatGpt 3.5 turbo)
             Do not forget to add .env with OPENAI_API_KEY and OPENAI_API_ORG_ID
         """
         env_file = find_dotenv(".env")
@@ -41,8 +41,8 @@ class ChatBot:
     
     def load_history(self, conversation_history=None) :
         """
-            Give memory to the AI
-            If another memory was in use, the memory is overwritten.
+            Gives AI a memory
+            If another memory was in use, it is overwritten.
 
             :param conversation_history : (ConversationSummaryBufferMemory) The conversation history (User <-> AI) must be retrieved from the database or created by create_new_conversation_history.
             If conversations_history isn't given then the AI won't remember/save anything
@@ -74,7 +74,8 @@ class ChatBot:
 
     def getCurrentConversationHistory(self) :
         """
-            Returns the conversation history, this allow the user to save their interaction with the AI.
+            Returns the conversation history.
+            Gives the ability to save users interaction history with the AI.
         """
         return self.__memory
     
@@ -95,9 +96,9 @@ class ChatBot:
     
     def change_preprompt(self, new_preprompt : str) :
         """
-            Allows the user to change the basic comportement of the AI
+            Allows the user to change the basic AIs behaviour
 
-            Here the default one :
+            Here the default one:
             You are the personal assistant of the students of a college.
             Your answers must not contain any word or phrase that is not appropriate for the chaste ears of children.
             Your answer must not exceed 256 tokens.
@@ -120,8 +121,8 @@ class ChatBot:
     
     def get_emotion(self, sentence: str, choices: list[str]):
         """
-            Allow the user to make robot have emotion.
-            Return robot emotion base on the sentence and list of emotion it gets.
+            Extract an emotional state out of a sentence using AI.
+            Return a robot emotion based on the sentence and list of emotions it gets.
             If no emotion match with the emotions in list then it return neutre
         """
         choices_str = ", ".join(choices)
