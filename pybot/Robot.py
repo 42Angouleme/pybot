@@ -501,6 +501,8 @@ class Robot:
             Renvoi l'image correspondant à l'emotion passer en paramètre
             Si aucune image correspond à l'émotion paseer en paramètre renvoi l'image neutre
         """
+        if not emotion in list(self.emotion_dict.keys()):
+            return "Neutre"
         return self.emotion_dict[emotion]
 
     ### ENTREE UTILISATEUR ###
