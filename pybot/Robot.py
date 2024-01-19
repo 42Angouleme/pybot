@@ -33,7 +33,7 @@ class Robot:
         self.isWriting = False
         self.emotion_dict = {
 
-            "neutre" : "/images/emotions/neutre.png",
+            "Neutre" : "/images/emotions/neutre.png",
             "Amour" : "/images/emotions/amour.png",
             "Amuser" : "/images/emotions/amuser.png",
             "Anxiete" : "/images/emotions/anxiete.png",
