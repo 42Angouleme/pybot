@@ -41,6 +41,7 @@ class Camera:
             ret, frame = self.camera.read()
             if not ret:
                 return None
+            frame = cv2.flip(frame, 1)
             cv2.imwrite("images/" + file_name + ".jpg", frame)
         except:
             pass
