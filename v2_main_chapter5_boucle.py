@@ -1,5 +1,5 @@
-from v2_main_chapter5_initialiation import robot
 from pybot import Couleur
+from v2_main_chapter5_initialiation import robot
 
 # --- FENETRE ---
 def boucle_fenetre():
@@ -75,4 +75,4 @@ def boucle_boutons():
                                 nom_utilisateur,
                                 attributs.derniere_carte_detectee)
         attributs.session_ouverte = False
-        attributs.mettre_a_jour_affichage = True
+        attributs.mettre_a_jour_affichage = Trueo
