@@ -1,4 +1,4 @@
-from pybot import Robot
+from pybot import Robot, Couleur
 robot = Robot()
 
 long = 840
