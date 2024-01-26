@@ -1,41 +1,41 @@
 from pybot import Robot
+
+
+# ---- Dans main_initialisation.py -------
 robot = Robot()
 
 long = 1024
 haut = 800
+robot.creer_fenetre(long, haut)
+robot.changer_titre("Bonjour!")
 
-def ecrire_nom_evenement(event_name):
-    print("L'évènement est:", event_name)
-
-def preparer_robot():
-    robot.creer_fenetre(long, haut)
-    robot.changer_titre("Bonjour!")
+def initialisation_evenements():
+    print("Creation des eveneemnts sur les tocuhes <ECHAP> ou <C>")
     robot.ajouter_evenement("echap", "stop")
-    robot.ajouter_evenement("B", "banane")
     robot.ajouter_evenement("C", "carotte")
-    print("Vous pouvez maintenant utiliser ECHAP et C")
+# ----------------------------------------
 
-preparer_robot()
-
-nom = "poireau"
-while robot.est_actif():
-    events = robot.verifier_evenements()    
-    if "stop" in events:
+# -------- Dans main_boucle.py -----------
+def boucle_evenements():
+    evenements = robot.verifier_evenements()
+    if "stop" in evenements:
         robot.fermer_fenetre()
-    elif "carotte" in events:
-        print("Vous pouvez maintenant utiliser P")
-        ecrire_nom_evenement("carotte")
+    elif "carotte" in evenements:
+        print("Suppression de l' évenement de la touche <C>")
         robot.supprimer_evenement("carotte")
+        print("Création de l' évenement de la touche <P>")
         robot.ajouter_evenement("P", "poireau")
-    elif nom in events:
-        ecrire_nom_evenement(nom)
-        if nom == "poireau":
-            print("Vous pouvez maintenant utiliser B")
-            robot.supprimer_evenement("poireau")
-            nom = "banane"
-        elif nom == "banane":
-            print("ECHAP ne permet plus de quitter, il faut maintenant utiliser Q")
-            robot.supprimer_evenement("stop")
-            robot.supprimer_evenement("banane")
-            robot.ajouter_evenement("Q", "stop")
-    robot.actualiser_affichage()
+    elif "poireau" in evenements:
+        print("Suppression des évenements de la touche <P> et <Echap>")
+        robot.supprimer_evenement("poireau")
+        robot.supprimer_evenement("stop")
+        print("Pour quitter tu dois maintenant utiliser: <Q>")
+        robot.ajouter_evenement("Q", "stop")
+# ----------------------------------------
+
+
+if __name__ == '__main__':
+    initialisation_evenements()
+    while robot.est_actif():
+        boucle_evenements()
+        robot.actualiser_affichage()
