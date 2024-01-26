@@ -418,15 +418,13 @@ class Robot:
     def repondre_question(self, question: str) -> str:
         """
             Permet de poser une question au robot.
-            Imprime la réponse du robot dans le terminal et la renvoit.
+            Imprime la réponse du robot dans le terminal et la renvoie.
         """
         if (self.chatBot is None):
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
         reponse = self.chatBot.get_ai_answer(question)
         print("Humain : " + question + "\nRobot : " + reponse)
         return reponse
-        # En finalité la fonction n'imprimera plus la reponse
-        # return "Réponse"
 
     def creer_historique(self):
         """
@@ -464,11 +462,11 @@ class Robot:
         memory = self.chatBot.getCurrentConversationHistory()
         return memory
     
-    def entrainer(self, texte: str):
-        """
-            ...
-        """
-        print("entraîner avec", texte)
+    # def entrainer(self, texte: str):
+    #     """
+    #         ...
+    #     """
+    #     print("entraîner avec", texte)
     
     ### EMOTIONS ###
     
