@@ -43,8 +43,9 @@ def boucle_evenements():
 
 # --- SESSION ---
 # - Preparation -
-session_ouverte = False
-derniere_carte_detectee = None
+def initialisation_session():
+    robot.attributs.session_ouverte = False
+    robot.attributs.derniere_carte_detectee = None
 
 # - Boucle -
 def boucle_session():
