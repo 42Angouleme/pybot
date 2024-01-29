@@ -1,6 +1,10 @@
 import os
 
+<<<<<<< HEAD
 import openai
+=======
+from openai import OpenAI
+>>>>>>> ddb9e91 (Merge done)
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
@@ -221,18 +225,19 @@ class ChatBot:
     
     def get_emotion(self, sentence: str, choices: list[str]):
         """
-            Extract an emotional state out of a sentence using AI.
-            Return a robot emotion based on the sentence and list of emotions it gets.
+            Allow the user to make robot have emotion.
+            Return robot emotion base on the sentence and list of emotion it gets.
             If no emotion match with the emotions in list then it return neutre
         """
         choices_str = ", ".join(choices)
-        openai.api_key = os.getenv("OPENAI_API_KEY")
-        openai.organization = os.getenv("OPENAI_API_ORG_ID")
-        #client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_API_ORG_ID"))
+        #openai.api_key = os.getenv("OPENAI_API_KEY")
+        #openai.organization = os.getenv("OPENAI_API_ORG_ID")
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_API_ORG_ID"))
         preprompt = f"""Pick one word from [ {choices_str} ] that fits well with the following sentence: {sentence}.
-        Answer only one word. Answer 'Neutre' if you really can't find any match"""
+        Answer only one word. Answer 'neutre' if you really can't find any match"""
 
-        reponse =  openai.ChatCompletion.create(
+        # reponse =  openai.ChatCompletion.create(
+        reponse = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": preprompt},

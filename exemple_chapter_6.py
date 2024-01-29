@@ -68,7 +68,7 @@ def boucle_boutons():
         robot.desactiver()
     if discussion_commencer and text_area.est_actif():
         texte_utilisateur = robot.ecrire(text_area)
-        # robot.repondre_question(texte_utilisateur)
+        robot.repondre_question(texte_utilisateur)
     if discussion_commencer and text_area_bis.est_actif():
         texte_utilisateur = robot.ecrire(text_area_bis)
         text_area_bis.effacer_texte()

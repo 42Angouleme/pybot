@@ -33,7 +33,6 @@ class Robot:
         self.chatBot = None
         self.isWriting = False
         self.emotion_dict = {
-
             "Neutre" : "/images/emotions/neutre.png",
             "Amuser" : "/images/emotions/amuser.png",
             "Celebration" : "/images/emotions/celebration.png",
