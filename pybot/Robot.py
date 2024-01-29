@@ -14,6 +14,7 @@ from typing import List, Dict
 from .types import Couleur, User
 from cv2.typing import MatLike
 from .module_fenetre.Interface import Button
+from .AttributeDict import AttributeDict
 
 
 class Robot:
@@ -34,7 +35,6 @@ class Robot:
         #self.chatBot = ChatBot() HERE Comment on appele le module ??
         self.isWriting = False
         self.emotion_dict = {
-
             "Neutre" : "/images/emotions/neutre.png",
             "Amuser" : "/images/emotions/amuser.png",
             "Celebration" : "/images/emotions/celebration.png",
@@ -51,8 +51,7 @@ class Robot:
             "Surprise" : "/images/emotions/surprise.png",
             "Tristesse" : "/images/emotions/tristesse.png",
         }
-
-
+        self.attributs = AttributeDict({"boutons": AttributeDict()})
 
     ### GENERAL - FENETRE ###
 
@@ -336,10 +335,10 @@ class Robot:
                 - prenom de l'utilisateur
                 - nom de l'utilisateur
         """
-        utilisateur = User()
+        utilisateur: User = User
         utilisateur.nom = self.utilisateur_connecte.last_name
         utilisateur.prenom = self.utilisateur_connecte.first_name
-        # user['carte'] = self.utilisateur_connecte.picture
+        utilisateur.carte = None
         return utilisateur
 
     def creer_utilisateur(self, prenom: str, nom: str, carte: MatLike):
