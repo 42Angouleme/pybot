@@ -34,35 +34,18 @@ class Robot:
         self.emotion_dict = {
 
             "Neutre" : "/images/emotions/neutre.png",
-            "Amour" : "/images/emotions/amour.png",
             "Amuser" : "/images/emotions/amuser.png",
-            "Anxiete" : "/images/emotions/anxiete.png",
             "Celebration" : "/images/emotions/celebration.png",
-            "Chagrin" : "/images/emotions/chagrin.png",
             "Colere" : "/images/emotions/colere.png",
-            "Confusion" : "/images/emotions/confusion.png",
-            "Content" : "/images/emotions/content.png",
             "Contrariete" : "/images/emotions/contrariete.png",
-            "Deception" : "/images/emotions/deception.png",
             "Degout" : "/images/emotions/degout.png",
-            "Desespoir" : "/images/emotions/desespoir.png",
-            "Embarras" : "/images/emotions/embarras.png",
-            "Emerveillement" : "/images/emotions/emerveillement.png",
-            "Enthousiasme" : "/images/emotions/enthousiasme.png",
-            "Etonnement" : "/images/emotions/etonnement.png",
             "Fatigue" : "/images/emotions/fatigue.png",
-            "Fierte" : "/images/emotions/fierte.png",
-            "Frustration" : "/images/emotions/frustration.png",
-            "Fureur" : "/images/emotions/fureur.png",
             "Incomprehension" : "/images/emotions/incomprehension.png",
             "Inquietude" : "/images/emotions/inquietude.png",
-            "Ironie" : "/images/emotions/ironie.png",
             "Joie" : "/images/emotions/joie.png",
-            "Mefiance" : "/images/emotions/mefiance.png",
             "Peur" : "/images/emotions/peur.png",
             "Reflexion" : "/images/emotions/reflexion.png",
             "Soulagement" : "/images/emotions/soulagment.png",
-            "Supplique" : "/images/emotions/supplique.png",
             "Surprise" : "/images/emotions/surprise.png",
             "Tristesse" : "/images/emotions/tristesse.png",
         }
@@ -435,15 +418,13 @@ class Robot:
     def repondre_question(self, question: str) -> str:
         """
             Permet de poser une question au robot.
-            Imprime la réponse du robot dans le terminal et la renvoit.
+            Imprime la réponse du robot dans le terminal et la renvoie.
         """
         if (self.chatBot is None):
             self.message_erreur("Aucune conversation n'a été commencé avec le robot")
         reponse = self.chatBot.get_ai_answer(question)
         print("Humain : " + question + "\nRobot : " + reponse)
         return reponse
-        # En finalité la fonction n'imprimera plus la reponse
-        # return "Réponse"
 
     def creer_historique(self):
         """
@@ -481,11 +462,11 @@ class Robot:
         memory = self.chatBot.getCurrentConversationHistory()
         return memory
     
-    def entrainer(self, texte: str):
-        """
-            ...
-        """
-        print("entraîner avec", texte)
+    # def entrainer(self, texte: str):
+    #     """
+    #         ...
+    #     """
+    #     print("entraîner avec", texte)
     
     ### EMOTIONS ###
     
