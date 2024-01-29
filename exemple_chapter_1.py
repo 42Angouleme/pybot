@@ -1,7 +1,8 @@
 from pybot import Robot
+
 robot = Robot()
 
-robot.changer_titre("bonjour,pybot!") # Erreur
+robot.changer_titre("bonjour,pybot!") #  Erreur
 robot.creer_fenetre()
 robot.changer_titre("bonjour,pybot!")
 robot.actualiser_affichage()
