@@ -29,7 +29,9 @@ class Robot:
         self.camera = None
         # Utilisateur connecté
         self.utilisateur_connecte = None
+
         self.chatBot = None
+        #self.chatBot = ChatBot() HERE Comment on appele le module ??
         self.isWriting = False
         self.emotion_dict = {
 

@@ -35,6 +35,21 @@ class Camera:
             self.surface.blit(self.frame, (self.x, self.y))
         except:
             pass
+    
+    # def afficher_camera(self, position_x: int = 0, position_y: int = 0):
+    #     """
+    #         Affiche la caméra aux coordonées x et y.
+    #     """
+    #     self.x = position_x
+    #     self.y = position_y
+    #     try:
+    #         ret, self.frame = self.camera.read() # ret is unused ?
+    #         self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+    #         self.frame = np.rot90(self.frame)
+    #         self.frame = pg.surfarray.make_surface(self.frame)
+    #         self.surface.blit(self.frame, (self.x, self.y))
+    #     except:
+    #         pass
 
     def capture(self, file_name):
         try:
