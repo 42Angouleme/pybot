@@ -7,7 +7,7 @@ robot.demarrer_webapp()
 mettre_a_jour_affichage = True
 largeur_fenetre = 1200
 hauteur_fenetre = 500
-
+session_ouverte = False
 
 # --- FENETRE ---
 # - Preparation -
@@ -20,7 +20,7 @@ def boucle_fenetre():
     robot.afficher_camera(300, 10)
     if mettre_a_jour_affichage:
         robot.afficher_fond()
-        if session_ouverte:
+        if robot.attributs.session_ouverte:
             bouton_deconnexion.afficher()
             bouton_suppression.afficher()
         else:
