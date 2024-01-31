@@ -70,7 +70,7 @@ def boucle_boutons():
         réponse = robot.repondre_question(texte_utilisateur)
         emotion = robot.emotion(réponse)
         image = robot.avoir_image_emotion(emotion)
-        robot.afficher_image(image, 550, 550)
+        robot.afficher_image(image, 300, 300)
 
 
 if __name__ == "__main__":

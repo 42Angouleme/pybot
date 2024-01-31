@@ -63,10 +63,10 @@ class Input:
     @staticmethod
     def check(events, robot):
         result = []
-        if (robot.isWriting == False):
+        if (robot._isWriting == False):
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    robot.fermer_fenetre()
+                    robot.deactivate()
                 if event.type == pg.KEYDOWN:
                     for e in events:
                         k = keys[e[0]]
@@ -77,16 +77,16 @@ class Input:
     @staticmethod
     def get_user_entry(robot, text_area) :
         user_texte = ""
-        if (robot.isWriting) :
+        if (robot._isWriting) :
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    robot.fermer_fenetre()
+                    robot.deactivate()
                     return "stop"
                 if event.type == pg.KEYDOWN:
                     user_texte += event.unicode
                 if event.type == pg.MOUSEBUTTONDOWN :
                     if event.button == 1 :
-                        text_area.check_is_outside(event.pos) 
+                        text_area._check_is_outside(event.pos) 
         if (user_texte == "") :
             return None
         else :
