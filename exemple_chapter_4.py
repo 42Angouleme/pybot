@@ -106,28 +106,28 @@ def boucle_boutons():
     if boutons.stop.est_actif():
         robot.desactiver()
     if boutons.filter_1.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "ocean")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "ocean")
         robot.attributs.mettre_a_jour_affichage = True
     if boutons.filter_2.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "cartoon")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "cartoon")
         robot.attributs.mettre_a_jour_affichage = True
     if boutons.filter_3.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "alien")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "alien")
         robot.attributs.mettre_a_jour_affichage = True
     if boutons.filter_4.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "rose")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "rose")
         robot.attributs.mettre_a_jour_affichage = True
     if boutons.filter_5.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "flou")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "flou")
         robot.attributs.mettre_a_jour_affichage = True
     if boutons.filter_6.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "noir_et_blanc")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "noir_et_blanc")
         robot.attributs.mettre_a_jour_affichage = True
     if boutons.filter_7.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "tourner")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "tourner")
         robot.attributs.mettre_a_jour_affichage = True
     if boutons.filter_8.est_actif():
-        robot.appliquer_filtre("/images/photo.jpg", "vernis")
+        robot.camera.appliquer_filtre("/images/photo.jpg", "vernis")
         robot.attributs.mettre_a_jour_affichage = True
 # ----------------------------------------
 
