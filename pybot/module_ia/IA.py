@@ -1,14 +1,13 @@
-from langchain.memory import ConversationSummaryBufferMemory
-from langchain_community.chat_models import ChatOpenAI
-from langchain.prompts.prompt import PromptTemplate
-from langchain.chains import ConversationChain
-from dotenv import load_dotenv, find_dotenv
-from openai import OpenAI
 import os, sys
-#import openai
+from openai import OpenAI
+from dotenv import load_dotenv, find_dotenv
+from langchain_community.chat_models import ChatOpenAI
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationSummaryBufferMemory
+from langchain.prompts.prompt import PromptTemplate
 
 class ChatBot:
-    def __init__(self) :
+    def __init__(self, emotion_list : list[str]) :
         """
             Set connection with AI API (ChatGpt 3.5 turbo)
             Do not forget to add .env with OPENAI_API_KEY and OPENAI_API_ORG_ID
@@ -22,6 +21,7 @@ class ChatBot:
         self.__memory : ConversationSummaryBufferMemory = None
         self.__template = """ """
         self.__conversation : ConversationChain = None
+        self.__emotion_list : list[str] = emotion_list
 
     def start_conversation(self) :
         """
@@ -78,6 +78,9 @@ class ChatBot:
         if(self.__chatGPT is None) :
             self.__error_message("No conversation has been started with the robot.", "en")
             return
+        if (question is None) :
+            self.__error_message("question is empty (=None).")
+            return
         completion = self.__conversation.predict(input=question)
         return (completion)
         
@@ -89,6 +92,10 @@ class ChatBot:
         if(self.__chatGPT is None) :
             self.__error_message("Aucune conversation n'a été commencé avec le robot.", "fr")
             return
+        if (question is None) :
+            self.__error_message("question est vide (=None).")
+            return
+            
         return self.answer_question(question)
 
     def create_conversation_history(self) -> ConversationSummaryBufferMemory :
@@ -168,20 +175,23 @@ class ChatBot:
         """
         return self.get_current_conversation_history()
     
-    def get_emotion(self, sentence: str, possible_emotion: list[str]):
+    def get_emotion(self, sentence: str):
         """
             Allow the user to make robot have emotion.
             Return robot emotion base on the sentence and list of emotion it gets.
             If no emotion match with the emotions in list then it return neutre
         """
-        choices_str = ", ".join(possible_emotion)
+        if (sentence is None) :
+            self.__error_message("sentence is empty (=None).")
+            return
+        choices_str = ", ".join(self.__emotion_list)
         #openai.api_key = os.getenv("OPENAI_API_KEY")
         #openai.organization = os.getenv("OPENAI_API_ORG_ID")
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_API_ORG_ID"))
         preprompt = f"""Pick one word from [ {choices_str} ] that fits well with the following sentence: {sentence}.
         Answer only one word. Answer 'Neutre' if you really can't find any match"""
 
-        # reponse =  openai.ChatCompletion.create(
+        #reponse =  openai.ChatCompletion.create(
         reponse = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -190,14 +200,17 @@ class ChatBot:
             ],
         )
         emotion = reponse.choices[0].message.content
-        if not emotion in possible_emotion:
+        if not emotion in self.__emotion_list:
             return "Neutre"
         return emotion
 
-    def obtenir_emotion(self, phrase: str, emotion_possible: list[str]):
+    def obtenir_emotion(self, phrase: str):
         """
         """
-        return self.get_emotion(phrase, emotion_possible)
+        if (phrase is None) :
+            self.__error_message("phrase est vide (=None).")
+            return
+        return self.get_emotion(phrase)
 
     ### Private Methode ###
 

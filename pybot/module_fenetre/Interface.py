@@ -5,7 +5,7 @@ import os
 
 class Interface:
     def __init__(self, surface) :
-        self.__surface : pg.Surface = surface
+        self._surface : pg.Surface = surface
         pg.freetype.init()
 
     def create_button(self, w: int, h:int , x: int , y:int , c: int) :
@@ -16,7 +16,7 @@ class Interface:
             "y":y,
             "color":c,  
         }
-        return Button(data, self.__surface)
+        return Button(data, self._surface)
 
     def create_text_area(self, w: int, h:int , x: int , y:int , c: int) :
         data = {
@@ -26,27 +26,27 @@ class Interface:
             "y":y,
             "color":c,  
         }
-        return TextArea(data, self.__surface)
+        return TextArea(data, self._surface)
 
 class Button:
     def __init__(self, data, surface : pg.Surface) :
-        self.__surface : pg.surface = surface
-        self.__position : tuple[int, int] = (data['x'], data['y'])
-        self.__rect : pg.Rect = pg.Rect(data['x'], data['y'], data["width"], data["height"])
-        self.__color : Couleur = data["color"]
-        self.__text : str = None
-        self.__text_size : int = 16
-        self.__text_color : Couleur = (0, 0, 0)
-        self.__text_position : tuple[int, int ] = self.__position
-        self.__pressed : bool = False
+        self._surface : pg.Surface = surface
+        self._position : tuple[int, int] = (data['x'], data['y'])
+        self._rect : pg.Rect = pg.Rect(data['x'], data['y'], data["width"], data["height"])
+        self._color : Couleur = data["color"]
+        self._text : str = None
+        self._text_size : int = 16
+        self._text_color : Couleur = (0, 0, 0)
+        self._text_position : tuple[int, int ] = self._position
+        self._pressed : bool = False
     
     def add_text(self, text: str, position_x: int = 0, position_y: int = 0, size: int = 16, color : Couleur = (0, 0, 0)) :
         """
         """
-        self.__text = text
-        self.__text_size = size
-        self.__text_color = color
-        self.__text_position = (self.__text_position[0] + position_x, self.__text_position[1] + position_y)
+        self._text = text
+        self._text_size = size
+        self._text_color = color
+        self._text_position = (self._text_position[0] + position_x, self._text_position[1] + position_y)
 
     def ajouter_texte(self, texte : str, position_x: int = 0, position_y:int = 0, taille:int = 16, couleur : Couleur = (0, 0, 0)) :
         """
@@ -60,12 +60,12 @@ class Button:
             Retourne vrai si le bouton a été cliqué.
         """
         try:
-            if self.__rect.collidepoint(pg.mouse.get_pos()):
-                if pg.mouse.get_pressed()[0] and not self.__pressed:
-                    self.__pressed = True
+            if self._rect.collidepoint(pg.mouse.get_pos()):
+                if pg.mouse.get_pressed()[0] and not self._pressed:
+                    self._pressed = True
                     return True
             if pg.mouse.get_pressed() == (0,0,0):
-                self.__pressed = False
+                self._pressed = False
         except:
             pass
         return False
@@ -79,11 +79,11 @@ class Button:
     def display(self) :
         """
         """
-        pg.draw.rect(self.__surface, self.__color, self.__rect)
-        if self.__text:
-            font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", self.__text_size)
-            surf = font.render(self.__text, True, self.__text_color)
-            self.__surface.blit(surf, self.__text_position)
+        pg.draw.rect(self._surface, self._color, self._rect)
+        if self._text:
+            font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", self._text_size)
+            surf = font.render(self._text, True, self._text_color)
+            self._surface.blit(surf, self._text_position)
         pg.display.update()
 
     def afficher(self):
@@ -95,19 +95,19 @@ class Button:
 class TextArea(Button) :
     def __init__(self, data, surface : pg.Surface):
         super().__init__(data, surface)
-        self.__old_text : str = ""
-        self.__text : str = ""
+        self._old_text : str = ""
+        self._text : str = ""
 
     def display(self):
         """
             Affiche la zone de texte dans la fenêtre principale.
         """
-        pg.draw.rect(self.__surface, self.__color, self.__rect)
-        if self.__text != "":
-            font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", self.__text_size)
-            surf = font.render(self.__old_text, True, self.__color)
-            surf = font.render(self.__text, True, self.__text_color)
-            self.__surface.blit(surf, self.__text_position)
+        pg.draw.rect(self._surface, self._color, self._rect)
+        if self._text != "":
+            font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", self._text_size)
+            surf = font.render(self._old_text, True, self._color)
+            surf = font.render(self._text, True, self._text_color)
+            self._surface.blit(surf, self._text_position)
         pg.display.update()
     
     def afficher(self):
@@ -116,59 +116,58 @@ class TextArea(Button) :
         """
         self.display()
 
-    def write(self, robot : Robot) :
+    def write(self, robot : Robot) -> str:
         """
         """
         new_text = ""
         robot._isWriting = True
         text = self.get_text()
-        #print("User start writing")
+        print("User start writing")
         while robot._isWriting:
-            if not self.__pressed:
+            if not self._pressed:
                 robot._isWriting = False
             new_text = robot._get_user_entry(text, self)
-            if (not robot.actif):
+            if (not robot.is_active()):
                 return ""
             if (new_text != text):
                 if ("\r" in new_text):
                     robot._isWriting = False
-                    self.__pressed = False
+                    self._pressed = False
                     break
                 self.__add_text(new_text, 10, 10, text)
                 self.afficher()
-                #robot.actualiser_affichage()  # Vraiment utile ??
-                #robot.fenetre.refresh_display()
+                robot.fenetre.refresh_display()
                 text = new_text
-        #print("User end writing")
+        print("User end writing")
         return text
 
-    def ecrire(self, robot):
+    def ecrire(self, robot : Robot) -> str:
         """
             Permet à l'utilisateur d'écrire dans la zone de texte associé.
             Renvoit le texte écrit par l'utilisateur.
         """
-        self.write(robot)
+        return self.write(robot)
     
-    def get_text(self) :
+    def get_text(self) -> str:
         """
         """
-        return self.__text
+        return self._text
 
-    def obtenir_texte(self) :
+    def obtenir_texte(self) -> str:
         """
             Renvoie le texte contenu dans la zone de texte.
         """
         return self.get_text()
 
-    def erase_text(self) :
+    def erase_text(self) -> str:
         """
         """
-        self.__old_text = self.__text
-        self.__text = ""
+        self._old_text = self._text
+        self._text = ""
         self.afficher()
-        return self.__old_text
+        return self._old_text
     
-    def effacer_texte(self) :
+    def effacer_texte(self) -> str:
         """
             Permet d'effacer le contenu de la zone de texte.
             Renvoi le texte contenu
@@ -178,7 +177,7 @@ class TextArea(Button) :
     def modify_font_size(self, size : int = 16) :
         """
         """
-        self.__text_size = size
+        self._text_size = size
 
     def modifier_taille_police(self, taille :int = 16) :
         """
@@ -190,7 +189,7 @@ class TextArea(Button) :
     def modify_font_color(self, color : Couleur = (0,0,0)) :
         """
         """
-        self.__text_color = color
+        self._text_color = color
     
     def modifier_couleur_police(self, couleur : Couleur = (0,0,0)) :
         """
@@ -205,8 +204,8 @@ class TextArea(Button) :
         """
             Check if the mouse click is outside of the texte area.
         """
-        if not self.__rect.collidepoint(position) :
-            self.__pressed = False
+        if not self._rect.collidepoint(position) :
+            self._pressed = False
             return True
         return False
     
@@ -214,6 +213,6 @@ class TextArea(Button) :
         """
             Add text to display in the text area
         """
-        self.__text = texte
-        self.__old_text = old_text
-        self.__text_position = (self.__position[0] + position_x, self.__position[1] + position_y)
+        self._text = texte
+        self._old_text = old_text
+        self._text_position = (self._position[0] + position_x, self._position[1] + position_y)

@@ -1,6 +1,5 @@
 from .Fenetre import Fenetre
 
-
-def run(robot, width, height):
-    win = Fenetre(robot)
-    return win.run(width, height)
+def run(emotion_dict):
+    win = Fenetre(emotion_dict)
+    return win

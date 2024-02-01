@@ -9,7 +9,7 @@ import os, sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'  # need to be declared before to import pygame
 
 class Fenetre:
-    def __init__(self):
+    def __init__(self, emotion_dict : dict[str, str], width: int = 800, height: int = 600):
         self.__title = "Pybot"
         self.__is_fullscreen : bool = False
         # main surface
@@ -25,14 +25,14 @@ class Fenetre:
         # clock and fps
         self.__color : pg.time.Clock = pg.time.Clock()
         self.__fps : float = 30
-    
-    # run ??
-    def open_window(self, width: int = 800, height: int = 600) :
-        """
-        """
-        # Try to move pg.init and self_surface in __init__
+        self.__emotion_dict : dict[str, str] = emotion_dict
         pg.init()
         self.__surface = pg.display.set_mode((width, height))
+    
+    # run ??
+    def open_window(self) :
+        """
+        """
         pg.display.set_caption(self.__title)
         self.__interface = Interface(self.__surface)
         
@@ -41,7 +41,7 @@ class Fenetre:
             Créé une fenêtre avec une longueur et une hauteur passées en argument (en nombre de pixels). \n
             Si un argument n'est pas donné, la longueur par défaut sera 800 pixels et la hauteur par défaut sera 600 pixels.
         """
-        self.open_window(longueur, hauteur)
+        self.open_window()
     
     def __change_background_color(self, R, G, B) :
             self.__background_color = (R, G, B)
@@ -79,19 +79,20 @@ class Fenetre:
         """
         self.full_screen(changer)
     
-    def change_window_title(self, title: str):
+    def change_title(self, title: str):
         """
         """
         try:
-            self.__change_title(title)
+            self.__title = title
+            self.__change_title = True
         except AttributeError:
             self.__error_message("title must defined after the window.", "en")
     
-    def changer_titre_fenetre(self, titre: str):
+    def changer_titre(self, titre: str):
         """
         """
         try:
-            self.__change_window_title(titre)
+            self.change_title(titre)
         except AttributeError:
             self.__error_message("le titre doit être défini après création de la fenêtre.", "fr")
 
@@ -205,7 +206,7 @@ class Fenetre:
         """
         self.display_detected_card(carte_detectee, position_x, position_y)
     
-    def create_bouton(self, width: int, height: int, position_x: int, position_y: int, color: Couleur) -> Button:
+    def create_button(self, width: int, height: int, position_x: int, position_y: int, color: Couleur) -> Button:
         """
         """
         try:
@@ -239,14 +240,28 @@ class Fenetre:
             Créer et retourner une zone de texte qui peut être affichée et vérifiée plus tard. \n
             Cela est utile pour récupérer les entrées utilisateur \n
             Les paramètres attendus sont : \n
-                * la longueur et la hauteur du bouton. \n
-                * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. \n
-                * la couleur du bouton.
+                * la longueur et la hauteur de la zone de text. \n
+                * la position x et y de la zone de text (son coin en haut à gauche) par rapport à la fenêtre. \n
+                * la couleur de la zone de text.
         """
         try:
             return self.create_text_area(longueur, hauteur, position_x, position_y, couleur)
         except AttributeError:
             self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
+    
+    def get_emotion_image(self, emotion : str):
+        """
+        """
+        if not emotion in list(self.__emotion_dict.keys()):
+            return "Neutre"
+        return self.__emotion_dict[emotion]
+
+    def obtenir_image_emotion(self, emotion : str):
+        """
+            Renvoi l'image correspondant à l'emotion passer en paramètre
+            Si aucune image correspond à l'émotion paseer en paramètre renvoi l'image neutre
+        """
+        return self.get_emotion_image(emotion)
 
     ### Private Methode ###
             

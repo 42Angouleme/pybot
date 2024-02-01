@@ -33,7 +33,7 @@ class Robot:
         self.__webapp : Flask = None
         self._isWriting : bool = False
 
-        self.emotion_dict : dict[str, str] = {
+        self.__emotion_dict : dict[str, str] = {
             "Neutre" : "/images/emotions/neutre.png",
             "Amuser" : "/images/emotions/amuser.png",
             "Celebration" : "/images/emotions/celebration.png",
@@ -53,7 +53,7 @@ class Robot:
 
         self.attributs : AttributeDict = AttributeDict({"boutons": AttributeDict()})
 
-    def start_window_module(self) :
+    def start_window_module(self, width, lenght) :
         """
         """
         if (self.window is not None) :
@@ -61,10 +61,10 @@ class Robot:
             return
         if (self.__webapp is None) :
             self.__warning_message("Webapp should be start before the window module.", "en")
-        self.window = Fenetre()
+        self.window = Fenetre(self.__emotion_dict, width, lenght)
         self.fenetre = self.window
 
-    def demarrer_module_fenetre(self) :
+    def demarrer_module_fenetre(self, longueur, largeur) :
         """
         """
         if (self.window is not None) :
@@ -72,23 +72,24 @@ class Robot:
             return
         if (self.__webapp is None) :
             self.__warning_message("L'application web doit être lancée avant de créer la fenêtre.", "fr")
-        self.start_window_module()
+        self.start_window_module(longueur, largeur)
     
     def start_AI_module(self) :
         """
         """
-        if (self.window is not None) :
+        if (self.AI is not None) :
             self.__error_message("AI module has already been started.", "en")
             return
         try :
-            self.AI = ChatBot()
+            self.AI = ChatBot(list(self.__emotion_dict.keys()))
+            self.IA = self.AI
         except :
             self.__warning_message("Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before startin the AI module", "en")
     
     def demarrer_module_IA(self) :
         """
         """
-        if (self.window is not None) :
+        if (self.AI is not None) :
             self.__error_message("Le module IA est déjà démarrer.", "fr")
             return
         self.start_AI_module()
@@ -99,7 +100,7 @@ class Robot:
         if (self.window is None) :
             self.__warning_message("Window module must be start before this module.", "en")
             return
-        if (self.window is not None) :
+        if (self.camera is not None) :
             self.__error_message("Camera module has already been started.", "en")
         self.camera = Camera(self.fenetre._get_surface())
 
@@ -124,7 +125,9 @@ class Robot:
             return
         if (self.user is not None) :
             self.__error_message("User module has already been started.", "en")
+        self.camera._updateUserCardsTracker(self.__webapp)
         self.user = User_manager(self.__webapp, self.camera)
+        self.utilisateur = self.user
 
     def demarrer_module_utilisateur(self) :
         """
@@ -228,15 +231,16 @@ class Robot:
         """
             Vérifie chaque évènement et retourne un tableau avec les évènements détectés.
         """
-        return self.check_events(self)
+        return self.check_events()
 
     def deactivate(self) :
         """
         """
         try:
-            self.camera._stop()
-            self.fenetre._stop()
-            self.actif = False 
+            if (self.camera is not None) :
+                self.camera._stop()
+            self.window._stop()
+            self.__active = False 
         except AttributeError:
             pass
 
