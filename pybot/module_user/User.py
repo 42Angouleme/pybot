@@ -2,6 +2,7 @@ from ..module_webapp.models.user import UserResponse
 from ..module_camera.Camera import Camera
 from cv2.typing import MatLike
 from dotenv import load_dotenv
+from pathlib import Path
 from ..types import User
 from flask import Flask
 import pygame as pg
