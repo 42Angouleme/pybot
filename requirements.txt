@@ -67,5 +67,5 @@ Werkzeug==3.0.1
 python-dotenv==1.0.0
 yarl==1.9.4
 SpeechRecognition==3.10.1
-#PyAudio==0.2.14
+PyAudio==0.2.14
 dateparser==1.2.0
