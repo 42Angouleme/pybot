@@ -16,6 +16,7 @@ class User_manager:
         self.__webapp : Flask = webapp
         self.__camera: Camera = camera
         self.__user_logged_in : UserResponse | None = None
+        self.__load_env_file(".env_to_rename")
 
     def logging(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) :
         """
@@ -318,7 +319,7 @@ class User_manager:
 
     APP_BASE_URL, APP_ADRESS, APP_PORT = [""] * 3
     @staticmethod
-    def load_env_file(path_file: str = '.env') :
+    def __load_env_file(path_file: str = '.env') :
         global APP_BASE_URL, APP_ADRESS, APP_PORT
         load_dotenv(dotenv_path=Path(path_file))
         APP_BASE_URL = os.getenv('WEBAPP_BASE_URI')

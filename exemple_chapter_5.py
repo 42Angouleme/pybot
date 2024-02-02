@@ -8,7 +8,6 @@ robot.demarrer_webapp()
 mettre_a_jour_affichage = True
 largeur_fenetre = 1200
 hauteur_fenetre = 500
-session_ouverte = False
 
 robot.demarrer_module_fenetre(largeur_fenetre, hauteur_fenetre)
 robot.demarrer_module_camera()
@@ -79,20 +78,20 @@ bouton_creation.ajouter_texte("Créer  utilisateur", 20, 20)
 
 # - Boucle -
 def boucle_boutons():
-    global mettre_a_jour_affichage, session_ouverte, carte_detectee
+    global mettre_a_jour_affichage, carte_detectee
     # Mise à jour du status de la session
-    if robot.utilisateur.verifier_session() != session_ouverte:
-        session_ouverte = robot.utilisateur.verifier_session()
+    if robot.utilisateur.verifier_session() != robot.attributs.session_ouverte:
+        robot.attributs.session_ouverte = robot.utilisateur.verifier_session()
         mettre_a_jour_affichage = True
-    elif session_ouverte:
+    elif robot.attributs.session_ouverte:
         # Vérification des boutons de session
         if bouton_suppression.est_actif():
             robot.utilisateur.supprimer_utilisateur()
-            session_ouverte = False
+            robot.attributs.session_ouverte = False
             mettre_a_jour_affichage = True
         if bouton_deconnexion.est_actif():
             robot.utilisateur.deconnecter()
-            session_ouverte = False
+            robot.attributs.session_ouverte = False
             mettre_a_jour_affichage = True
     if bouton_creation.est_actif():
         nom_utilisateur = "Ada"
@@ -100,7 +99,7 @@ def boucle_boutons():
         robot.utilisateur.creer_utilisateur(prenom_utilisateur,
                                 nom_utilisateur,
                                 robot.attributs.derniere_carte_detectee)
-        session_ouverte = False
+        robot.attributs.session_ouverte = False
         mettre_a_jour_affichage = True
 
 
