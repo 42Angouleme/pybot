@@ -18,6 +18,16 @@ class Camera :
 
     def display_camera(self, position_x: int = 0, position_y: int = 0) :
         """
+        Display the camera in the window.
+
+        Args:
+        -----
+            position_x (int): The x-coordinate of the top-left corner of the camera. Default is 0.
+            position_y (int): The y-coordinate of the top-left corner of the camera. Default is 0.
+
+        Returns:
+        --------
+            None
         """
         self.__x = position_x
         self.__y = position_y
@@ -32,12 +42,31 @@ class Camera :
 
     def afficher_camera(self, position_x: int = 0, position_y: int = 0) :
         """
-            Affiche la caméra aux coordonées x et y.
+        Affiche la caméra dans la fenêtre.
+
+        Paramètres:
+        -----------
+            position_x (int): La coordonnée x du coin supérieur gauche de la caméra. La valeur par défaut est 0.
+            position_y (int): La coordonnée y du coin supérieur gauche de la caméra. La valeur par défaut est 0.
+
+        Retour:
+        -------
+            Aucun
         """
         self.display_camera(position_x, position_y)
     
     def take_picture(self, file_name: str) :
         """
+        Takes a picture using the camera and saves it as a JPEG file.
+        It is saved in the "images" folder.
+
+        Args:
+        -----
+            file_name (str): The name of the file to save the picture as.
+
+        Returns:
+        --------
+            None
         """
         try:
             ret, frame = self.__camera.read()
@@ -50,22 +79,48 @@ class Camera :
 
     def prendre_photo(self, nom_fichier: str) :
         """
-            Capture une image de la caméra au nom du fichier passé en paramètre et l'enregistre dans le dossier images.
+        Prend une photo en utilisant la caméra et l'enregistre en tant que fichier JPEG.
+        Elle est enregistrée dans le dossier "images".
+
+        Paramètres:
+        -----------
+            nom_fichier (str): Le nom du fichier pour enregistrer la photo.
+
+        Retour:
+        -------
+            Aucun
         """
-        self.take_picture(nom_fichier)
+        self.prendre_photo(nom_fichier)
     
-    def apply_filter(self, file_path : str, filter_name : str) :
+    def apply_filter(self, file_path: str, filter_name: str):
         """
+        Apply a filter to the given photo.
+        See documentation for the complete list of filters: https://42angouleme.github.io/ref/
+
+        Args:
+        -----
+            file_path (str): The path to the file to apply the filter to.
+            filter_name (str): The name of the filter to apply.
+
+        Returns:
+        --------
+            None
         """
         self.__filters.apply(file_path, filter_name)
     
     def appliquer_filtre(self, chemin_fichier: str, nom_filtre: str) :
-        r"""
-            Applique un filtre sur une image. \n
-            Les paramètres attendus sont : \n
-                * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
-                * Le nom du filtre. (ex: cartoon, alien, tourner...) \n
-            (voir documentation pour la liste complète des filtres: https://42angouleme.github.io/ref/)
+        """
+        Applique un filtre a la photo donnée.
+        Consultez la documentation pour la liste complète des filtres : https://42angouleme.github.io/ref/
+
+        Paramètres:
+        -----------
+            chemin_fichier (str): Le chemin vers le fichier auquel appliquer le filtre.
+            nom_filtre (str): Le nom du filtre à appliquer.
+
+        Retour:
+        -------
+            Aucun
         """
         self.apply_filter(chemin_fichier, nom_filtre)
     
