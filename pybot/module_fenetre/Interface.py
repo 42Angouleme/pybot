@@ -40,8 +40,21 @@ class Button:
         self._text_position : tuple[int, int ] = self._position
         self._pressed : bool = False
     
-    def add_text(self, text: str, position_x: int = 0, position_y: int = 0, size: int = 16, color : Couleur = (0, 0, 0)) :
+    def add_text(self, text: str, position_x: int = 0, position_y: int = 0, size: int = 16, color: Couleur = (0, 0, 0)):
         """
+        Add text to the button.
+
+        Args:
+        ----
+            text (str): The text to be added.
+            position_x (int, optional): The x-coordinate of the text in the button. Defaults to 0.
+            position_y (int, optional): The y-coordinate of the text in the button. Defaults to 0.
+            size (int, optional): The size of the text. Defaults to 16.
+            color (Couleur, optional): The color of the text. Defaults to (0, 0, 0).
+        
+        Returns:
+        -------
+            None
         """
         self._text = text
         self._text_size = size
@@ -50,14 +63,33 @@ class Button:
 
     def ajouter_texte(self, texte : str, position_x: int = 0, position_y:int = 0, taille:int = 16, couleur : Couleur = (0, 0, 0)) :
         """
-            Ajoute le texte dans le bouton, a la position x et y dans le bouton. \n
-            Il est aussi possible de fournir une taille et une couleur au texte.
+        Ajoute du texte au bouton.
+
+        Args:
+        -----
+            texte (str): Le texte à ajouter.
+            position_x (int, optionnel): La coordonnée x du texte dans le bouton. Par défaut, 0.
+            position_y (int, optionnel): La coordonnée y du texte dans le bouton. Par défaut, 0.
+            taille (int, optionnel): La taille du texte. Par défaut, 16.
+            couleur (Couleur, optionnel): La couleur du texte. Par défaut, (0, 0, 0).
+        
+        Retour:
+        --------
+            Aucun
         """
         self.add_text(texte, position_x, position_y, taille, couleur)
 
     def is_active(self) :
         """
-            Retourne vrai si le bouton a été cliqué.
+        Check if the button is click.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            bool: True if the button is click, False otherwise.
         """
         try:
             if self._rect.collidepoint(pg.mouse.get_pos()):
@@ -72,12 +104,29 @@ class Button:
 
     def est_actif(self) :
         """
-            Retourne vrai si le bouton a été cliqué.
+        Vérifie si le bouton est cliqué.
+
+        Paramètres:
+        ----------
+            None
+
+        Retour:
+        -------
+            bool: True si le bouton est cliqué, False sinon.
         """
         return self.is_active()
 
     def display(self) :
         """
+        Display the button in the window.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         pg.draw.rect(self._surface, self._color, self._rect)
         if self._text:
@@ -88,7 +137,15 @@ class Button:
 
     def afficher(self):
         """
-            Affiche le bouton dans la fenêtre principale.
+        Affiche le bouton dans la fenêtre.
+
+        Parametre:
+        ----------
+            None
+
+        Retour:
+        --------
+            None
         """
         self.display()
 
@@ -100,7 +157,15 @@ class TextArea(Button) :
 
     def display(self):
         """
-            Affiche la zone de texte dans la fenêtre principale.
+        Display the text area on the window.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         pg.draw.rect(self._surface, self._color, self._rect)
         if self._text != "":
@@ -112,12 +177,29 @@ class TextArea(Button) :
     
     def afficher(self):
         """
-            Affiche la zone de texte dans la fenêtre principale.
+        Affiche la zone de texte dans la fenêtre.
+
+        Parametre:
+        ----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         self.display()
 
     def write(self, robot : Robot) -> str:
         """
+        Writes the user's input into the texte area and returns the final text.
+
+        Args:
+        -----
+            robot (Robot): The robot.
+
+        Returns:
+        --------
+            str: The final text after the user has finished writing.
         """
         new_text = ""
         robot._isWriting = True
@@ -143,24 +225,57 @@ class TextArea(Button) :
 
     def ecrire(self, robot : Robot) -> str:
         """
-            Permet à l'utilisateur d'écrire dans la zone de texte associé.
-            Renvoit le texte écrit par l'utilisateur.
+        Écrit l'entrée de l'utilisateur dans la zone de texte et renvoie le texte final.
+
+        Paramètres:
+        -----------
+            robot (Robot): Le robot.
+
+        Retour:
+        -------
+            str: Le texte final après que l'utilisateur ait fini d'écrire.
         """
         return self.write(robot)
     
     def get_text(self) -> str:
         """
+        Get the text from the text area.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            str: The text from the text area.
         """
         return self._text
 
     def obtenir_texte(self) -> str:
         """
-            Renvoie le texte contenu dans la zone de texte.
+        Renvoie le texte contenu dans la zone de texte.
+
+        Paramètre:
+        ----------
+            Aucun
+        
+        Retour:
+        -------
+            str: Le texte contenu dans la zone de texte.
         """
         return self.get_text()
 
     def erase_text(self) -> str:
         """
+        Erases the current text and returns the old text.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            str: The text that was erased.
         """
         self._old_text = self._text
         self._text = ""
@@ -169,32 +284,71 @@ class TextArea(Button) :
     
     def effacer_texte(self) -> str:
         """
-            Permet d'effacer le contenu de la zone de texte.
-            Renvoi le texte contenu
+        Efface le texte actuel et renvoie l'ancien texte.
+
+        Paramètres:
+        ----------
+            Aucun
+
+        Retour:
+        -------
+            str: Le texte qui a été effacé.
         """
         return self.erase_text()
     
-    def modify_font_size(self, size : int = 16) :
+    def modify_font_size(self, size: int = 16):
         """
+        Modifies the font size of the text area.
+
+        Args:
+        -----
+            size (int): The new font size to be set. Default is 16.
+
+        Returns:
+        --------
+            None
         """
         self._text_size = size
 
-    def modifier_taille_police(self, taille :int = 16) :
+    def modifier_taille_police(self, taille: int = 16) :
         """
-            Permet de changer la taille de la police.
-            Utilisée sans paramètre, cela réinitialise la taille.
+        Modifie la taille de la police de la zone de text.
+
+        Paramètres:
+        -----------
+            taille (int): La nouvelle taille de police à définir.
+
+        Retour:
+        -------
+            None
         """
         self.modify_font_size(taille)
     
     def modify_font_color(self, color : Couleur = (0,0,0)) :
         """
+        Modifies the font color of the text area.
+
+        Parameters:
+        -----------
+            color (Couleur): The RGB color value to set as the font color. Defaults to (0, 0, 0) (black).
+        
+        Returns:
+        --------
+            None
         """
         self._text_color = color
     
     def modifier_couleur_police(self, couleur : Couleur = (0,0,0)) :
         """
-            Permet de modifier la couleur de la police.
-            Utilisée sans paramètre, cela réinitialise la couleur.
+        Modifie la couleur de police de la zone de texte.
+
+        Paramètres:
+        ----------
+            couleur (Couleur): La valeur RGB de la couleur à définir comme couleur de police. Par défaut, (0, 0, 0) (noir).
+
+        Retour:
+        -------
+            None
         """
         self.modify_font_color(couleur)
 

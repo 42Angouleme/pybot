@@ -71,7 +71,7 @@ def boucle_boutons():
         robot.desactiver()
     if discussion_commencer and text_area.est_actif():
         texte_utilisateur = text_area.ecrire(robot)
-        réponse = robot.AI.repondre_question(texte_utilisateur)
+        réponse = robot.AI.poser_question(texte_utilisateur)
         print(réponse)
         emotion = robot.AI.obtenir_emotion(réponse)
         image = robot.fenetre.obtenir_image_emotion(emotion)

@@ -38,7 +38,7 @@ class Fenetre:
         
     def ouvrir_fenetre(self, longueur: int = 800, hauteur: int = 600):
         """
-            Créé une fenêtre avec une longueur et une hauteur passées en argument (en nombre de pixels). \n
+            Créé une fenêtre avec une longueur et une hauteur passées en argument (en nombre de pixels). 
             Si un argument n'est pas donné, la longueur par défaut sera 800 pixels et la hauteur par défaut sera 600 pixels.
         """
         self.open_window()
@@ -53,9 +53,9 @@ class Fenetre:
             self.__error_message("the window hasn't been opened.", "en")
     
     def changer_couleur_fond(self, couleur: Couleur) :
-        r"""
-            Change la couleur du fond d'écran. \n
-            La couleur passée en paramètre doit être au format: (R, G, B). \n
+        """
+            Change la couleur du fond d'écran. 
+            La couleur passée en paramètre doit être au format: (R, G, B). 
             R, G et B sont des nombres entre 0 et 255.
         """
         try :
@@ -111,7 +111,7 @@ class Fenetre:
         self.refresh_display()
 
     def display_background(self):
-        r"""
+        """
         """
         try:
             self.__draw_background()
@@ -119,8 +119,8 @@ class Fenetre:
             self.__error_message("the window hasn't been opened.", "en")
             
     def afficher_fond(self):
-        r"""
-            Affiche le fond d'écran avec la dernière couleur enregistrée par la fonction couleur_fond() \n
+        """
+            Affiche le fond d'écran avec la dernière couleur enregistrée par la fonction couleur_fond() 
             (par défaut, la couleur est : noir).
         """
         try:
@@ -129,12 +129,12 @@ class Fenetre:
             self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
     
     def draw_rectangle(self, width: int, height: int, position_x: int, position_y: int, color: Couleur):
-        r"""
-            Dessine un rectangle dans la fenêtre. \n
+        """
+            Dessine un rectangle dans la fenêtre. 
 
-            Les paramètres attendus sont : \n
-                * la longueur et la hauteur du rectangle. \n
-                * la position x et y du rectangle (son coin en haut à gauche) par rapport à la fenêtre. \n
+            Les paramètres attendus sont : 
+                * la longueur et la hauteur du rectangle. 
+                * la position x et y du rectangle (son coin en haut à gauche) par rapport à la fenêtre. 
                 * la couleur du rectangle.
         """
         try:
@@ -143,7 +143,7 @@ class Fenetre:
             self.__error_message("the window hasn't been opened.", "en")
     
     def dessiner_rectangle(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur):
-        r"""
+        """
         """
         try:
             self.__draw_rect(longueur, hauteur, position_x, position_y, couleur)
@@ -151,7 +151,7 @@ class Fenetre:
             self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
     
     def display_text(self, text, position_x: int = 0, position_y: int = 0, size: int = 16, color: Couleur = (0, 0, 0)):
-        r"""
+        """
         """
 
         try:
@@ -160,13 +160,13 @@ class Fenetre:
             self.__error_message("the window hasn't been opened.", "en")
     
     def afficher_texte(self, texte, position_x: int = 0, position_y: int = 0, taille: int = 16, couleur: Couleur = (0, 0, 0)):
-        r"""
-            Affiche un texte dans la fenêtre. \n
+        """
+            Affiche un texte dans la fenêtre. 
 
-            Les paramètres attendus sont : \n
-                * le texte à afficher. \n
-                * la position x et y du texte (son coin en haut à gauche) par rapport à la fenêtre. \n
-                * la taille du texte. \n
+            Les paramètres attendus sont : 
+                * le texte à afficher. 
+                * la position x et y du texte (son coin en haut à gauche) par rapport à la fenêtre. 
+                * la taille du texte. 
                 * la couleur du texte.
         """
         try:
@@ -175,7 +175,7 @@ class Fenetre:
             self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
     
     def display_image(self, file_path: str, position_x: int, position_y: int):
-        r"""
+        """
         """
         try:
             img = pg.image.load(os.getcwd() + file_path)
@@ -184,24 +184,24 @@ class Fenetre:
             pass
 
     def afficher_image(self, chemin_fichier: str, position_x: int, position_y: int):
-        r"""
-            Afficher une image. \n
-            Les paramètres attendus sont : \n
-                * Le chemin et nom du fichier. (ex: /images/photo.jpg) \n
+        """
+            Afficher une image. 
+            Les paramètres attendus sont : 
+                * Le chemin et nom du fichier. (ex: /images/photo.jpg) 
                 * Les coordonnées x et y où sera affichée l'image.
         """
         self.display_image(chemin_fichier, position_x, position_y)
 
     def display_detected_card(self, dectected_card: MatLike, position_x: int, position_y: int):   
-        r"""
+        """
         """
         self.__display_image(dectected_card, position_x, position_y)
 
     def afficher_carte_detectee(self, carte_detectee: MatLike, position_x: int, position_y: int):
-        r"""
-            Afficher la carte détectée. \n
-            Les paramètres attendus sont : \n
-                * L'image de la carte detectée par Robot.detecter_carte() \n
+        """
+            Afficher la carte détectée. 
+            Les paramètres attendus sont : 
+                * L'image de la carte detectée par Robot.detecter_carte() 
                 * Les coordonnées x et y où sera affichée l'image.
         """
         self.display_detected_card(carte_detectee, position_x, position_y)
@@ -215,11 +215,11 @@ class Fenetre:
             self.__error_message("the window hasn't been opened.", "en")
     
     def creer_bouton(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur) -> Button:
-        r"""
-            Crée et retourne un bouton qui peut être affiché et vérifié plus tard. \n
-            Les paramètres attendus sont : \n
-                * la longueur et la hauteur du bouton. \n
-                * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. \n
+        """
+            Crée et retourne un bouton qui peut être affiché et vérifié plus tard. 
+            Les paramètres attendus sont : 
+                * la longueur et la hauteur du bouton. 
+                * la position x et y du bouton (son coin en haut à gauche) par rapport à la fenêtre. 
                 * la couleur du bouton.
         """
         try:
@@ -228,7 +228,7 @@ class Fenetre:
             self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
         
     def create_text_area(self, width: int, height: int, position_x: int, position_y: int, color: Couleur):
-        r"""
+        """
         """
         try:
             return self.__interface.create_text_area(width, height, position_x, position_y, color)
@@ -236,12 +236,12 @@ class Fenetre:
             self.__error_message("the window hasn't been opened.", "en")
     
     def creer_zone_texte(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur):
-        r"""
-            Créer et retourner une zone de texte qui peut être affichée et vérifiée plus tard. \n
-            Cela est utile pour récupérer les entrées utilisateur \n
-            Les paramètres attendus sont : \n
-                * la longueur et la hauteur de la zone de text. \n
-                * la position x et y de la zone de text (son coin en haut à gauche) par rapport à la fenêtre. \n
+        """
+            Créer et retourner une zone de texte qui peut être affichée et vérifiée plus tard. 
+            Cela est utile pour récupérer les entrées utilisateur 
+            Les paramètres attendus sont : 
+                * la longueur et la hauteur de la zone de text. 
+                * la position x et y de la zone de text (son coin en haut à gauche) par rapport à la fenêtre. 
                 * la couleur de la zone de text.
         """
         try:
