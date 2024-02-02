@@ -17,42 +17,66 @@ class User_manager:
         self.__camera: Camera = camera
         self.__user_logged_in : UserResponse | None = None
 
-    def logging(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85):
+    def logging(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) :
         """
+        Logs in a user if a recognized user is found.
+        Draw a square around the recognized user's card.
+        
+        Args:
+        -----
+            minimum_threshold (float): The minimum confidence threshold for user recognition. Defaults to 0.75.
+            search_stop_threshold (float): The confidence threshold at which the search for a user stops. Defaults to 0.85.
+        
+        Returns:
+        --------
+            None
         """
         if not self.__camera._is_open():
             return
         recognized_user = self.__connect_user(minimum_threshold, search_stop_threshold)
 
-        if recognized_user and self.verifier_session():
+        if recognized_user and self.check_session():
             self.__warning_message("A user is already logged in.", "en")
         elif recognized_user:
             self.__user_logged_in = recognized_user
         
 
-    def connecter(self, seuil_minimal: float = 0.75, seuil_arret_recherche: float = 0.85):
+    def connecter(self, seuil_minimal: float = 0.75, seuil_arret_recherche: float = 0.85) :
         """
-            Affiche à l'écran un cadre autour de la carte et
-            connecte l'utilisateur si reconnu.
-
-            Paramètres:
-                * seuil_minimal (défaut: 0.75) : score minimum pour
-                    qu'une carte détectée soit considérée comme valide.
-                * seuil_arret_recherche (défaut: 0.85) : score pour
-                    qu'une carte détectée soit interprétée comme la bonne.
+        Connecte un utilisateur si un utilisateur reconnu est trouvé.
+        Dessine un carré autour de la carte de l'utilisateur reconnu.
+        
+        Paramètres:
+        -----------
+            seuil_minimal (float): Le seuil de confiance minimum pour la reconnaissance de l'utilisateur. Par défaut à 0.75.
+            seuil_arret_recherche (float): Le seuil de confiance à partir duquel la recherche d'un utilisateur s'arrête. Par défaut à 0.85.
+        
+        Retour:
+        -------
+            Aucun
         """
         if not self.__camera._is_open():
             return
         recognized_user = self.__connect_user(seuil_minimal, seuil_arret_recherche)
 
-        if recognized_user and self.verifier_session():
+        if recognized_user and self.check_session():
             self.__warning_message("Un utilisateur est déjà connecté.", "fr")
         elif recognized_user:
             self.__user_logged_in = recognized_user
 
 
-    def detect_card(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) -> MatLike:
+    def detect_card(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) -> MatLike :
         """
+        Detects a card using the camera.
+
+        Args:
+        -----
+            minimum_threshold (float): The minimum threshold for card detection. Defaults to 0.75.
+            search_stop_threshold (float): The threshold at which the search for a card should stop. Defaults to 0.85.
+
+        Returns:
+        --------
+            MatLike: The detected card image, or None if the camera is not open.
         """
         if not self.__camera._is_open():
             return None
@@ -60,67 +84,122 @@ class User_manager:
                                                     search_stop_threshold)
         return carte_reconnue
 
-    def detecter_carte(self, seuil_minimal: float = 0.75, seuil_arret_recherche: float = 0.85) -> MatLike:
+    def detecter_carte(self, seuil_minimal: float = 0.75, seuil_arret_recherche: float = 0.85) -> MatLike :
         """
-            Methode permettant de récupérer la carte détectée à l' écran.
-            Carte qui n est pas une carte déjà enregistrée.
+        Détecte une carte en utilisant la caméra.
 
-            Paramètres:
-                * seuil_minimal (défaut: 0.75) : score minimum pour
-                    qu'une carte détectée soit considérée comme valide.
-                * seuil_arret_recherche (défaut: 0.85) : score pour
-                    qu'une carte détectée soit interprétée comme la bonne.
+        Paramètres:
+        -----------
+            seuil_minimal (float): Le seuil minimum pour la détection de la carte. Par défaut, 0.75.
+            seuil_arret_recherche (float): Le seuil à partir duquel la recherche de la carte doit s'arrêter. Par défaut, 0.85.
+
+        Retour:
+        -------
+            MatLike: L'image de la carte détectée, ou None si la caméra n'est pas ouverte.
         """
         return self.detect_card(seuil_minimal, seuil_arret_recherche)
 
-    def deconnect(self) :
+    def disconnect(self) :
         """
+        Disconnects the user from the current session.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         self.__user_logged_in = None
 
-    def deconnecter(self):
+    def deconnecter(self) :
         """
-            Déconnecte la personne actuellement connectée.
+        Déconnecte l'utilisateur de la session en cours.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
-        self.deconnect()
+        self.disconnect()
 
     def check_session(self) -> bool :
         """
+        Check if a user session is active.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            bool: True if a user session is active, False otherwise.
         """
         return self.__user_logged_in is not None
 
     def verifier_session(self) -> bool :
         """
-            Indique si un utilisateur est déjà connecté.
+        Vérifie si une session utilisateur est active.
 
-            Retourne:
-                * True: Si une personne est connectée
-                * False: Sinon
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            bool: True si une session utilisateur est active, False sinon.
         """
         return self.check_session()
 
-    def get_logged_in_user(self) -> User:
+    def get_logged_in_user(self) -> User :
         """
-            Méthode qui retourne un object contenant:
-                - prenom de l'utilisateur
-                - nom de l'utilisateur
-        """
-        utilisateur: User = User
-        utilisateur.nom = self.__user_logged_in.last_name
-        utilisateur.prenom = self.__user_logged_in.first_name
-        utilisateur.carte = None
-        return utilisateur
+        Get the logged-in user.
 
-    def obtenir_utilisateur_connecte(self) -> User:
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            User: The logged-in user object.
         """
-            Méthode qui retourne un object contenant:
-                - prenom de l'utilisateur
-                - nom de l'utilisateur
+        user: User = User
+        user.nom = self.__user_logged_in.last_name
+        user.prenom = self.__user_logged_in.first_name
+        user.carte = None
+        return user
+
+    def obtenir_utilisateur_connecte(self) -> User :
+        """
+        Récupère l'utilisateur connecté.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            User: L'utilisateur connecté sous forme d'un objet.
         """
         return self.get_logged_in_user()
 
-    def create_user(self, first_name: str, last_name: str, carte: MatLike):
+    def create_user(self, first_name: str, last_name: str, carte: MatLike) :
         """
+        Create a new user with the given first name, last name, and card image.
+
+        Args:
+        -----
+            first_name (str): The first name of the user.
+            last_name (str): The last name of the user.
+            carte (MatLike): The card image linked to the user.
+
+        Returns:
+        --------
+            None
         """
         if self.verifier_session():
             self.__warning_message("A user is already logged in.", "en")
@@ -152,46 +231,67 @@ class User_manager:
             except Exception as e:
                 self.__error_message("[HTTP EXCEPTION]" + str(e), "en")
 
-    def creer_utilisateur(self, prenom: str, nom: str, carte: MatLike):
+    def creer_utilisateur(self, prenom: str, nom: str, carte: MatLike) :
         """
-            Créer un utilisateur avec les données renseignées en paramètres
+        Crée un nouvel utilisateur avec le prénom, le nom et l'image de la carte donnés.
 
-            Paramètres:
-                - prenom: son prénom
-                - nom: son nom de famille
-                - carte: l'image de sa carte (générée avec Robot.detecter_carte())
+        Paramètres:
+        -----------
+            prenom (str): Le prénom de l'utilisateur.
+            nom (str): Le nom de famille de l'utilisateur.
+            carte (MatLike): L'image de la carte liée à l'utilisateur.
+
+        Retour:
+        -------
+            Aucun
         """
         if self.verifier_session():
             self.__warning_message("Un utilisateur est déjà connecté")
             return
         elif carte is None:
-            self.__warning_message( "Création d'un utilisateur avec une carte invalide (=None)")
+            self.__warning_message("Création d'un utilisateur avec une carte invalide (=None)")
             return
         self.create_user(prenom, nom, carte)
 
     def delete_user(self):
-        """
-           Supprime l'utilisateur connecté.
-        """
-        if not self.verifier_session():
-            self.__warning_message("No user is logged in")
-            return
-        try:
-            id = self.__user_logged_in.id
-            response = requests.delete(f"{APP_BASE_URL}/api/users/{id}")
-            if response.status_code != 200:
-                self.__error_message("[HTTP ERROR]" + str(response.content), "en")
-            else:
-                self.deconnecter()
-                # Update les cartes des sessions chargées lors
-                #   de la construction de CardsTracker
-                self.__camera._updateUserCardsTracker(self.__webapp)
-        except Exception as e:
-            self.__error_message("[HTTP EXCEPTION]" + str(e), "en")
+            """
+            Deletes the current user.
+
+            Args:
+            -----
+                None
+
+            Returns:
+            --------
+                None
+            """
+            if not self.verifier_session():
+                self.__warning_message("No user is logged in")
+                return
+            try:
+                id = self.__user_logged_in.id
+                response = requests.delete(f"{APP_BASE_URL}/api/users/{id}")
+                if response.status_code != 200:
+                    self.__error_message("[HTTP ERROR]" + str(response.content), "en")
+                else:
+                    self.deconnecter()
+                    # Update les cartes des sessions chargées lors
+                    #   de la construction de CardsTracker
+                    self.__camera._updateUserCardsTracker(self.__webapp)
+            except Exception as e:
+                self.__error_message("[HTTP EXCEPTION]" + str(e), "en")
     
-    def supprimer_utilisateur(self):
+    def supprimer_utilisateur(self) :
         """
-            Supprime l'utilisateur connecté.
+        Supprime l'utilisateur actuel.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         if not self.verifier_session():
             self.__warning_message("Aucun utilisateur n'est connecté")
@@ -200,7 +300,7 @@ class User_manager:
     
     ### Private Methode ###
             
-    def __error_message(self, msg: str, lang: str = "fr"):
+    def __error_message(self, msg: str, lang: str = "fr") :
         if (lang.lower() == "fr") :
             print(f"\033[91mErreur: {msg}\033[00m", file=sys.stderr)
         elif (lang.lower() == "en") :
@@ -212,13 +312,13 @@ class User_manager:
         elif (lang.lower() == "en") :
             print(f"\033[33mWarning: {msg}\033[00m", file=sys.stderr)
     
-    def __connect_user(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) -> UserResponse:
+    def __connect_user(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) -> UserResponse :
         recognized_user, _ = self.__camera._detect_user(minimum_threshold, search_stop_threshold)
         return recognized_user
 
     APP_BASE_URL, APP_ADRESS, APP_PORT = [""] * 3
     @staticmethod
-    def load_env_file(path_file: str = '.env'):
+    def load_env_file(path_file: str = '.env') :
         global APP_BASE_URL, APP_ADRESS, APP_PORT
         load_dotenv(dotenv_path=Path(path_file))
         APP_BASE_URL = os.getenv('WEBAPP_BASE_URI')
