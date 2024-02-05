@@ -53,7 +53,7 @@ class Robot:
 
         self.attributs : AttributeDict = AttributeDict({"boutons": AttributeDict()})
 
-    def start_window_module(self, width, lenght) :
+    def start_window_module(self, width : int = 800, lenght : int = 600) :
         """
         Start the window module with the specified width and length.
 
@@ -78,7 +78,7 @@ class Robot:
         self.window = Fenetre(self.__emotion_dict, width, lenght)
         self.fenetre = self.window
 
-    def demarrer_module_fenetre(self, longueur, largeur) :
+    def demarrer_module_fenetre(self, longueur : int = 800, largeur : int = 600) :
         """
         Démarre le module fenêtre avec la longueur et la largeur spécifiées.
 
