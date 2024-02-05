@@ -55,6 +55,20 @@ class Robot:
 
     def start_window_module(self, width, lenght) :
         """
+        Start the window module with the specified width and length.
+
+        This method initializes the window module if it has not already been started.
+
+        Note that the webapp if you use it, must be started before the window module.
+
+        Args:
+        -----
+            width (int): The width of the window.
+            length (int): The length of the window.
+
+        Returns:
+        --------
+            None
         """
         if (self.window is not None) :
             self.__error_message("Window module has already been started.", "en")
@@ -66,9 +80,23 @@ class Robot:
 
     def demarrer_module_fenetre(self, longueur, largeur) :
         """
+        Démarre le module fenêtre avec la longueur et la largeur spécifiées.
+
+        Cette méthode initialise le module fenêtre si ce n'est pas déjà fait.
+
+        Notez que l'application web si vous l'utilisez, doit être démarré avant le module fenêtre.
+
+        Paramètres:
+        -----------
+            longueur (int): La longueur de la fenêtre.
+            largeur (int): La largeur de la fenêtre.
+
+        Retour:
+        -------
+            Aucun
         """
         if (self.window is not None) :
-            self.__error_message("Le module fenêtre est déjà démarrer.", "fr")
+            self.__error_message("Le module fenêtre est déjà démarré.", "fr")
             return
         if (self.__webapp is None) :
             self.__warning_message("L'application web doit être lancée avant de créer la fenêtre.", "fr")
@@ -76,6 +104,19 @@ class Robot:
     
     def start_AI_module(self) :
         """
+        Starts the AI module.
+
+        This method initializes the AI module if it has not already been started.
+        
+        Note that the environment variables OPENAI_API_KEY and OPENAI_API_ORG_ID must be set before starting the AI module.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         if (self.AI is not None) :
             self.__error_message("AI module has already been started.", "en")
@@ -84,21 +125,46 @@ class Robot:
             self.AI = ChatBot(list(self.__emotion_dict.keys()))
             self.IA = self.AI
         except :
-            self.__warning_message("Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before startin the AI module", "en")
+            self.__warning_message("Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before starting the AI module", "en")
     
     def demarrer_module_IA(self) :
         """
+        Démarre le module IA.
+
+        Cette méthode initialise le module IA si ce n'est pas déjà fait.
+        
+        Notez que les variables d'environnement OPENAI_API_KEY et OPENAI_API_ORG_ID doivent être définies avant de démarrer le module IA.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         if (self.AI is not None) :
-            self.__error_message("Le module IA est déjà démarrer.", "fr")
+            self.__error_message("Le module IA est déjà démarré.", "fr")
             return
         self.start_AI_module()
     
-    def start_camera_module(self) :
+    def start_camera_module(self):
         """
+        Starts the camera module.
+
+        This method initializes the camera module if it has not already been started.
+        Note that the window module must be started before this module.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         if (self.window is None) :
-            self.__warning_message("Window module must be start before this module.", "en")
+            self.__warning_message("Window module must be started before this module.", "en")
             return
         if (self.camera is not None) :
             self.__error_message("Camera module has already been started.", "en")
@@ -106,22 +172,45 @@ class Robot:
 
     def demarrer_module_camera(self) :
         """
+        Démarre le module caméra.
+
+        Cette méthode initialise le module caméra s'il n'a pas déjà été démarré.
+        Notez que le module fenêtre doit être démarré avant ce module.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         if (self.window is None) :
-            self.__warning_message("Le module fenetre doit être démarrer avant ce module.", "fr")
+            self.__warning_message("Le module fenêtre doit être démarré avant ce module.", "fr")
             return
         if (self.camera is not None) :
-            self.__error_message("Le module camera est déjà démarrer.", "fr")
+            self.__error_message("Le module caméra est déjà démarré.", "fr")
         self.start_camera_module()
     
-    def start_user_module(self) :
+    def start_user_module(self):
         """
+        Starts the user module.
+
+        Note that the webapp and the camerea module must be started before this module.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
-        if (self.__webapp is None) :
-            self.__warning_message("Webapp must be start before this module.", "en")
+        if (self.__webapp is None):
+            self.__warning_message("Webapp must be started before this module.", "en")
             return
-        if (self.camera is None) :
-            self.__warning_message("Camera module must be start before this module.", "en")
+        if (self.camera is None):
+            self.__warning_message("Camera module must be started before this module.", "en")
             return
         if (self.user is not None) :
             self.__error_message("User module has already been started.", "en")
@@ -131,21 +220,43 @@ class Robot:
 
     def demarrer_module_utilisateur(self) :
         """
+        Démarre le module utilisateur.
+
+        Notez que l'application web et le module caméra doivent être démarrés avant ce module.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         if (self.__webapp is None) :
             self.__warning_message("L'application web doit être lancée avant ce module.", "fr")
             return
         if (self.camera is None) :
-            self.__warning_message("Le module camera doit être démarrer avant ce module.", "fr")
+            self.__warning_message("Le module caméra doit être démarré avant ce module.", "fr")
             return
         if (self.user is not None) :
-            self.__error_message("Le module utilisateur est déjà démarrer.", "fr")
+            self.__error_message("Le module utilisateur est déjà démarré.", "fr")
         self.start_user_module()
 
     ### Robot Module Methode ###
     
     def start_webapp(self):
         """
+        Starts the web application.
+
+        This method starts the web application in a non-blocking way.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         self.__webapp = create_app(root_dir=os.path.dirname(os.path.abspath(__file__)))
         pid = os.fork()
@@ -155,48 +266,119 @@ class Robot:
 
     def demarrer_webapp(self):
         """
-            Cette méthode lance de manière non bloquante le serveur web qui s'occupe de la partie base de données.
+        Démarre l'application web.
+
+        Cette méthode démarre l'application web de manière non bloquante.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         self.start_webapp()
     
     def sleep(self, secondes: int) :
         """
+        Pause the execution of the robot for the specified number of seconds.
+
+        Args:
+        -----
+            secondes (int): The number of seconds to sleep.
+
+        Returns:
+        --------
+            None
         """
         time.sleep(secondes)
 
     def dort(self, secondes: int) :
         """
-            Le programme restera en attente le nombre de secondes passé en argument.
+        Met en pause l'exécution du robot pendant le nombre de secondes spécifié.
+
+        Paramètres:
+        ------------
+            secondes (int): Le nombre de secondes à attendre.
+
+        Retour:
+        -------
+            Aucun
         """
         self.sleep(secondes)
 
     def is_active(self) -> bool :
         """
+        Check if the robot is active.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            bool: True if the robot is active, False otherwise.
         """
         return self.__active
     
     def est_actif(self) -> bool :
         """
-            Retourne vrai (True) ou faux (False) pour savoir si le robot est toujours actif. \n
-            Peut être utilisé pour vérifier la sortie d'une boucle.
+        Vérifie si le robot est actif.
+
+        Paramètres:
+        ------------
+            Aucun
+
+        Retour:
+        -------
+            bool: True si le robot est actif, False sinon.
         """
         return self.is_active()
     
     def make_inactive(self) :
         """
+        Makes the robot inactive by setting the active attribute to False.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         self.__active = False
 
     def rendre_inactif(self) :
         """
-            Rend le robot inactif
+        Rend le robot inactif en définissant l'attribut actif sur False.
+
+        Paramètres:
+        ------------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         self.make_inactive()
     
     ### Robot Evenements ###
 
-    def add_events(self, key: str, name: str) :
+    def add_events(self, key: str, name: str):
         """
+        Add events to the robot events list.
+        See documentation for the list of possible keys.s
+
+        Args:
+        -----
+            key (str): The key of the event.
+            name (str): The name of the event.
+        
+        Returns:
+        --------
+            None
         """
         new = (key.lower(), name)
         if new not in self.events:
@@ -204,13 +386,31 @@ class Robot:
 
     def ajouter_evenement(self, touche: str, nom: str) :
         """
-            Ajoute à la liste des évènements, un évènement et la touche liée, un évènement peut avoir plusieurs touches. \n
-            Voir documentation pour la liste des touches possibles.
+        Ajoute des évènements à la liste des évènements du robot.
+        Voir la documentation pour la liste des touches possibles.
+
+        Paramètres:
+        ------------
+            touche (str): La touche de l'évènement.
+            nom (str): Le nom de l'évènement.
+        
+        Retour:
+        -------
+            Aucun
         """
         self.add_events(touche, nom)
 
-    def delete_events(self, name: str) :
+    def delete_events(self, name: str):
         """
+        Delete events with the given name from the list of events.
+
+        Args:
+        -----
+            name (str): The name of the events to be deleted.
+
+        Returns:
+        --------
+            None
         """
         for e in self.events:
             if e[1] == name:
@@ -218,23 +418,57 @@ class Robot:
 
     def supprimer_evenement(self, nom: str) :
         """
-            Supprime l'évènement passé en paramètre de la liste des évènements.
+        Supprime les évènements ayant le nom donné de la liste des évènements.
+
+        Paramètres:
+            nom (str): Le nom des évènements à supprimer.
+
+        Retour:
+        -------
+            Aucun
         """
         self.delete_events(nom)
     
     def check_events(self) -> List[str] :
         """
+        Check all the events and return a list of detected events.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            A list of strings representing the events.
         """
         return Input.check(self.events, self)
 
     def verifier_evenements(self) -> List[str] :
         """
-            Vérifie chaque évènement et retourne un tableau avec les évènements détectés.
+        Vérifie tous les évènements et renvoie une liste d'évènements détectés.
+
+        Paramètres:
+        ------------
+            Aucun
+
+        Retour:
+        -------
+            Une liste de chaînes de caractères représentant les évènements.
         """
         return self.check_events()
 
-    def deactivate(self) :
+    def deactivate(self):
         """
+        Deactivates the robot by stopping the camera and the window and set the active attribute to False.
+        A robot that has been deactivated will not be able to perform any action.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
         """
         try:
             if (self.camera is not None) :
@@ -246,8 +480,16 @@ class Robot:
 
     def desactiver(self) :
         """
-            Sert à fermer correctement la fenêtre (et la bibliothèque graphique), le robot devient inactif. \n
-            Combiné avec un évènement (par exemple appuyer sur une touche ou un bouton) cette méthode peut etre utilisée pour arrêter le programme.
+        Désactive le robot en arrêtant la caméra et la fenêtre et définit l'attribut actif à False.
+        Un robot qui a été désactivé ne pourra pas effectuer d'action.
+
+        Paramètres:
+        ------------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
         """
         self.deactivate()
 
