@@ -372,7 +372,7 @@ class Robot:
         """
         self.add_event(touche, nom)
 
-    def delete_events(self, name: str):
+    def delete_event(self, name: str):
         """
         Delete events with the given name from the list of events.
 
