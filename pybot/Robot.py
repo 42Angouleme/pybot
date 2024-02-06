@@ -336,37 +336,9 @@ class Robot:
         """
         return self.is_active()
     
-    def make_inactive(self) :
-        """
-        Makes the robot inactive by setting the active attribute to False.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            None
-        """
-        self.__active = False
-
-    def rendre_inactif(self) :
-        """
-        Rend le robot inactif en définissant l'attribut actif sur False.
-
-        Paramètres:
-        ------------
-            Aucun
-
-        Retour:
-        -------
-            Aucun
-        """
-        self.make_inactive()
-    
     ### Robot Evenements ###
 
-    def add_events(self, key: str, name: str):
+    def add_event(self, key: str, name: str):
         """
         Add events to the robot events list.
         See documentation for the list of possible keys.s
@@ -398,7 +370,7 @@ class Robot:
         -------
             Aucun
         """
-        self.add_events(touche, nom)
+        self.add_event(touche, nom)
 
     def delete_events(self, name: str):
         """
