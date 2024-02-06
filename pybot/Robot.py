@@ -474,7 +474,17 @@ class Robot:
             if (self.camera is not None) :
                 self.camera._stop()
             self.window._stop()
-            self.__active = False 
+            self.__active = False
+
+            self.AI = None
+            self.camera = None
+            self.window = None
+            self.user = None
+
+            self.IA = self.AI
+            self.fenetre = self.window
+            self.utilisateur = self.user
+
         except AttributeError:
             pass
 

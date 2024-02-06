@@ -4,7 +4,7 @@ robot = Robot()
 
 robot.demarrer_module_fenetre()
 
-robot.fenetre.changer_titre("bonjour,pybot!") #  Erreur
+robot.fenetre.changer_titre("bonjour,pybot!")
 robot.fenetre.ouvrir_fenetre()
 robot.fenetre.changer_titre("bonjour,pybot!")
 robot.fenetre.actualiser_affichage()
