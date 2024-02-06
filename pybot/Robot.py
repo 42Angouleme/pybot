@@ -100,7 +100,7 @@ class Robot:
             return
         if (self.__webapp is None) :
             self.__warning_message("L'application web doit être lancée avant de créer la fenêtre.", "fr")
-        self.start_window_module(longueur, largeur)
+        self.start_window_module()
     
     def start_AI_module(self) :
         """
