@@ -53,7 +53,7 @@ class Robot:
 
         self.attributs : AttributeDict = AttributeDict({"boutons": AttributeDict()})
 
-    def start_window_module(self, width : int = 800, lenght : int = 600) :
+    def start_window_module(self) :
         """
         Start the window module with the specified width and length.
 
@@ -75,10 +75,10 @@ class Robot:
             return
         if (self.__webapp is None) :
             self.__warning_message("Webapp should be start before the window module.", "en")
-        self.window = Fenetre(self.__emotion_dict, width, lenght)
+        self.window = Fenetre(self.__emotion_dict)
         self.fenetre = self.window
 
-    def demarrer_module_fenetre(self, longueur : int = 800, largeur : int = 600) :
+    def demarrer_module_fenetre(self) :
         """
         Démarre le module fenêtre avec la longueur et la largeur spécifiées.
 
@@ -164,7 +164,7 @@ class Robot:
             None
         """
         if (self.window is None) :
-            self.__warning_message("Window module must be started before this module.", "en")
+            self.__warning_message("Window module must be started and the window must be opened before this module.", "en")
             return
         if (self.camera is not None) :
             self.__error_message("Camera module has already been started.", "en")
@@ -186,7 +186,7 @@ class Robot:
             Aucun
         """
         if (self.window is None) :
-            self.__warning_message("Le module fenêtre doit être démarré avant ce module.", "fr")
+            self.__warning_message("Le module fenêtre doit être démarré et la fenêtre ouverte avant ce module.", "fr")
             return
         if (self.camera is not None) :
             self.__error_message("Le module caméra est déjà démarré.", "fr")

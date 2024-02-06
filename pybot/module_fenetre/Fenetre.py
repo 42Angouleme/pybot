@@ -9,7 +9,7 @@ import os, sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'  # need to be declared before to import pygame
 
 class Fenetre:
-    def __init__(self, emotion_dict : dict[str, str], width: int = 800, height: int = 600) :
+    def __init__(self, emotion_dict : dict[str, str]) :
         self.__title = "Pybot"
         self.__is_fullscreen : bool = False
         # main surface
@@ -26,10 +26,8 @@ class Fenetre:
         self.__color : pg.time.Clock = pg.time.Clock()
         self.__fps : float = 30
         self.__emotion_dict : dict[str, str] = emotion_dict
-        pg.init()
-        self.__surface = pg.display.set_mode((width, height))
     
-    def open_window(self) :
+    def open_window(self, width: int = 800, height: int = 600) :
         """
         Opens the window.
 
@@ -41,10 +39,12 @@ class Fenetre:
         --------
             None
         """
+        pg.init()
+        self.__surface = pg.display.set_mode((width, height))
         pg.display.set_caption(self.__title)
         self.__interface = Interface(self.__surface)
         
-    def ouvrir_fenetre(self):
+    def ouvrir_fenetre(self, longueur: int = 800, largeur: int = 600) :
         """
         Ouvre la fenêtre.
 
@@ -56,7 +56,7 @@ class Fenetre:
         -------
             Aucun
         """
-        self.open_window()
+        self.open_window(longueur, largeur)
     
     def change_background_color(self, color: Couleur) :
         """
