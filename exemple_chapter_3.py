@@ -6,7 +6,7 @@ robot.demarrer_webapp()
 long = 840
 haut = 300
 
-robot.demarrer_module_fenetre(long, haut)
+robot.demarrer_module_fenetre()
 
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.zone = "menu"
@@ -21,7 +21,7 @@ robot.attributs.paroles = [
 ]
 
 def initialisation_fenetre():
-    robot.fenetre.ouvrir_fenetre()
+    robot.fenetre.ouvrir_fenetre(long, haut)
     robot.fenetre.changer_titre("Bonjour boutons!")
     robot.fenetre.changer_couleur_fond(Couleur.ROSE)
 

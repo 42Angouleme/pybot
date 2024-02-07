@@ -9,13 +9,13 @@ mettre_a_jour_affichage = True
 largeur_fenetre = 1200
 hauteur_fenetre = 500
 
-robot.demarrer_module_fenetre(largeur_fenetre, hauteur_fenetre)
+robot.demarrer_module_fenetre()
 robot.demarrer_module_camera()
 robot.demarrer_module_utilisateur()
 
 # --- FENETRE ---
 # - Preparation -
-robot.fenetre.ouvrir_fenetre()
+robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
 robot.fenetre.changer_couleur_fond(Couleur.NOIR)
 
 # - Boucle -

@@ -270,7 +270,7 @@ class Fenetre:
         except AttributeError:
             self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
     
-    def display_text(self, text, position_x: int = 0, position_y: int = 0, size: int = 16, color: Couleur = (0, 0, 0)) :
+    def display_text(self, text : str, position_x: int = 0, position_y: int = 0, size: int = 16, color: Couleur = (0, 0, 0)) :
         """
         Display text on the window.
 
@@ -291,7 +291,7 @@ class Fenetre:
         except AttributeError:
             self.__error_message("the window hasn't been opened.", "en")
     
-    def afficher_texte(self, texte, position_x: int = 0, position_y: int = 0, taille: int = 16, couleur: Couleur = (0, 0, 0)) :
+    def afficher_texte(self, texte : str, position_x: int = 0, position_y: int = 0, taille: int = 16, couleur: Couleur = (0, 0, 0)) :
         """
         Affiche du texte dans la fenêtre.
 

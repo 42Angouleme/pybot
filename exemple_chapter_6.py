@@ -10,13 +10,13 @@ largeur_fenetre = 1200
 hauteur_fenetre = 500
 discussion_commencer = False
 
-robot.demarrer_module_fenetre(largeur_fenetre, hauteur_fenetre)
+robot.demarrer_module_fenetre()
 robot.demarrer_module_IA()
 
 
 # --- FENETRE ---
 # - Preparation -
-robot.fenetre.ouvrir_fenetre()
+robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
 robot.window.change_background_color(Couleur.NOIR)
 robot.window.changer_titre("Bonjour Robot!")
 

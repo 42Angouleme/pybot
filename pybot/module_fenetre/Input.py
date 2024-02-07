@@ -67,6 +67,7 @@ class Input:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     robot.deactivate()
+                    exit()
                 if event.type == pg.KEYDOWN:
                     for e in events:
                         k = keys[e[0]]
@@ -81,7 +82,8 @@ class Input:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     robot.deactivate()
-                    return "stop"
+                    exit()
+                    #return "stop"
                 if event.type == pg.KEYDOWN:
                     user_texte += event.unicode
                 if event.type == pg.MOUSEBUTTONDOWN :
