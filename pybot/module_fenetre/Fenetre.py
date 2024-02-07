@@ -33,7 +33,8 @@ class Fenetre:
 
         Args:
         -----
-            None
+            width (int): The width of the window. Defaults to 800.
+            height (int): The height of the window. Defaults to 600.
 
         Returns:
         --------
@@ -44,19 +45,20 @@ class Fenetre:
         pg.display.set_caption(self.__title)
         self.__interface = Interface(self.__surface)
         
-    def ouvrir_fenetre(self, longueur: int = 800, largeur: int = 600) :
+    def ouvrir_fenetre(self, longueur: int = 800, hauteur: int = 600) :
         """
         Ouvre la fenêtre.
 
         Paramètres:
         ----------
-            Aucun
+            longueur (int): La largeur de la fenêtre. Par défaut, 800.
+            hauteur (int): La hauteur de la fenêtre. Par défaut, 600.
 
         Retour:
         -------
             Aucun
         """
-        self.open_window(longueur, largeur)
+        self.open_window(longueur, hauteur)
     
     def change_background_color(self, color: Couleur) :
         """

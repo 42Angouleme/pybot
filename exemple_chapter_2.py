@@ -13,7 +13,7 @@ robot.fenetre.ouvrir_fenetre()
 robot.fenetre.changer_titre("Bonjour!")
 
 def initialisation_evenements():
-    print("Creation des eveneemnts sur les tocuhes <ECHAP> ou <C>")
+    print("Creation des eveneemnts sur les touches <ECHAP> ou <C>")
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("C", "carotte")
 # ----------------------------------------
