@@ -100,9 +100,9 @@ class User_manager:
         """
         return self.detect_card(seuil_minimal, seuil_arret_recherche)
 
-    def disconnect(self) :
+    def logout(self) :
         """
-        Disconnects the user from the current session.
+        Logout the user from the current session.
 
         Args:
         -----
@@ -126,7 +126,7 @@ class User_manager:
         -------
             Aucun
         """
-        self.disconnect()
+        self.logout()
 
     def check_session(self) -> bool :
         """

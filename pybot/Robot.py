@@ -46,7 +46,7 @@ class Robot:
             "Joie" : "/images/emotions/joie.png",
             "Peur" : "/images/emotions/peur.png",
             "Reflexion" : "/images/emotions/reflexion.png",
-            "Soulagement" : "/images/emotions/soulagment.png",
+            "Soulagement" : "/images/emotions/soulagement.png",
             "Surprise" : "/images/emotions/surprise.png",
             "Tristesse" : "/images/emotions/tristesse.png",
         }
