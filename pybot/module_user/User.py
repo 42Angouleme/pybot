@@ -188,7 +188,7 @@ class User_manager:
         """
         return self.get_logged_in_user()
 
-    def create_user(self, first_name: str, last_name: str, carte: MatLike) :
+    def create_user(self, first_name: str, last_name: str, card: MatLike) :
         """
         Create a new user with the given first name, last name, and card image.
 
@@ -196,7 +196,7 @@ class User_manager:
         -----
             first_name (str): The first name of the user.
             last_name (str): The last name of the user.
-            carte (MatLike): The card image linked to the user.
+            card (MatLike): The card image linked to the user.
 
         Returns:
         --------
