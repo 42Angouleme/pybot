@@ -145,7 +145,7 @@ class Camera :
         """
         # Handle first launch of camera with 0 frame
         if self.__frame is None:
-            return []
+            return [], []
         frame, user_detected = self.__card_tracker.get_detected_user(
                 self.__frame,
                 min_threshold,
