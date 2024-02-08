@@ -205,10 +205,10 @@ class User_manager:
         if self.verifier_session():
             self.__warning_message("A user is already logged in.", "en")
             return
-        elif carte is None:
+        elif card is None:
             self.__warning_message("Creation of an user with an invalid card (=None)")
             return
-        pg.image.save(carte, ".tmp_card.png")
+        pg.image.save(card, ".tmp_card.png")
         with open(".tmp_card.png", "rb") as img:
             files = {
                 "picture": ("picture.png", img, "image/png"),
@@ -275,7 +275,7 @@ class User_manager:
                 if response.status_code != 200:
                     self.__error_message("[HTTP ERROR]" + str(response.content), "en")
                 else:
-                    self.deconnecter()
+                    self.logout()
                     # Update les cartes des sessions chargées lors
                     #   de la construction de CardsTracker
                     self.__camera._updateUserCardsTracker(self.__webapp)
