@@ -26,18 +26,15 @@ robot = Robot()
 robot.demarrer_module_fenetre()
 
 robot.fenetre.ouvrir_fenetre(1200, 900)
-robot.fenetre.changer_titre("Nouveau titre")
-robot.fenetre.changer_couleur_fond(Couleur.BLANC)
-robot.fenetre.afficher_fond()
-robot.ajouter_evenement("echap", "sortir")
 
-robot.fenetre.dessiner_rectangle(100, 50, 100, 100, Couleur.BLEU_CIEL)
-robot.fenetre.afficher_texte("Bonjour", 100, 100, 20, Couleur.NOIR)
-#robot.fenetre.afficher_image("images/photo.png", 100, 100) # à remplacer par le chemin de votre image
+boutons = robot.attributs.boutons
+boutons.quitter = robot.fenetre.creer_bouton(100, 100, 100, 100, Couleur.BLANC)
+boutons.quitter.ajouter_texte("Quitter", 10, 10, 20, Couleur.NOIR)
 
-while robot.est_actif() :
-    evenement = robot.verifier_evenements()
-    if "sortir" in evenement:
+while robot.est_actif():
+    boutons = robot.attributs.boutons
+    if boutons.quitter.est_actif():
         robot.desactiver()
-        break # Sortie de la boucle
+        break # Sort de la boucle
+    boutons.quitter.afficher()
     robot.fenetre.actualiser_affichage()

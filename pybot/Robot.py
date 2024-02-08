@@ -51,7 +51,7 @@ class Robot:
             "Tristesse" : "/images/emotions/tristesse.png",
         }
 
-        self.attributs : AttributeDict = AttributeDict({"boutons": AttributeDict()})
+        self.attributs : AttributeDict = AttributeDict({"boutons": AttributeDict(), "zones_de_texte": AttributeDict()})
 
     def start_window_module(self) :
         """
@@ -163,7 +163,7 @@ class Robot:
         --------
             None
         """
-        if (self.window is None) :
+        if (self.window is None or self.fenetre._get_surface() is None) :
             self.__warning_message("Window module must be started and the window must be opened before this module.", "en")
             return
         if (self.camera is not None) :
@@ -447,15 +447,6 @@ class Robot:
                 self.camera._stop()
             self.window._stop()
             self.__active = False
-
-            self.AI = None
-            self.camera = None
-            self.window = None
-            self.user = None
-
-            self.IA = self.AI
-            self.fenetre = self.window
-            self.utilisateur = self.user
 
         except AttributeError:
             pass

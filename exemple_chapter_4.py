@@ -7,7 +7,6 @@ long = 1200
 haut = 1000
 
 robot.demarrer_module_fenetre()
-robot.demarrer_module_camera()
 
 robot.attributs.afficher_camera = False
 robot.attributs.afficher_photo = False
@@ -15,6 +14,7 @@ robot.attributs.mettre_a_jour_affichage = True
 
 def initialisation_fenetre():
     robot.fenetre.ouvrir_fenetre(long, haut)
+    robot.demarrer_module_camera()
     robot.fenetre.changer_titre("Bonjour camera!")
     robot.fenetre.changer_couleur_fond(Couleur.NOIR)
 

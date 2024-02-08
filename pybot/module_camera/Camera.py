@@ -90,7 +90,7 @@ class Camera :
         -------
             Aucun
         """
-        self.prendre_photo(nom_fichier)
+        self.take_picture(nom_fichier)
     
     def apply_filter(self, file_path: str, filter_name: str):
         """
