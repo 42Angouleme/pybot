@@ -399,7 +399,7 @@ class Robot:
         -------
             Aucun
         """
-        self.delete_events(nom)
+        self.delete_event(nom)
     
     def check_events(self) -> List[str] :
         """
