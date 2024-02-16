@@ -17,8 +17,8 @@ robot.demarrer_module_IA()
 # --- FENETRE ---
 # - Preparation -
 robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
-robot.window.change_background_color(Couleur.NOIR)
-robot.window.changer_titre("Bonjour Robot!")
+robot.fenetre.change_background_color(Couleur.NOIR)
+robot.fenetre.changer_titre("Bonjour Robot!")
 
 # - Boucle -
 def boucle_fenetre():
@@ -65,15 +65,15 @@ def boucle_boutons():
             bouton_question.ajouter_texte("Arreter la discussion")
         else:
             bouton_question.ajouter_texte("Poser question")
-            robot.AI.arreter_discussion()
+            robot.IA.arreter_discussion()
         mettre_a_jour_affichage = True
     if bouton_stop.est_actif():
         robot.desactiver()
     if discussion_commencer and text_area.est_actif():
         texte_utilisateur = text_area.ecrire(robot)
-        réponse = robot.AI.poser_question(texte_utilisateur)
+        réponse = robot.IA.poser_question(texte_utilisateur)
         print(réponse)
-        emotion = robot.AI.obtenir_emotion(réponse)
+        emotion = robot.IA.obtenir_emotion(réponse)
         image = robot.fenetre.obtenir_image_emotion(emotion)
         robot.fenetre.afficher_image(image, 300, 300)
 

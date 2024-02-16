@@ -92,7 +92,7 @@ class Camera :
         """
         self.take_picture(nom_fichier)
     
-    def apply_filter(self, file_path: str, filter_name: str):
+    def apply_filter_to(self, file_path: str, filter_name: str):
         """
         Apply a filter to the given photo.
         See documentation for the complete list of filters: https://42angouleme.github.io/ref/
@@ -108,7 +108,7 @@ class Camera :
         """
         self.__filters.apply(file_path, filter_name)
     
-    def appliquer_filtre(self, chemin_fichier: str, nom_filtre: str) :
+    def appliquer_filtre_a(self, chemin_fichier: str, nom_filtre: str) :
         """
         Applique un filtre a la photo donnée.
         Consultez la documentation pour la liste complète des filtres : https://42angouleme.github.io/ref/
@@ -122,7 +122,7 @@ class Camera :
         -------
             Aucun
         """
-        self.apply_filter(chemin_fichier, nom_filtre)
+        self.apply_filter_to(chemin_fichier, nom_filtre)
     
     ### Private Methode ###
 

@@ -10,7 +10,7 @@ class Filtres:
         image_path = os.getcwd() + file_path
         image = cv2.imread(image_path)
         if image is None:
-            print(f"\033[91mErreur: Il faut une image correcte pour pouvoir appliquer un filtre.\033[00m")
+            print(f"\033[91mErreur: Image non trouvé ou ayant une extension autre que jpg et png.\033[00m")
             return None
         filtered_image = None
         if filter_name == "cartoon":
@@ -30,7 +30,7 @@ class Filtres:
         elif filter_name == "vernis":
             filtered_image = self.vernis(image)
         if filtered_image is None:
-            print(f"\033[91mErreur: Il faut un nom de filtre correct.\033[00m")
+            print(f"\033[91mErreur: Filtre inconnu, référez-vous à la liste proposée dans la documentation.\033[00m")
             return None
         cv2.imwrite(image_path, filtered_image)
 
