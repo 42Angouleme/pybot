@@ -6,11 +6,14 @@ robot = Robot()
 
 long = 1024
 haut = 800
-robot.creer_fenetre(long, haut)
-robot.changer_titre("Bonjour!")
+
+robot.demarrer_module_fenetre()
+
+robot.fenetre.ouvrir_fenetre(long, haut)
+robot.fenetre.changer_titre("Bonjour!")
 
 def initialisation_evenements():
-    print("Creation des eveneemnts sur les tocuhes <ECHAP> ou <C>")
+    print("Creation des eveneemnts sur les touches <ECHAP> ou <C>")
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("C", "carotte")
 # ----------------------------------------
@@ -19,7 +22,7 @@ def initialisation_evenements():
 def boucle_evenements():
     evenements = robot.verifier_evenements()
     if "stop" in evenements:
-        robot.fermer_fenetre()
+        robot.desactiver()
     elif "carotte" in evenements:
         print("Suppression de l' évenement de la touche <C>")
         robot.supprimer_evenement("carotte")
@@ -38,4 +41,4 @@ if __name__ == '__main__':
     initialisation_evenements()
     while robot.est_actif():
         boucle_evenements()
-        robot.actualiser_affichage()
+        robot.fenetre.actualiser_affichage()
