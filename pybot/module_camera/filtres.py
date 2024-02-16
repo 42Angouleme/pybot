@@ -10,7 +10,7 @@ class Filtres:
         image_path = os.getcwd() + file_path
         image = cv2.imread(image_path)
         if image is None:
-            print(f"\033[91mErreur: Image non trouvé ou ayant une extension autre que jpg et png.\033[00m")
+            print(f"\033[91mErreur: Image non trouvée ou ayant une extension autre que jpg et png.\033[00m")
             return None
         filtered_image = None
         if filter_name == "cartoon":
