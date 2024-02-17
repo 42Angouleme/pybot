@@ -6,7 +6,10 @@ from langchain.chains import ConversationChain
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain.prompts.prompt import PromptTemplate
 
+from .. import ensure
+
 class ChatBot:
+
     def __init__(self, emotion_list : list[str]) :
         """
             Set connection with AI API (ChatGpt 3.5 turbo)
@@ -15,7 +18,7 @@ class ChatBot:
         env_file = find_dotenv(".env")
         load_dotenv(env_file)
         if (os.getenv("OPENAI_API_KEY") == None or os.getenv("OPENAI_API_ORG_ID") == None) :
-            self.__error_message("OPENAI_API_KEY or OPENAI_API_ORG_ID are missing from the environment.", "en")
+            ensure.err("OPENAI_API_KEY or OPENAI_API_ORG_ID are missing from the environment.", "en")
             raise Exception("")
         self.__chatGPT : ChatOpenAI = None
         self.__memory : ConversationSummaryBufferMemory = None
@@ -23,6 +26,7 @@ class ChatBot:
         self.__conversation : ConversationChain = None
         self.__emotion_list : list[str] = emotion_list
 
+    @ensure.no_conversation("en")
     def start_conversation(self):
         """
         Starts a conversation with the robot.
@@ -43,10 +47,6 @@ class ChatBot:
         --------
             None
         """
-        if (self.__chatGPT is not None):
-            self.__error_message("Another discussion is currently underway.", "en")
-            return
-
         self.__chatGPT = ChatOpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_API_ORG_ID"), model_name="gpt-3.5-turbo")
         self.__memory = None
         self.__template = """
@@ -64,6 +64,7 @@ class ChatBot:
         PROMPT = PromptTemplate(input_variables=["history", "input"], template=self.__template)
         self.__conversation = ConversationChain(llm=self.__chatGPT, prompt=PROMPT)
 
+    @ensure.no_conversation("fr")
     def demarrer_discussion(self):
         """
         Démarre une discussion avec le robot.
@@ -80,9 +81,6 @@ class ChatBot:
         -------
             Aucun.
         """
-        if (self.__chatGPT is not None):
-            self.__error_message("Une autre discussion est actuellement en cours.", "fr")
-            return
         self.start_conversation()
 
     def stop_conversation(self) :
@@ -123,6 +121,8 @@ class ChatBot:
         """
         self.stop_conversation()
 
+
+    @ensure.conversation("en")
     def ask_question(self, question: str) -> str:
         """
         Ask a question to the robot and get a response.
@@ -137,15 +137,13 @@ class ChatBot:
         --------
             str: The response from the robot.
         """
-        if (self.__chatGPT is None) :
-            self.__error_message("No conversation has been started with the robot.", "en")
-            return
         if (question is None) :
-            self.__error_message("question is empty (=None).")
-            return
+            ensure.msg["en"]["no_questoin"]
+            return ''
         completion = self.__conversation.predict(input=question)
         return completion
-        
+
+    @ensure.conversation("fr")
     def poser_question(self, question : str) -> str :
         """
         Pose une question au robot et retourne la réponse.
@@ -160,15 +158,14 @@ class ChatBot:
         --------
             str: La réponse du robot à la question posée.
         """
-        if (self.__chatGPT is None) :
-            self.__error_message("Aucune conversation n'a été commencé avec le robot.", "fr")
-            return
         if (question is None) :
-            self.__error_message("question est vide (=None).")
+            ensure.msg['fr']['no_question']
             return
             
         return self.ask_question(question)
 
+
+    @ensure.conversation("en")
     def create_conversation_history(self) -> ConversationSummaryBufferMemory:
         """
         Create a new conversation history (memory of robot's conversation with user).
@@ -183,11 +180,9 @@ class ChatBot:
         --------
             ConversationSummaryBufferMemory: The newly created conversation history.
         """
-        if (self.__chatGPT is None) :
-            self.__error_message("No conversation has been started with the robot.", "en")
-            return
         return ConversationSummaryBufferMemory(llm=self.__chatGPT, max_token_limit=256)
-    
+
+    @ensure.conversation("fr")
     def creer_historique_conversation(self) -> ConversationSummaryBufferMemory:
         """
         Crée un nouvel historique de conversation.
@@ -202,11 +197,9 @@ class ChatBot:
         -------
             ConversationSummaryBufferMemory: L'historique de conversation créé.
         """
-        if (self.__chatGPT == None) :
-            self.__error_message("Aucune conversation n'a été commencé avec le robot.", "fr")
-            return
         return self.create_conversation_history()
 
+    @ensure.conversation("en")
     def load_history(self, conversation_history: ConversationSummaryBufferMemory | None = None):
         """
         Load conversation history into the robot's memory.
@@ -225,12 +218,10 @@ class ChatBot:
         --------
         None
         """
-        if (self.__chatGPT is None) :
-            self.__error_message("No conversation has been started with the robot.", "en")
-            return
         self.__memory = conversation_history
         self.__conversation.memory = self.__memory
-    
+
+    @ensure.conversation("fr")
     def charger_historique(self, historique_de_conversation : ConversationSummaryBufferMemory | None = None):
         """
         Charge l'historique de la conversation dans la mémoire du robot.
@@ -249,11 +240,9 @@ class ChatBot:
         --------
             None
         """
-        if (self.__chatGPT == None) :
-            self.__error_message("Aucune conversation n'a été commencée avec le robot.", "fr")
-            return
         self.load_history(historique_de_conversation)
-    
+
+    @ensure.conversation("en")
     def delete_history(self):
         """
         Deletes the conversation history.
@@ -270,12 +259,10 @@ class ChatBot:
         --------
             None
         """
-        if (self.__chatGPT is None) :
-            self.__error_message("No conversation has been started with the robot.", "en")
-            return
         self.__memory = None
         self.__conversation.memory = None
-    
+
+    @ensure.conversation("fr")
     def supprimer_historique(self):
         """
         Supprime l'historique de la conversation.
@@ -292,9 +279,6 @@ class ChatBot:
         --------
             None
         """
-        if(self.__chatGPT == None) :
-            self.__error_message("Aucune conversation n'a été commencée avec le robot.", "fr")
-            return
         self.delete_history()
     
     def get_current_conversation_history(self) -> ConversationSummaryBufferMemory :
@@ -338,8 +322,8 @@ class ChatBot:
             str: The emotion associated with the sentence. Returns 'Neutre' if no match is found.
         """
         if (sentence is None) :
-            self.__error_message("sentence is empty (=None).")
-            return
+            ensure.msg['en']["is_empty"]("sentence")
+            return ''
         choices_str = ", ".join(self.__emotion_list)
         #openai.api_key = os.getenv("OPENAI_API_KEY")
         #openai.organization = os.getenv("OPENAI_API_ORG_ID")
@@ -374,17 +358,11 @@ class ChatBot:
             str: L'émotion associée à la phrase. Renvoie 'Neutre' si aucune correspondance n'est trouvée.
         """
         if (phrase is None) :
-            self.__error_message("phrase est vide (=None).")
-            return
+            ensure.msg['fr']["is_empty"]('La phrase')
+            return ''
         return self.get_emotion(phrase)
 
     ### Private Methode ###
-
-    def __error_message(self, msg: str, lang: str = "fr"):
-        if (lang.lower() == "fr") :
-            print(f"\033[91mErreur: {msg}\033[00m", file=sys.stderr)
-        elif (lang.lower() == "en") :
-            print(f"\033[91mError: {msg}\033[00m", file=sys.stderr)
 
     def _change_preprompt(self, new_preprompt : str) :
         """
