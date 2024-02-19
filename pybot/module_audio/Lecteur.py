@@ -67,26 +67,60 @@ class Lecteur:
 
     @property
     def lecture_en_cours(self) -> bool:
+        """
+        `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`
+        """
         return Lecteur.__reading_in_progress
 
     @thread
     def charger_voix(self, voix: VoiceKey = default_voice_key):
+        """
+        Charge une voix qui pourra ensuite être utilisée pour parler.
+
+        Paramètres:
+        ----------
+            voix (str): Le nom de la voix à charger.
+
+        Retour:
+        -------
+            Aucun
+        """
         print(f"Chargement de la voix '{voix}'...")
         voice_path, loaded_event, voice = self._voices[voix]
         if voice is not None:
             print(f"La voix '{voix}' était déjà chargée...")
         self._voices[voix][2] = PiperVoice.load(voice_path)
         loaded_event.set()
-        if self.voix_choisie is None:
-            self.utiliser_voix(voix)
         print(f"Voix {voix} chargée.")
 
-    def utiliser_voix(self, voix: VoiceKey):
+    def utiliser_voix(self, voix: VoiceKey) -> None:
+        """
+        Utilise une voix, pour qu'elle soit ensuite utilisée par la fonction `dire`. Il faut penser à charger cette voix en appelant la fonction `charger_voix` avant d'appeler `dire`.
+
+        Paramètres:
+        ----------
+            voix (str): Le nom de la voix à charger.
+
+        Retour:
+        -------
+            Aucun
+        """
         print(f"Choix de la voix {voix}...")
         self.voix_choisie = voix
 
     @thread
-    def lire_fichier_audio(self, chemin: str):
+    def lire_fichier_audio(self, chemin: str) -> None:
+        """
+        Lire un fichier audio.
+
+        Paramètres:
+        ----------
+            chemin (str): Le chemin complet du fichier audio.
+
+        Retour:
+        -------
+            Aucun
+        """
         if Lecteur.__playing_audio_file:
             warn(
                 f"Je suis déjà en lire un fichier audio, je ne peux pas lire 2 fichiers audio en même temps."
@@ -112,7 +146,20 @@ class Lecteur:
         Lecteur.__playing_audio_file = False
 
     @thread
-    def parler_dans_fichier(self, voix: VoiceKey, text: str, chemin: str):
+    def parler_dans_fichier(self, voix: VoiceKey, texte: str, chemin: str) -> bool:
+        """
+        Transforme le texte en fichier audio et l'enregistre au chemin spécifié. Il faut au préalable avoir appelé la fonction `charger_voix` avec cette même voix en paramètre.
+
+        Paramètres:
+        ----------
+            voix (str): Le nom de la voix à utiliser.
+            texte (str): Le texte à synthétiser.
+            chemin (str): Le chemin où enregistrer le fichier audio.
+
+        Retour:
+        -------
+            `False` si un problème est survenu, sinon `True`
+        """
         timeout = 10
         loaded_event = self._voices[voix][1]
         # If voice is not loaded after a few seconds, abort
@@ -121,22 +168,37 @@ class Lecteur:
             warn(
                 f"La voix choisie ({voix}) n'a pas été charger, je ne peux pas préparer la lecture."
             )
-            return
+            return False
 
         voice = self._voices[voix][2]
 
         # Open file for writing
         with wave.open(chemin, "wb") as wav_file:
             # Generate voice from text
-            voice.synthesize(text, wav_file)
+            voice.synthesize(texte, wav_file)
+
+        return True
 
     @thread
-    def dire(self, text: str):
+    def dire(self, texte: str) -> bool:
+        """
+        Récite le texte donné en paramètre avec une voix humaine.
+        Il faut au préalable avoir préparé une voix en appelant les fonction `charger_voix` et `utiliser_voix`.
+        Le robot ne doit pas déjà être en train de parler.
+
+        Paramètres:
+        ----------
+            texte (str): Le texte à réciter.
+
+        Retour:
+        -------
+            `False` si un problème est survenu, sinon `True`
+        """
         if Lecteur.__reading_in_progress:
             warn(
                 f"Je suis déjà en train de lire, je ne peux pas lire 2 textes en même temps."
             )
-            return
+            return False
 
         Lecteur.__reading_in_progress = True
 
@@ -144,11 +206,13 @@ class Lecteur:
 
         if self.voix_choisie is None:
             warn(f"Aucune voix n'a été choisie, je ne peux pas préparer la lecture.")
-            return
+            return False
 
         self.parler_dans_fichier(
-            self.voix_choisie, text, self._last_tts_filepath, thread=False
+            self.voix_choisie, texte, self._last_tts_filepath, thread=False
         )
         self.lire_fichier_audio(self._last_tts_filepath, thread=False)
 
         Lecteur.__reading_in_progress = False
+
+        return True
