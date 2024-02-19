@@ -10,3 +10,4 @@ module_webapp/static/images/
 module_webapp/static/thumbnails/
 
 module_webapp/database.db
+!pybot/module_audio/fichier_audio/derniere_lecture.wav

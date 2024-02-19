@@ -1,1 +1,1 @@
-from .module import run
+from .Lecteur import Lecteur, VoiceKey
