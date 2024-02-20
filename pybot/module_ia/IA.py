@@ -254,7 +254,7 @@ class ChatBot:
             return
         self.load_history(historique_de_conversation)
 
-    def set_historic_summary(self, summary: str | None):
+    def set_history_summary(self, summary: str | None):
         if (self.__chatGPT is None) :
             self.__error_message("No conversation has been started with the robot.", "en")
             return
@@ -266,7 +266,7 @@ class ChatBot:
         self.__memory.clear()
         self.__memory.moving_summary_buffer = summary
 
-    def get_historic_summary(self):
+    def get_history_summary(self):
         if (self.__chatGPT is None) :
             self.__error_message("No conversation has been started with the robot.", "en")
             return
