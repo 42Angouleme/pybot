@@ -253,7 +253,26 @@ class ChatBot:
             self.__error_message("Aucune conversation n'a été commencée avec le robot.", "fr")
             return
         self.load_history(historique_de_conversation)
-    
+
+    def set_historic_summary(self, summary: str):
+        if (self.__chatGPT is None) :
+            self.__error_message("No conversation has been started with the robot.", "en")
+            return
+        if self.__memory is None:
+            self.__error_message("No history has been loaded.", "en")
+            return
+        self.__memory.clear()
+        self.__memory.moving_summary_buffer = summary
+
+    def get_historic_summary(self):
+        if (self.__chatGPT is None) :
+            self.__error_message("No conversation has been started with the robot.", "en")
+            return
+        if self.__memory is None:
+            self.__error_message("No history has been loaded.", "en")
+            return
+        return self.__memory.load_memory_variables({})["history"]
+
     def delete_history(self):
         """
         Deletes the conversation history.
