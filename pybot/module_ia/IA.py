@@ -59,7 +59,6 @@ class ChatBot:
             Current conversation:
             {history}
             Human: {input}
-            AI Assistant:
         """
         PROMPT = PromptTemplate(input_variables=["history", "input"], template=self.__template)
         self.__conversation = ConversationChain(llm=self.__chatGPT, prompt=PROMPT)
