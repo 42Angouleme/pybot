@@ -8,6 +8,7 @@ from flask import Flask
 import pygame as pg
 import requests
 import os, sys
+from ..module_webapp.dao import user
 
 class User_manager:
     def __init__(self, webapp : Flask, camera : Camera) :
@@ -17,6 +18,24 @@ class User_manager:
         self.__camera: Camera = camera
         self.__user_logged_in : UserResponse | None = None
         self.__load_env_file(".env_to_rename")
+
+    def set_conversation_summary(self, summary: str) -> bool:
+        if not self.verifier_session():
+           self.__warning_message("No user is logged in")
+           return False
+        user_id = self.__user_logged_in.id
+        with self.__webapp.app_context():
+            user.update(id= user_id, user_patch= {"conversation_summary": summary})
+        return True
+
+    def get_conversation_summary(self) -> str | None:
+        if not self.verifier_session():
+           self.__warning_message("No user is logged in")
+           return None
+        user_id = self.__user_logged_in.id
+        with self.__webapp.app_context():
+            return user.get(id= user_id).conversation_summary
+
 
     def logging(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) :
         """

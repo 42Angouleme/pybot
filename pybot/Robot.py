@@ -466,6 +466,17 @@ class Robot:
         """
         self.deactivate()
 
+    def save_user_historic_summary(self):
+        summary = self.IA.get_historic_summary()
+        if summary is None:
+            self.__error_message("Summary is empty", "en")
+            return
+        self.user.set_conversation_summary(summary)
+
+    def load_user_historic_summary(self):
+        summary = self.user.get_conversation_summary()
+        self.IA.set_historic_summary(summary)
+
     ### Private Methode ###
 
     def __error_message(self, msg: str, lang: str = "fr"):
