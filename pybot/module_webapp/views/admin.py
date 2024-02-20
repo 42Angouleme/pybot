@@ -90,11 +90,6 @@ def profile_page(id):
         u = user.get(id)
         if u is None:
             abort(404, description="User not found")
-        if u.openai_chat_messages == "":
-            formatted_json = ""
-        else:
-            # prettify json
-            formatted_json = json.dumps(u.openai_chat_messages, indent=2)
         return render_template(
-            "admin/edit.html", user=u, openai_chat_messages=formatted_json
+            "admin/edit.html", user=u
         )

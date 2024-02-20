@@ -13,40 +13,6 @@ import json
 from jsonschema import validate
 from typing import List
 
-openai_chat_messages_schema = {
-    "type": "array",
-    "items": {
-        "type": "object",
-        "additionalProperties": False,
-        "properties": {
-            "role": {
-                "type": "string",
-                "enum": ["system", "user", "assistant", "function"],
-            },
-            "content": {"type": ["string", "null"]},
-            "name": {"type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_]+$"},
-            "function_call": {
-                "type": "object",
-                "properties": {
-                    "name": {"type": "string"},
-                    "arguments": {"type": "string"},
-                },
-                "required": ["name", "arguments"],
-                "additionalProperties": False,
-            },
-        },
-        "required": ["role", "content"],
-    },
-}
-"""The json schema allowed for openai chat messages object as described at https://platform.openai.com/docs/api-reference/chat/create#messages. Note, the schema is not restrictive enough if you read the spec carrefully but that's enough for now."""
-
-
-def parse_openai_chat_messages(user: User):
-    """If the user has openai_chat_messages property, convert it from string to JSON, then validate the JSON schema and reassign the property as object."""
-    if user.openai_chat_messages:
-        user.openai_chat_messages = json.loads(user.openai_chat_messages)
-        validate(user.openai_chat_messages, openai_chat_messages_schema)
-
 
 def raise_NoResultFound_if_none(user, id):
     if user is None:
@@ -88,7 +54,6 @@ class UserDAO(object):
             picture = DrawingModel.create_from(file)
             picture.get_thumbnail(width=48, auto_generate=True)
             new_user = User(**(user | {"picture": picture}))
-        parse_openai_chat_messages(new_user)
         db.session.add(new_user)
         db.session.commit()
         # refetch the user from the db for the response to include the generated ID
@@ -113,7 +78,6 @@ class UserDAO(object):
                     user.picture.get_thumbnail(width=48, auto_generate=True)
                 del user_patch["picture"]
 
-            parse_openai_chat_messages(user_patch)
             # apply the patch to the user object we just fetched
             for key, value in user_patch.items():
                 if value is not None:
