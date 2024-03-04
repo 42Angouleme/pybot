@@ -11,48 +11,50 @@ import time
 # Typing
 from typing import List
 from .AttributeDict import AttributeDict
+from . import ensure
 
 
 class Robot:
+    # English Module #
+    AI : ChatBot | None = None
+    camera : Camera | None = None
+    window : Fenetre | None = None
+    user : User_manager | None = None
+
+    # Robot Attributs #
+    events = []
+    __active : bool = True
+    __webapp : Flask | None = None
+    _isWriting : bool = False
+
+    __emotion_dict : dict[str, str] = {
+        "Neutre" : "/images/emotions/neutre.png",
+        "Amuser" : "/images/emotions/amuser.png",
+        "Celebration" : "/images/emotions/celebration.png",
+        "Colere" : "/images/emotions/colere.png",
+        "Contrariete" : "/images/emotions/contrariete.png",
+        "Degout" : "/images/emotions/degout.png",
+        "Fatigue" : "/images/emotions/fatigue.png",
+        "Incomprehension" : "/images/emotions/incomprehension.png",
+        "Inquietude" : "/images/emotions/inquietude.png",
+        "Joie" : "/images/emotions/joie.png",
+        "Peur" : "/images/emotions/peur.png",
+        "Reflexion" : "/images/emotions/reflexion.png",
+        "Soulagement" : "/images/emotions/soulagement.png",
+        "Surprise" : "/images/emotions/surprise.png",
+        "Tristesse" : "/images/emotions/tristesse.png",
+    }
+
+    attributs : AttributeDict = AttributeDict({"boutons": AttributeDict(), "zones_de_texte": AttributeDict()})
+
     def __init__(self):
-
-        # English Module #
-        self.AI : ChatBot = None
-        self.camera : Camera = None
-        self.window : Fenetre = None
-        self.user : User_manager = None
-
         # Module Francais#
         self.IA : ChatBot = self.AI
         self.fenetre : Fenetre = self.window
         self.utilisateur : User_manager = self.user
 
-        # Robot Attributs #
-        self.events = []
-        self.__active : bool = True
-        self.__webapp : Flask = None
-        self._isWriting : bool = False
 
-        self.__emotion_dict : dict[str, str] = {
-            "Neutre" : "/images/emotions/neutre.png",
-            "Amuser" : "/images/emotions/amuser.png",
-            "Celebration" : "/images/emotions/celebration.png",
-            "Colere" : "/images/emotions/colere.png",
-            "Contrariete" : "/images/emotions/contrariete.png",
-            "Degout" : "/images/emotions/degout.png",
-            "Fatigue" : "/images/emotions/fatigue.png",
-            "Incomprehension" : "/images/emotions/incomprehension.png",
-            "Inquietude" : "/images/emotions/inquietude.png",
-            "Joie" : "/images/emotions/joie.png",
-            "Peur" : "/images/emotions/peur.png",
-            "Reflexion" : "/images/emotions/reflexion.png",
-            "Soulagement" : "/images/emotions/soulagement.png",
-            "Surprise" : "/images/emotions/surprise.png",
-            "Tristesse" : "/images/emotions/tristesse.png",
-        }
-
-        self.attributs : AttributeDict = AttributeDict({"boutons": AttributeDict(), "zones_de_texte": AttributeDict()})
-
+    @ensure.no_window('en')
     def start_window_module(self) :
         """
         Start the window module with the specified width and length.
@@ -70,14 +72,11 @@ class Robot:
         --------
             None
         """
-        if (self.window is not None) :
-            self.__error_message("Window module has already been started.", "en")
-            return
-        if (self.__webapp is None) :
-            self.__warning_message("Webapp should be start before the window module.", "en")
         self.window = Fenetre(self.__emotion_dict)
         self.fenetre = self.window
 
+    @ensure.no_window('fr')
+    @ensure.warn_webapp('fr')
     def demarrer_module_fenetre(self) :
         """
         Démarre le module fenêtre avec la longueur et la largeur spécifiées.
@@ -95,13 +94,9 @@ class Robot:
         -------
             Aucun
         """
-        if (self.window is not None) :
-            self.__error_message("Le module fenêtre est déjà démarré.", "fr")
-            return
-        if (self.__webapp is None) :
-            self.__warning_message("L'application web doit être lancée avant de créer la fenêtre.", "fr")
         self.start_window_module()
-    
+
+    @ensure.no_AI("en")
     def start_AI_module(self) :
         """
         Starts the AI module.
@@ -118,15 +113,13 @@ class Robot:
         --------
             None
         """
-        if (self.AI is not None) :
-            self.__error_message("AI module has already been started.", "en")
-            return
         try :
             self.AI = ChatBot(list(self.__emotion_dict.keys()))
             self.IA = self.AI
         except :
-            self.__warning_message("Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before starting the AI module", "en")
-    
+            ensure.warn("Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before starting the AI module", "en")
+
+    @ensure.no_AI('fr')
     def demarrer_module_IA(self) :
         """
         Démarre le module IA.
@@ -143,11 +136,10 @@ class Robot:
         -------
             Aucun
         """
-        if (self.AI is not None) :
-            self.__error_message("Le module IA est déjà démarré.", "fr")
-            return
         self.start_AI_module()
-    
+
+    @ensure.window('en')
+    @ensure.no_camera('en')
     def start_camera_module(self):
         """
         Starts the camera module.
@@ -163,13 +155,10 @@ class Robot:
         --------
             None
         """
-        if (self.window is None or self.fenetre._get_surface() is None) :
-            self.__warning_message("Window module must be started and the window must be opened before this module.", "en")
-            return
-        if (self.camera is not None) :
-            self.__error_message("Camera module has already been started.", "en")
         self.camera = Camera(self.fenetre._get_surface())
 
+    @ensure.window('fr')
+    @ensure.no_camera('fr')
     def demarrer_module_camera(self) :
         """
         Démarre le module caméra.
@@ -185,13 +174,11 @@ class Robot:
         -------
             Aucun
         """
-        if (self.window is None) :
-            self.__warning_message("Le module fenêtre doit être démarré et la fenêtre ouverte avant ce module.", "fr")
-            return
-        if (self.camera is not None) :
-            self.__error_message("Le module caméra est déjà démarré.", "fr")
         self.start_camera_module()
-    
+
+    @ensure.webapp('en')
+    @ensure.camera('en')
+    @ensure.no_user('en')
     def start_user_module(self):
         """
         Starts the user module.
@@ -206,18 +193,13 @@ class Robot:
         --------
             None
         """
-        if (self.__webapp is None):
-            self.__warning_message("Webapp must be started before this module.", "en")
-            return
-        if (self.camera is None):
-            self.__warning_message("Camera module must be started before this module.", "en")
-            return
-        if (self.user is not None) :
-            self.__error_message("User module has already been started.", "en")
         self.camera._updateUserCardsTracker(self.__webapp)
         self.user = User_manager(self.__webapp, self.camera)
         self.utilisateur = self.user
 
+    @ensure.webapp('fr')
+    @ensure.camera('fr')
+    @ensure.no_user('fr')
     def demarrer_module_utilisateur(self) :
         """
         Démarre le module utilisateur.
@@ -232,14 +214,6 @@ class Robot:
         -------
             Aucun
         """
-        if (self.__webapp is None) :
-            self.__warning_message("L'application web doit être lancée avant ce module.", "fr")
-            return
-        if (self.camera is None) :
-            self.__warning_message("Le module caméra doit être démarré avant ce module.", "fr")
-            return
-        if (self.user is not None) :
-            self.__error_message("Le module utilisateur est déjà démarré.", "fr")
         self.start_user_module()
 
     ### Robot Module Methode ###
@@ -468,18 +442,6 @@ class Robot:
 
     ### Private Methode ###
 
-    def __error_message(self, msg: str, lang: str = "fr"):
-        if (lang.lower() == "fr") :
-            print(f"\033[91mErreur: {msg}\033[00m", file=sys.stderr)
-        elif (lang.lower() == "en") :
-            print(f"\033[91mError: {msg}\033[00m", file=sys.stderr)
-    
-    def __warning_message(self, msg: str, lang: str = "fr"):
-        if (lang.lower() == "fr") :
-            print(f"\033[33mAttention: {msg}\033[00m", file=sys.stderr)
-        elif (lang.lower() == "en") :
-            print(f"\033[33mWarning: {msg}\033[00m", file=sys.stderr)
-    
     def _get_user_entry(self, texte, text_area):
         """
             Allow to get the user_entry, use in texte_area and in fuction ecrire

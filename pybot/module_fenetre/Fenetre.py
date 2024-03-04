@@ -5,6 +5,8 @@ from ..types import Couleur
 import pygame as pg
 import os, sys
 
+from ..ensure import err
+
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'True'  # need to be declared before to import pygame
 
@@ -75,7 +77,7 @@ class Fenetre:
         try:
             self.__change_background_color(color[0], color[1], color[2])
         except AttributeError:
-            self.__error_message("the window hasn't been opened.", "en")
+            err("the window hasn't been opened.", "en")
     
     def changer_couleur_fond(self, couleur: Couleur) :
         """
@@ -92,7 +94,7 @@ class Fenetre:
         try :
             self.__change_background_color(couleur[0], couleur[1], couleur[2])
         except AttributeError :
-            self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
+            err("la fenêtre n'a pas été ouverte.", "fr")
 
     def full_screen(self, change: bool) :
         """
@@ -142,7 +144,7 @@ class Fenetre:
         try:
             self.__change_window_title(title)
         except AttributeError:
-            self.__error_message("title must be defined after the window.", "en")
+            err("title must be defined after the window.", "en")
     
     def changer_titre(self, titre: str) :
         """
@@ -159,7 +161,7 @@ class Fenetre:
         try:
             self.__change_window_title(titre)
         except AttributeError:
-            self.__error_message("le titre doit être défini après création de la fenêtre.", "fr")
+            err("le titre doit être défini après création de la fenêtre.", "fr")
 
     def refresh_display(self) :
         """
@@ -209,7 +211,7 @@ class Fenetre:
         try:
             self.__draw_background()
         except AttributeError:
-            self.__error_message("the window hasn't been opened.", "en")
+            err("the window hasn't been opened.", "en")
             
     def afficher_fond(self):
         """
@@ -226,7 +228,7 @@ class Fenetre:
         try:
             self.__draw_background()
         except AttributeError:
-            self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
+            err("la fenêtre n'a pas été ouverte.", "fr")
     
     def draw_rectangle(self, width: int, height: int, position_x: int, position_y: int, color: Couleur) :
         """
@@ -247,7 +249,7 @@ class Fenetre:
         try:
             self.__draw_rect(width, height, position_x, position_y, color)
         except AttributeError:
-            self.__error_message("the window hasn't been opened.", "en")
+            err("the window hasn't been opened.", "en")
     
     def dessiner_rectangle(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur) :
         """
@@ -268,7 +270,7 @@ class Fenetre:
         try:
             self.__draw_rect(longueur, hauteur, position_x, position_y, couleur)
         except AttributeError:
-            self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
+            err("la fenêtre n'a pas été ouverte.", "fr")
     
     def display_text(self, text : str, position_x: int = 0, position_y: int = 0, size: int = 16, color: Couleur = (0, 0, 0)) :
         """
@@ -289,7 +291,7 @@ class Fenetre:
         try:
             self.__draw_text(text, position_x, position_y, size, color)
         except AttributeError:
-            self.__error_message("the window hasn't been opened.", "en")
+            err("the window hasn't been opened.", "en")
     
     def afficher_texte(self, texte : str, position_x: int = 0, position_y: int = 0, taille: int = 16, couleur: Couleur = (0, 0, 0)) :
         """
@@ -310,7 +312,7 @@ class Fenetre:
         try:
             self.__draw_text(texte, position_x, position_y, taille, couleur)
         except AttributeError:
-            self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
+            err("la fenêtre n'a pas été ouverte.", "fr")
     
     def display_image(self, file_path: str, position_x: int, position_y: int) :
         """
@@ -399,7 +401,7 @@ class Fenetre:
         try:
             return self.__create_button(width, height, position_x, position_y, color)
         except AttributeError:
-            self.__error_message("the window hasn't been opened.", "en")
+            err("the window hasn't been opened.", "en")
     
     def creer_bouton(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur) -> Button :
         """
@@ -420,7 +422,7 @@ class Fenetre:
         try:
             return self.__create_button(longueur, hauteur, position_x, position_y, couleur)
         except AttributeError:
-            self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
+            err("la fenêtre n'a pas été ouverte.", "fr")
         
     def create_text_area(self, width: int, height: int, position_x: int, position_y: int, color: Couleur) :
         """
@@ -441,7 +443,7 @@ class Fenetre:
         try:
             return self.__interface.create_text_area(width, height, position_x, position_y, color)
         except AttributeError:
-            self.__error_message("the window hasn't been opened.", "en")
+            err("the window hasn't been opened.", "en")
     
     def creer_zone_texte(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur) :
         """
@@ -462,7 +464,7 @@ class Fenetre:
         try:
             return self.create_text_area(longueur, hauteur, position_x, position_y, couleur)
         except AttributeError:
-            self.__error_message("la fenêtre n'a pas été ouverte.", "fr")
+            err("la fenêtre n'a pas été ouverte.", "fr")
     
     def get_emotion_image(self, emotion: str) -> str:
         """
@@ -511,12 +513,6 @@ class Fenetre:
     def __change_background_color(self, R, G, B) :
             self.__background_color = (R, G, B)
 
-    def __error_message(self, msg: str, lang: str = "fr") :
-        if (lang.lower() == "fr") :
-            print(f"\033[91mErreur: {msg}\033[00m", file=sys.stderr)
-        elif (lang.lower() == "en") :
-            print(f"\033[91mError: {msg}\033[00m", file=sys.stderr)
-    
     def __getWidth(self) :
         return self.__surface.get_width()
 
