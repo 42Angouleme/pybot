@@ -10,6 +10,8 @@ import requests
 import os, sys
 from ..module_webapp.dao import user
 
+from ..ensure import err, warn
+
 class User_manager:
     def __init__(self, webapp : Flask, camera : Camera) :
         """
@@ -56,7 +58,7 @@ class User_manager:
         recognized_user = self.__connect_user(minimum_threshold, search_stop_threshold)
 
         if recognized_user and self.check_session():
-            self.__warning_message("A user is already logged in.", "en")
+            warn("A user is already logged in.", "en")
         elif recognized_user:
             self.__user_logged_in = recognized_user
         
@@ -80,7 +82,7 @@ class User_manager:
         recognized_user = self.__connect_user(seuil_minimal, seuil_arret_recherche)
 
         if recognized_user and self.check_session():
-            self.__warning_message("Un utilisateur est déjà connecté.", "fr")
+            warn("Un utilisateur est déjà connecté.", "fr")
         elif recognized_user:
             self.__user_logged_in = recognized_user
 
@@ -222,10 +224,10 @@ class User_manager:
             None
         """
         if self.verifier_session():
-            self.__warning_message("A user is already logged in.", "en")
+            warn("A user is already logged in.", "en")
             return
         elif card is None:
-            self.__warning_message("Creation of an user with an invalid card (=None)")
+            warn("Creation of an user with an invalid card (=None)")
             return
         pg.image.save(card, ".tmp_card.png")
         with open(".tmp_card.png", "rb") as img:
@@ -242,14 +244,14 @@ class User_manager:
                     f"{APP_BASE_URL}/api/users", data=new_user, files=files
                 )
                 if response.status_code != 201:
-                    self.__error_message("[HTTP ERROR]" + str(response.content), "en")
+                    err("[HTTP ERROR]" + str(response.content), "en")
                 else:
                     print("Success")
                     # Update les cartes des sessions chargées lors
                     #   de la construction de CardsTracker
                     self.__camera._updateUserCardsTracker(self.__webapp)
             except Exception as e:
-                self.__error_message("[HTTP EXCEPTION]" + str(e), "en")
+                err("[HTTP EXCEPTION]" + str(e), "en")
 
     def creer_utilisateur(self, prenom: str, nom: str, carte: MatLike) :
         """
@@ -266,10 +268,10 @@ class User_manager:
             Aucun
         """
         if self.verifier_session():
-            self.__warning_message("Un utilisateur est déjà connecté")
+            warn("Un utilisateur est déjà connecté")
             return
         elif carte is None:
-            self.__warning_message("Création d'un utilisateur avec une carte invalide (=None)")
+            warn("Création d'un utilisateur avec une carte invalide (=None)")
             return
         self.create_user(prenom, nom, carte)
 
@@ -286,20 +288,20 @@ class User_manager:
                 None
             """
             if not self.verifier_session():
-                self.__warning_message("No user is logged in")
+                warn("No user is logged in")
                 return
             try:
                 id = self.__user_logged_in.id
                 response = requests.delete(f"{APP_BASE_URL}/api/users/{id}")
                 if response.status_code != 200:
-                    self.__error_message("[HTTP ERROR]" + str(response.content), "en")
+                    err("[HTTP ERROR]" + str(response.content), "en")
                 else:
                     self.logout()
                     # Update les cartes des sessions chargées lors
                     #   de la construction de CardsTracker
                     self.__camera._updateUserCardsTracker(self.__webapp)
             except Exception as e:
-                self.__error_message("[HTTP EXCEPTION]" + str(e), "en")
+                err("[HTTP EXCEPTION]" + str(e), "en")
     
     def supprimer_utilisateur(self) :
         """
@@ -314,24 +316,12 @@ class User_manager:
             Aucun
         """
         if not self.verifier_session():
-            self.__warning_message("Aucun utilisateur n'est connecté")
+            warn("Aucun utilisateur n'est connecté")
             return
         self.delete_user()
     
     ### Private Methode ###
             
-    def __error_message(self, msg: str, lang: str = "fr") :
-        if (lang.lower() == "fr") :
-            print(f"\033[91mErreur: {msg}\033[00m", file=sys.stderr)
-        elif (lang.lower() == "en") :
-            print(f"\033[91mError: {msg}\033[00m", file=sys.stderr)
-    
-    def __warning_message(self, msg: str, lang: str = "fr"):
-        if (lang.lower() == "fr") :
-            print(f"\033[33mAttention: {msg}\033[00m", file=sys.stderr)
-        elif (lang.lower() == "en") :
-            print(f"\033[33mWarning: {msg}\033[00m", file=sys.stderr)
-    
     def __connect_user(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) -> UserResponse :
         recognized_user, _ = self.__camera._detect_user(minimum_threshold, search_stop_threshold)
         return recognized_user
