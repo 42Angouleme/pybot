@@ -239,6 +239,30 @@ Human: {input}"""
         """
         self.load_history(historique_de_conversation)
 
+    def set_history_summary(self, summary: str | None):
+        if (self.__chatGPT is None) :
+            self.__error_message("No conversation has been started with the robot.", "en")
+            return
+        if self.__memory is None:
+            self.__error_message("No history has been loaded.", "en")
+            return
+        if summary is None:
+            summary = ""
+        self.__memory.clear()
+        self.__memory.moving_summary_buffer = summary
+
+    def get_history_summary(self):
+        if (self.__chatGPT is None) :
+            self.__error_message("No conversation has been started with the robot.", "en")
+            return
+        if self.__memory is None:
+            self.__error_message("No history has been loaded.", "en")
+            return
+        messages = self.__memory.chat_memory.messages
+        prev_summary = self.__memory.moving_summary_buffer
+        next_summary = self.__memory.predict_new_summary(messages, prev_summary)
+        return next_summary
+
     @ensure.conversation("en")
     def delete_history(self):
         """

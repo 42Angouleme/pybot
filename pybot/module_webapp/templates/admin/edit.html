@@ -26,13 +26,8 @@
         <label for="uploaded-img">La nouvelle image</label>
 		<img id="uploaded-img" alt="new student picture">
 
-        <label for="openai_chat_messages">OpenAI chat messages:</label>
-	    <textarea id="openai_chat_messages" style="display:block;width:800px; height: 300px" type="text" name="openai_chat_messages" placeholder='[
-    {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "Who won the world series in 2020?"},
-    {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-    {"role": "user", "content": "Where was it played?"}
-]'>{{openai_chat_messages}}</textarea>
+        <label for="conversation_summary">OpenAI chat messages:</label>
+	    <textarea id="conversation_summary" style="display:block;width:800px; height: 300px" type="text" name="conversation_summary">{{ user['conversation_summary'] }}</textarea>
         </div>
 		<div id="error"></div>
         <div class="form-example">

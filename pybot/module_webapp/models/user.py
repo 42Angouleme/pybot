@@ -14,7 +14,7 @@ class UserBase:
     last_name: str
     picture_path: str
     picture: bytes
-    openai_chat_messages: dict
+    conversation_summary: str
 
 
 class UserCreate(UserBase):
@@ -25,7 +25,7 @@ class UserPatch:
     first_name: Optional[str]
     last_name: Optional[str]
     picture: Optional[bytes]
-    openai_chat_messages: Optional[dict]
+    conversation_summary: Optional[str]
 
 
 class UserResponse(UserBase):
@@ -42,5 +42,5 @@ class User(db.Model):
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    openai_chat_messages = db.Column(db.JSON)
+    conversation_summary = db.Column(db.String(500), nullable=True, default="")
     picture = db.Column(DrawingModel.as_mutable_json())

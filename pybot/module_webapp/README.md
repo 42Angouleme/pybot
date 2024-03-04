@@ -58,7 +58,7 @@ TODO: The API is not protected by authentication and is available to visitor.
 
 - `created_at`: creation timestamp
 - `picture`: info about the user uploaded picture, contains path, thumbnail_path and media related information. The picture file itself is stored on the filesystem at `static/images` and `static/thumbnail`
-- `openai_chat_messages` The JSON (as string) openai chat conversation history.
+- `conversation_summary` The openai chat conversation history summary.
 - `first_name`
 - `last_name`
 

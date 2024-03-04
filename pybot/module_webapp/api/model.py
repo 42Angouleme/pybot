@@ -14,7 +14,7 @@ create_user_parser.add_argument(
     "last_name", type=str, help="The user last name", location="form", required=True
 )
 create_user_parser.add_argument(
-    "openai_chat_messages", type=str, help="The user chat history", location="form"
+    "conversation_summary", type=str, help="The user chat history", location="form"
 )
 
 patch_user_parser = api.parser()
@@ -26,7 +26,7 @@ patch_user_parser.add_argument(
     "last_name", type=str, help="The user last name", location="form"
 )
 patch_user_parser.add_argument(
-    "openai_chat_messages", type=str, help="The user chat history", location="form"
+    "conversation_summary", type=str, help="The user chat history", location="form"
 )
 
 api_user_model = api.model(
@@ -35,9 +35,7 @@ api_user_model = api.model(
         "id": fields.Integer(readonly=True, description="The user unique identifier"),
         "first_name": fields.String(required=True, description="The user first name"),
         "last_name": fields.String(required=True, description="The user last name"),
-        "openai_chat_messages": fields.Raw(
-            description="The user openai chat messages history"
-        ),
+        "conversation_summary": fields.String(required=False, description="The user openai chat messages history"),
         "created_at": fields.DateTime(description="User creation timestamp"),
     },
 )
