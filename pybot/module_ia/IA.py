@@ -196,139 +196,116 @@ Human: {input}"""
         """
         return self.create_conversation_history()
 
-    @ensure.conversation("en")
-    def load_history(self, conversation_history: ConversationSummaryBufferMemory | None = None):
-        """
-        Load conversation history into the robot's memory.
+    # @ensure.conversation("en")
+    # def load_history(self, conversation_history: ConversationSummaryBufferMemory | None = None):
+    #     """
+    #     Load conversation history into the robot's memory.
 
-        If no conversation history is passed, the robot's memory is cleared.
+    #     If no conversation history is passed, the robot's memory is cleared.
 
-        If a conversation history is passed, it is loaded into the robot's memory and erases the old one.
+    #     If a conversation history is passed, it is loaded into the robot's memory and erases the old one.
 
-        If no conversation has been started with the robot, an error message is displayed.
+    #     If no conversation has been started with the robot, an error message is displayed.
 
-        Args:
-        -----
-        conversation_history (ConversationSummaryBufferMemory): The conversation history to be loaded.
+    #     Args:
+    #     -----
+    #     conversation_history (ConversationSummaryBufferMemory): The conversation history to be loaded.
 
-        Returns:
-        --------
-        None
-        """
-        self.__memory = conversation_history
-        self.__conversation.memory = self.__memory
+    #     Returns:
+    #     --------
+    #     None
+    #     """
+    #     self.__memory = conversation_history
+    #     self.__conversation.memory = self.__memory
 
-    @ensure.conversation("fr")
-    def charger_historique(self, historique_de_conversation : ConversationSummaryBufferMemory | None = None):
-        """
-        Charge l'historique de la conversation dans la mémoire du robot.
+    # @ensure.conversation("fr")
+    # def charger_historique(self, historique_de_conversation : ConversationSummaryBufferMemory | None = None):
+    #     """
+    #     Charge l'historique de la conversation dans la mémoire du robot.
 
-        Si aucun historique de conversation n'est passé, la mémoire du robot est effacée.
+    #     Si aucun historique de conversation n'est passé, la mémoire du robot est effacée.
 
-        Si un historique de conversation est passé, il est chargé dans la mémoire du robot et remplace l'ancien.
+    #     Si un historique de conversation est passé, il est chargé dans la mémoire du robot et remplace l'ancien.
 
-        Si une discussion est déjà en cours, un message d'erreur est affiché.
+    #     Si une discussion est déjà en cours, un message d'erreur est affiché.
         
-        Paramètres:
-        -----------
-            historique_de_conversation (ConversationSummaryBufferMemory | None): L'historique de la conversation à charger.
+    #     Paramètres:
+    #     -----------
+    #         historique_de_conversation (ConversationSummaryBufferMemory | None): L'historique de la conversation à charger.
         
-        Retour:
-        --------
-            None
-        """
-        self.load_history(historique_de_conversation)
+    #     Retour:
+    #     --------
+    #         None
+    #     """
+    #     self.load_history(historique_de_conversation)
 
-    def set_history_summary(self, summary: str | None):
-        if (self.__chatGPT is None) :
-            self.__error_message("No conversation has been started with the robot.", "en")
-            return
-        if self.__memory is None:
-            self.__error_message("No history has been loaded.", "en")
-            return
-        if summary is None:
-            summary = ""
-        self.__memory.clear()
-        self.__memory.moving_summary_buffer = summary
 
-    def get_history_summary(self):
-        if (self.__chatGPT is None) :
-            self.__error_message("No conversation has been started with the robot.", "en")
-            return
-        if self.__memory is None:
-            self.__error_message("No history has been loaded.", "en")
-            return
-        messages = self.__memory.chat_memory.messages
-        prev_summary = self.__memory.moving_summary_buffer
-        next_summary = self.__memory.predict_new_summary(messages, prev_summary)
-        return next_summary
+    # @ensure.conversation("en")
+    # def delete_history(self):
+    #     """
+    #     Deletes the conversation history.
 
-    @ensure.conversation("en")
-    def delete_history(self):
-        """
-        Deletes the conversation history.
+    #     This method deletes the conversation history by resetting the memory of the robot.
 
-        This method deletes the conversation history by resetting the memory of the robot.
+    #     If no conversation has been started with the robot, an error message is displayed.
 
-        If no conversation has been started with the robot, an error message is displayed.
+    #     Parameters:
+    #     -----------
+    #         None
 
-        Parameters:
-        -----------
-            None
+    #     Returns:
+    #     --------
+    #         None
+    #     """
+    #     self.__memory = None
+    #     self.__conversation.memory = None
 
-        Returns:
-        --------
-            None
-        """
-        self.__memory = None
-        self.__conversation.memory = None
+    # @ensure.conversation("fr")
+    # def supprimer_historique(self):
+    #     """
+    #     Supprime l'historique de la conversation.
 
-    @ensure.conversation("fr")
-    def supprimer_historique(self):
-        """
-        Supprime l'historique de la conversation.
+    #     Cette méthode supprime l'historique de la conversation en réinitialisant la mémoire du robot.
 
-        Cette méthode supprime l'historique de la conversation en réinitialisant la mémoire du robot.
+    #     Si aucune conversation n'a été commencée avec le robot, un message d'erreur est affiché.
 
-        Si aucune conversation n'a été commencée avec le robot, un message d'erreur est affiché.
+    #     Paramètres:
+    #     -----------
+    #         None
 
-        Paramètres:
-        -----------
-            None
-
-        Retour:
-        --------
-            None
-        """
-        self.delete_history()
+    #     Retour:
+    #     --------
+    #         None
+    #     """
+    #     self.delete_history()
     
-    def get_current_conversation_history(self) -> ConversationSummaryBufferMemory :
-        """
-        Returns the current conversation history.
+    # def get_current_conversation_history(self) -> ConversationSummaryBufferMemory :
+    #     """
+    #     Returns the current conversation history.
 
-        Args:
-        -----
-            None
+    #     Args:
+    #     -----
+    #         None
 
-        Returns:
-        --------
-            ConversationSummaryBufferMemory: The current conversation history.
-        """
-        return self.__memory
+    #     Returns:
+    #     --------
+    #         ConversationSummaryBufferMemory: The current conversation history.
+    #     """
+    #     return self.__memory
     
-    def obtenir_historique_conversation(self) -> ConversationSummaryBufferMemory :
-        """
-        Renvoie l'historique de conversation actuel.
+    # def obtenir_historique_conversation(self) -> ConversationSummaryBufferMemory :
+    #     """
+    #     Renvoie l'historique de conversation actuel.
 
-        Paramètres:
-        ------------
-            None
+    #     Paramètres:
+    #     ------------
+    #         None
 
-        Retour:
-        -------
-            ConversationSummaryBufferMemory: L'historique de conversation actuel.
-        """
-        return self.get_current_conversation_history()
+    #     Retour:
+    #     -------
+    #         ConversationSummaryBufferMemory: L'historique de conversation actuel.
+    #     """
+    #     return self.get_current_conversation_history()
     
     def get_emotion(self, sentence: str) -> str:
         """
@@ -409,3 +386,27 @@ Human: {input}"""
             return
         PROMPT = PromptTemplate(input_variables=["history", "input"], template=self.__template)
         self.__conversation.prompt = PROMPT
+
+    def _set_history_summary(self, summary: str | None):
+        if (self.__chatGPT is None) :
+            self.__error_message("No conversation has been started with the robot.", "en")
+            return
+        if self.__memory is None:
+            self.__error_message("No history has been loaded.", "en")
+            return
+        if summary is None:
+            summary = ""
+        self.__memory.clear()
+        self.__memory.moving_summary_buffer = summary
+
+    def _get_history_summary(self):
+        if (self.__chatGPT is None) :
+            self.__error_message("No conversation has been started with the robot.", "en")
+            return
+        if self.__memory is None:
+            self.__error_message("No history has been loaded.", "en")
+            return
+        messages = self.__memory.chat_memory.messages
+        prev_summary = self.__memory.moving_summary_buffer
+        next_summary = self.__memory.predict_new_summary(messages, prev_summary)
+        return next_summary

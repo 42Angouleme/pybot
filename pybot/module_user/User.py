@@ -21,23 +21,6 @@ class User_manager:
         self.__user_logged_in : UserResponse | None = None
         self.__load_env_file(".env_to_rename")
 
-    def set_conversation_summary(self, summary: str) -> bool:
-        if not self.verifier_session():
-           self.__warning_message("No user is logged in")
-           return False
-        user_id = self.__user_logged_in.id
-        with self.__webapp.app_context():
-            user.update(id= user_id, user_patch= {"conversation_summary": summary})
-        return True
-
-    def get_conversation_summary(self) -> str | None:
-        if not self.verifier_session():
-           self.__warning_message("No user is logged in")
-           return None
-        user_id = self.__user_logged_in.id
-        with self.__webapp.app_context():
-            return user.get(id= user_id).conversation_summary
-
 
     def logging(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) :
         """
@@ -325,6 +308,23 @@ class User_manager:
     def __connect_user(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) -> UserResponse :
         recognized_user, _ = self.__camera._detect_user(minimum_threshold, search_stop_threshold)
         return recognized_user
+
+    def _set_conversation_summary(self, summary: str) -> bool:
+        if not self.verifier_session():
+           self.__warning_message("No user is logged in")
+           return False
+        user_id = self.__user_logged_in.id
+        with self.__webapp.app_context():
+            user.update(id= user_id, user_patch= {"conversation_summary": summary})
+        return True
+
+    def _get_conversation_summary(self) -> str | None:
+        if not self.verifier_session():
+           self.__warning_message("No user is logged in")
+           return None
+        user_id = self.__user_logged_in.id
+        with self.__webapp.app_context():
+            return user.get(id= user_id).conversation_summary
 
     APP_BASE_URL, APP_ADRESS, APP_PORT = [""] * 3
     @staticmethod
