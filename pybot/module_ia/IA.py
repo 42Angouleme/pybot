@@ -161,41 +161,6 @@ Human: {input}"""
             
         return self.ask_question(question)
 
-
-    @ensure.conversation("en")
-    def create_conversation_history(self) -> ConversationSummaryBufferMemory:
-        """
-        Create a new conversation history (memory of robot's conversation with user).
-
-        If no conversation has been started with the robot, an error message is displayed.
-
-        Args:
-        -----
-            None
-
-        Returns:
-        --------
-            ConversationSummaryBufferMemory: The newly created conversation history.
-        """
-        return ConversationSummaryBufferMemory(llm=self.__chatGPT, max_token_limit=256)
-
-    @ensure.conversation("fr")
-    def creer_historique_conversation(self) -> ConversationSummaryBufferMemory:
-        """
-        Crée un nouvel historique de conversation.
-
-        Si une discussion est déjà en cours, un message d'erreur est affiché.
-
-        Paramètres:
-        -----------
-            None
-
-        Retour:
-        -------
-            ConversationSummaryBufferMemory: L'historique de conversation créé.
-        """
-        return self.create_conversation_history()
-
     @ensure.conversation("en")
     def get_conversation_history(self) -> str:
         """
