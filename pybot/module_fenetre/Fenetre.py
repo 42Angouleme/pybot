@@ -445,7 +445,7 @@ class Fenetre:
         except AttributeError:
             err("the window hasn't been opened.", "en")
     
-    def creer_zone_texte(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur) :
+    def creer_zone_de_texte(self, longueur: int, hauteur: int, position_x: int, position_y: int, couleur: Couleur) :
         """
         Crée une zone de texte avec la largeur, la hauteur, la position et la couleur spécifiées.
 

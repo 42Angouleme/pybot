@@ -85,7 +85,7 @@ class User_manager:
         """
         if not self.__camera._is_open():
             return None
-        carte_reconnue, _ = self.__camera._detect_card(minimum_threshold,
+        carte_reconnue = self.__camera._detect_card(minimum_threshold,
                                                     search_stop_threshold)
         return carte_reconnue
 
