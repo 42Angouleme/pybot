@@ -52,7 +52,7 @@ bouton_question : Button = robot.fenetre.creer_bouton(200, 60, 10, 200, Couleur.
 bouton_question.ajouter_texte("Poser question", 5, 20)
 bouton_stop : Button = robot.fenetre.creer_bouton(200, 60, 10, 300, Couleur.ROUGE)
 bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
-text_area : TextArea = robot.fenetre.creer_zone_texte(400, 100, 600, 200, Couleur.GRIS)
+text_area : TextArea = robot.fenetre.creer_zone_de_texte(400, 100, 600, 200, Couleur.GRIS)
 text_area.modifier_couleur_police(Couleur.VERT_SAPIN)
 
 # - Boucle -

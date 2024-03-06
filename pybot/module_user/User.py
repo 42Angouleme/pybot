@@ -210,7 +210,7 @@ class User_manager:
             warn("A user is already logged in.", "en")
             return
         elif card is None:
-            warn("Creation of an user with an invalid card (=None)")
+            warn("Creation of an user with an invalid card (=None)", "en")
             return
         pg.image.save(card, ".tmp_card.png")
         with open(".tmp_card.png", "rb") as img:
@@ -251,10 +251,10 @@ class User_manager:
             Aucun
         """
         if self.verifier_session():
-            warn("Un utilisateur est déjà connecté")
+            warn("Un utilisateur est déjà connecté", "fr")
             return
         elif carte is None:
-            warn("Création d'un utilisateur avec une carte invalide (=None)")
+            warn("Création d'un utilisateur avec une carte invalide (=None)", "fr")
             return
         self.create_user(prenom, nom, carte)
 
@@ -271,7 +271,7 @@ class User_manager:
                 None
             """
             if not self.verifier_session():
-                warn("No user is logged in")
+                warn("No user is logged in", "en")
                 return
             try:
                 id = self.__user_logged_in.id
@@ -299,32 +299,82 @@ class User_manager:
             Aucun
         """
         if not self.verifier_session():
-            warn("Aucun utilisateur n'est connecté")
+            warn("Aucun utilisateur n'est connecté", "fr")
             return
         self.delete_user()
+
+    def save_conversation_history(self, summary: str) -> bool:
+        """
+        Save the conversation history in the information of the current user in the database.
+
+        Args:
+        -----
+            summary (str): The conversation summary to save.
+
+        Returns:
+        --------
+            bool: True if the conversation summary was saved successfully, False otherwise.
+        """
+        if not self.verifier_session():
+           warn("No user is logged in", "en")
+           return False
+        user_id = self.__user_logged_in.id
+        with self.__webapp.app_context():
+            user.update(id= user_id, user_patch= {"conversation_summary": summary})
+        return True
+    
+    def sauvegarder_historique_conversation(self, resume: str) -> bool:
+        """
+        Enregistre l'historique de la conversation dans les informations de l'utilisateur actuel dans la base de données.
+
+        Paramètres:
+        -----------
+            resume (str): Le résumé de la conversation à enregistrer.
+
+        Retour:
+        -------
+            bool: True si le résumé de la conversation a été enregistré avec succès, False sinon.
+        """
+        return self.save_conversation_summary(resume)
+
+    def get_user_conversation_history(self) -> str:
+        """
+        Get the conversation history of the current user.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            str: The conversation history of the current user, or None if no user is logged in.
+        """
+        if not self.verifier_session():
+           warn("No user is logged in", "en")
+           return None
+        user_id = self.__user_logged_in.id
+        with self.__webapp.app_context():
+            return user.get(id= user_id).conversation_summary
+        
+    def obtenir_historique_conversation_utilisateur(self) -> str:
+        """
+        Récupère l'historique de la conversation de l'utilisateur actuel.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            str: L'historique de la conversation de l'utilisateur actuel, ou None si aucun utilisateur n'est connecté.
+        """
+        return self.get_user_conversation_history()
     
     ### Private Methode ###
             
     def __connect_user(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85) -> UserResponse :
         recognized_user, _ = self.__camera._detect_user(minimum_threshold, search_stop_threshold)
         return recognized_user
-
-    def _set_conversation_summary(self, summary: str) -> bool:
-        if not self.verifier_session():
-           self.__warning_message("No user is logged in")
-           return False
-        user_id = self.__user_logged_in.id
-        with self.__webapp.app_context():
-            user.update(id= user_id, user_patch= {"conversation_summary": summary})
-        return True
-
-    def _get_conversation_summary(self) -> str | None:
-        if not self.verifier_session():
-           self.__warning_message("No user is logged in")
-           return None
-        user_id = self.__user_logged_in.id
-        with self.__webapp.app_context():
-            return user.get(id= user_id).conversation_summary
 
     APP_BASE_URL, APP_ADRESS, APP_PORT = [""] * 3
     @staticmethod
