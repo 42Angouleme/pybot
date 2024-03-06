@@ -484,67 +484,6 @@ class Robot:
         """
         self.deactivate()
 
-    # def save_user_history_summary(self):
-    #     """
-    #     Save the user conversation summary in the database.
-
-    #     Args:
-    #     -----
-    #         None
-
-    #     Returns:
-    #     --------
-    #         None
-    #     """
-    #     summary = self.IA._get_history_summary()
-    #     if summary is None:
-    #         self.__error_message("Summary is empty", "en")
-    #         return
-    #     self.user._set_conversation_summary(summary)
-
-    # def sauvegarder_historique_utilisateur(self):
-    #     """
-    #     Sauvegarde le résumé de la conversation de l'utilisateur dans la base de données.
-
-    #     Paramètres:
-    #     ------------
-    #         Aucun
-
-    #     Retour:
-    #     -------
-    #         Aucun
-    #     """
-    #     self.save_user_history_summary()
-
-    # def load_user_history_summary(self):
-    #     """
-    #     Load the user conversation summary from the database.
-
-    #     Args:
-    #     -----
-    #         None
-
-    #     Returns:
-    #     --------
-    #         None
-    #     """
-    #     summary = self.user._get_conversation_summary()
-    #     self.IA._set_history_summary(summary)
-
-    # def charger_historique_utilisateur(self):
-    #     """
-    #     Charge le résumé de la conversation de l'utilisateur depuis la base de données.
-
-    #     Paramètres:
-    #     ------------
-    #         Aucun
-
-    #     Retour:
-    #     -------
-    #         Aucun
-    #     """
-    #     self.load_user_history_summary()
-
     ### Private Methode ###
 
     def _get_user_entry(self, texte, text_area):
