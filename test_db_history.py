@@ -19,6 +19,7 @@ def demarrer_module() :
     robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
     robot.demarrer_module_camera()
     robot.demarrer_module_utilisateur()
+    robot.demarrer_module_IA()
 
 def parametrer_fenetre() :
     robot.fenetre.changer_couleur_fond(Couleur.NOIR)
@@ -39,6 +40,15 @@ def initialisation_boutons() :
     boutons.suppression = robot.fenetre.creer_bouton(200, 60, 670, 510, Couleur.ROUGE)
     boutons.suppression.ajouter_texte("Supprimer utilisateur", 5, 20)
 
+    boutons.envoyer = robot.fenetre.creer_bouton(200, 60, 300, 700, Couleur.VIOLET)
+    boutons.envoyer.ajouter_texte("Envoyer", 5, 20)
+
+    boutons.charger = robot.fenetre.creer_bouton(200, 60, 740, 700, Couleur.ROSE)
+    boutons.charger.ajouter_texte("Charger", 5, 20)
+
+    boutons.sauvegarder = robot.fenetre.creer_bouton(200, 60, 520, 700, Couleur.ROSE)
+    boutons.sauvegarder.ajouter_texte("Sauvegarder", 5, 20)
+
 def initialisation_session() :
     robot.attributs.session_ouverte = False
     robot.attributs.derniere_carte_detectee = None
@@ -47,8 +57,9 @@ def initialisation_zone_de_texte() :
     zones_de_texte = robot.attributs.zones_de_texte
 
     zones_de_texte.nom = robot.fenetre.creer_zone_de_texte(200, 60, 980, 200, Couleur.GRIS)
-
     zones_de_texte.prenom = robot.fenetre.creer_zone_de_texte(200, 60, 980, 400, Couleur.GRIS)
+
+    zones_de_texte.question = robot.fenetre.creer_zone_de_texte(640, 60, 300, 600, Couleur.GRIS)
 
 ## BOUCLES ##
 
@@ -80,6 +91,8 @@ def boucle_zone_de_texte() :
         zones_de_texte.nom.ecrire(robot)
     if zones_de_texte.prenom.est_actif():
         zones_de_texte.prenom.ecrire(robot)
+    if zones_de_texte.question.est_actif():
+        zones_de_texte.question.ecrire(robot)
 
 def boucle_d_affichage():
     bouttons = robot.attributs.boutons
@@ -94,9 +107,13 @@ def boucle_d_affichage():
         if robot.attributs.session_ouverte :
             bouttons.deconnexion.afficher()
             bouttons.suppression.afficher()
+            bouttons.sauvegarder.afficher()
+            bouttons.charger.afficher()
+            bouttons.envoyer.afficher()
             user = robot.utilisateur.obtenir_utilisateur_connecte()
             robot.fenetre.afficher_texte(user.nom, 25, 200, 30, Couleur.BLANC)
             robot.fenetre.afficher_texte(user.prenom, 25, 300, 30, Couleur.BLANC)
+            zones_de_texte.question.afficher()
         else:
             bouttons.creation.afficher()
             robot.fenetre.afficher_texte("Nom", 980, 150, 20, Couleur.BLANC)
@@ -116,6 +133,7 @@ def boucle_session():
         if robot.utilisateur.verifier_session():
             user = robot.utilisateur.obtenir_utilisateur_connecte()
             print(f"Hello \033[96;1m{user.prenom} {user.nom}\033[0;0m !")
+            robot.IA.demarrer_discussion()
         else:
             # Affichage de carte détéctée non connectée
             carte_detectee = robot.utilisateur.detecter_carte()
@@ -135,10 +153,35 @@ def boucle_boutons() :
             robot.utilisateur.supprimer_utilisateur()
             robot.attributs.session_ouverte = False
             robot.attributs.mettre_a_jour_affichage = True
+
         if bouttons.deconnexion.est_actif():
             robot.utilisateur.deconnecter()
+            robot.IA.effacer_historique_conversation()
+            robot.IA.arreter_discussion()
+            print("Deconnexion")
             robot.attributs.session_ouverte = False
             robot.attributs.mettre_a_jour_affichage = True
+
+        if bouttons.charger.est_actif():
+            historique = robot.utilisateur.obtenir_historique_conversation_utilisateur()
+            robot.IA.charger_historique_conversation(historique)
+            print("Historique chargé")
+
+        if bouttons.envoyer.est_actif():
+            question = zones_de_texte.question.effacer_texte()
+            if not question:
+                pass
+            reponse = robot.IA.poser_question(question)
+            print(question)
+            print(reponse)
+
+        if bouttons.sauvegarder.est_actif():
+            question = zones_de_texte.question.obtenir_texte()
+            if not question:
+                pass
+            historique = robot.IA.obtenir_historique_conversation()
+            robot.utilisateur.sauvegarder_historique_conversation(historique)
+            print("Historique sauvegardé")
     
     if bouttons.creation.est_actif():
         nom = zones_de_texte.nom.obtenir_texte()

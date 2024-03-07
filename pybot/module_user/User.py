@@ -335,7 +335,7 @@ class User_manager:
         -------
             bool: True si le résumé de la conversation a été enregistré avec succès, False sinon.
         """
-        return self.save_conversation_summary(resume)
+        return self.save_conversation_history(resume)
 
     def get_user_conversation_history(self) -> str:
         """
