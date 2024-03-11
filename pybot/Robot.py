@@ -1,5 +1,6 @@
 from .module_fenetre.Fenetre import Fenetre
 from .module_user.User import User_manager
+from .module_audio.Lecteur import Lecteur
 from .module_camera.Camera import Camera
 from .module_fenetre.Input import Input
 from .module_webapp import create_app
@@ -20,6 +21,13 @@ class Robot:
     camera : Camera | None = None
     window : Fenetre | None = None
     user : User_manager | None = None
+    reader : Lecteur | None = None
+
+    # Module Francais #
+    IA : ChatBot | None = None
+    fenetre : Fenetre | None = None
+    utilisateur : User_manager | None = None
+    lecteur : Lecteur | None = None
 
     # Robot Attributs #
     events = []
@@ -48,10 +56,10 @@ class Robot:
     attributs : AttributeDict = AttributeDict({"boutons": AttributeDict(), "zones_de_texte": AttributeDict()})
 
     def __init__(self):
-        # Module Francais#
         self.IA : ChatBot = self.AI
         self.fenetre : Fenetre = self.window
         self.utilisateur : User_manager = self.user
+        self.lecteur : Lecteur = self.reader
 
 
     @ensure.no_window('en')
@@ -140,7 +148,7 @@ class Robot:
 
     @ensure.window('en')
     @ensure.no_camera('en')
-    def start_camera_module(self):
+    def start_camera_module(self) :
         """
         Starts the camera module.
 
@@ -179,11 +187,12 @@ class Robot:
     @ensure.webapp('en')
     @ensure.camera('en')
     @ensure.no_user('en')
-    def start_user_module(self):
+    def start_user_module(self) :
         """
         Starts the user module.
 
-        Note that the webapp and the camerea module must be started before this module.
+        This method initializes the user module if it has not already been started.
+        Note that the webapp and the camera module must be started before this module.
 
         Args:
         -----
@@ -204,6 +213,7 @@ class Robot:
         """
         Démarre le module utilisateur.
 
+        Cette méthode initialise le module utilisateur s'il n'a pas déjà été démarré.
         Notez que l'application web et le module caméra doivent être démarrés avant ce module.
 
         Paramètres:
@@ -215,6 +225,39 @@ class Robot:
             Aucun
         """
         self.start_user_module()
+
+    def start_reader_module(self) :
+        """
+        Starts the reader module.
+
+        This method initializes the reader module if it has not already been started.
+
+        Parameters:
+        -----------
+            None
+
+        Returns:
+        --------
+            None
+        """
+        self.reader = Lecteur()
+        self.lecteur = self.reader
+
+    def demarrer_module_lecteur(self) :
+        """
+        Démarre le module lecteur.
+
+        Cette méthode initialise le module lecteur s'il n'a pas déjà été démarré.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
+        """
+        self.start_reader_module()
 
     ### Robot Module Methode ###
     
@@ -238,7 +281,7 @@ class Robot:
             self.__webapp.run()
             sys.exit()
 
-    def demarrer_webapp(self):
+    def demarrer_webapp(self) :
         """
         Démarre l'application web.
 
@@ -367,6 +410,7 @@ class Robot:
         Supprime les évènements ayant le nom donné de la liste des évènements.
 
         Paramètres:
+        -----------
             nom (str): Le nom des évènements à supprimer.
 
         Retour:
@@ -439,17 +483,6 @@ class Robot:
             Aucun
         """
         self.deactivate()
-
-    def save_user_history_summary(self):
-        summary = self.IA.get_history_summary()
-        if summary is None:
-            self.__error_message("Summary is empty", "en")
-            return
-        self.user.set_conversation_summary(summary)
-
-    def load_user_history_summary(self):
-        summary = self.user.get_conversation_summary()
-        self.IA.set_history_summary(summary)
 
     ### Private Methode ###
 

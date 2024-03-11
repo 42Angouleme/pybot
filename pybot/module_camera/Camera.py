@@ -167,14 +167,14 @@ class Camera :
         """
         # Handle first launch of camera with 0 frame
         if self.__frame is None:
-            return []
+            return None
         frame, detected_card = self.__card_tracker.get_detected_card(
                 self.__frame,
                 min_threshold,
                 stop_threshold)
         if detected_card is not None:
             self.__surface.blit(frame, (self.__x, self.__y))
-        return detected_card, frame
+        return detected_card
 
     def _updateUserCardsTracker(self, webapp: Flask):
         # Handle Unintialized webapp

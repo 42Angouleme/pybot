@@ -63,10 +63,10 @@ def _get_decorator(error_condition, err_msg_key, logger=err):
     return lang_decorator
 
 def no_conversation(lang):
-    return _get_decorator(error_condition = lambda self: self._Robot__chatGPT is not None, err_msg_key = "has_conversation")(lang)
+    return _get_decorator(error_condition = lambda self: self._ChatBot__chatGPT is not None, err_msg_key = "has_conversation")(lang)
 
 def conversation(lang):
-    return _get_decorator(error_condition = lambda self: self._Robot__chatgpt is None, err_msg_key = "no_conversation")(lang)
+    return _get_decorator(error_condition = lambda self: self._ChatBot__chatGPT is None, err_msg_key = "no_conversation")(lang)
 
 def AI(lang):
     return _get_decorator(error_condition = lambda self: self.AI is None, err_msg_key = "has_AI")(lang)

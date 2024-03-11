@@ -204,7 +204,7 @@ class TextArea(Button) :
         new_text = ""
         robot._isWriting = True
         text = self.get_text()
-        print("User start writing")
+        #print("User start writing")
         while robot._isWriting:
             if not self._pressed:
                 robot._isWriting = False
@@ -220,7 +220,7 @@ class TextArea(Button) :
                 self.afficher()
                 robot.fenetre.refresh_display()
                 text = new_text
-        print("User end writing")
+        #print("User end writing")
         return text
 
     def ecrire(self, robot : Robot) -> str:
