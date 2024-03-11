@@ -1,6 +1,6 @@
 from .module_fenetre.Fenetre import Fenetre
 from .module_user.User import User_manager
-from .module_audio.Lecteur import Lecteur
+from .module_haut_parleur.HautParleur import HautParleur
 from .module_camera.Camera import Camera
 from .module_fenetre.Input import Input
 from .module_webapp import create_app
@@ -21,13 +21,13 @@ class Robot:
     camera : Camera | None = None
     window : Fenetre | None = None
     user : User_manager | None = None
-    reader : Lecteur | None = None
+    speaker : HautParleur | None = None
 
     # Module Francais #
     IA : ChatBot | None = None
     fenetre : Fenetre | None = None
     utilisateur : User_manager | None = None
-    lecteur : Lecteur | None = None
+    haut_parleur : Lecteur | None = None
 
     # Robot Attributs #
     events = []
@@ -59,7 +59,7 @@ class Robot:
         self.IA : ChatBot = self.AI
         self.fenetre : Fenetre = self.window
         self.utilisateur : User_manager = self.user
-        self.lecteur : Lecteur = self.reader
+        self.haut_parleur : Lecteur = self.speaker
 
 
     @ensure.no_window('en')
@@ -226,11 +226,11 @@ class Robot:
         """
         self.start_user_module()
 
-    def start_reader_module(self) :
+    def start_speaker_module(self) :
         """
-        Starts the reader module.
+        Starts the speaker module.
 
-        This method initializes the reader module if it has not already been started.
+        This method initializes the speaker module if it has not already been started.
 
         Parameters:
         -----------
@@ -240,14 +240,14 @@ class Robot:
         --------
             None
         """
-        self.reader = Lecteur()
-        self.lecteur = self.reader
+        self.speaker = Lecteur()
+        self.haut_parleur = self.speaker
 
-    def demarrer_module_lecteur(self) :
+    def demarrer_module_haut_parleur(self) :
         """
-        Démarre le module lecteur.
+        Démarre le module haut_parleur.
 
-        Cette méthode initialise le module lecteur s'il n'a pas déjà été démarré.
+        Cette méthode initialise le module haut_parleur s'il n'a pas déjà été démarré.
 
         Paramètres:
         -----------
@@ -257,7 +257,7 @@ class Robot:
         -------
             Aucun
         """
-        self.start_reader_module()
+        self.start_speaker_module()
 
     ### Robot Module Methode ###
     

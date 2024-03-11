@@ -1,23 +1,23 @@
 # import time
-# from pybot.module_audio import Lecteur
+# from pybot.module_haut_parleur import HautParleur
 
 
-# lecteur = Lecteur()
+# haut_parleur = HautParleur()
 
-# lecteur.charger_voix("femme")
-# lecteur.charger_voix("homme")
+# haut_parleur.charger_voix("femme")
+# haut_parleur.charger_voix("homme")
 
-# lecteur.utiliser_voix("femme")
+# haut_parleur.utiliser_voix("femme")
 
 # phrase = """Maître Corbeau, sur un arbre perché, tenait en son bec un fromage."""
 
-# lecteur.dire(phrase)
+# haut_parleur.dire(phrase)
 
-# while lecteur.lecture_en_cours:
+# while haut_parleur.lecture_en_cours:
 #     time.sleep(1)
 
-# lecteur.utiliser_voix("homme")
-# lecteur.dire(phrase)
+# haut_parleur.utiliser_voix("homme")
+# haut_parleur.dire(phrase)
 
 from pybot.module_fenetre.Interface import Button, TextArea
 from pybot import Robot, Couleur
@@ -31,7 +31,7 @@ hauteur_fenetre = 500
 discussion_commencer = False
 
 robot.demarrer_module_fenetre()
-robot.demarrer_module_lecteur()
+robot.demarrer_module_haut_parleur()
 
 # --- FENETRE ---
 # - Preparation -
@@ -41,8 +41,8 @@ robot.fenetre.changer_titre("Bonjour Robot!")
 
 # --- LECTEUR ---
 # - Preparation -
-robot.lecteur.charger_voix("homme")
-robot.lecteur.utiliser_voix("homme")
+robot.haut_parleur.charger_voix("homme")
+robot.haut_parleur.utiliser_voix("homme")
 
 # - Boucle -
 def boucle_fenetre():
@@ -91,8 +91,8 @@ def boucle_boutons():
         robot.desactiver()
     if discussion_commencer and text_area.est_actif():
         texte_utilisateur = text_area.ecrire(robot)
-        robot.lecteur.dire(texte_utilisateur)
-        while robot.lecteur.lecture_en_cours:
+        robot.haut_parleur.dire(texte_utilisateur)
+        while robot.haut_parleur.lecture_en_cours:
             robot.dort(1)
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 #! venv/bin/python3
 
-from . import module_audio as audio
+from . import module_haut_parleur as speaker
 from . import module_microphone as micro
 from . import module_ia as ia
 
@@ -11,11 +11,11 @@ async def chat_bot():
             question = listen.one_phrase().as_text()
             print("Tu as dis: " + question)
             if "stop" in question.lower():
-                audio.run(txt="Tu as dis STOP... au revoir, humain.")
+                speaker.run(txt="Tu as dis STOP... au revoir, humain.")
                 break
             answer = ia.run(question)
             if answer:
-                audio.run(txt=answer)
+                speaker.run(txt=answer)
         except Exception as e:
             print(f"Une erreur est survenue: {e}")
             break
@@ -26,7 +26,7 @@ async def chat_bot():
 def main():
     # asyncio.run(chat_bot())
     micro.run()
-    # audio.run()
+    # speaker.run()
     # ia.run()
     # fenetre.run()
 

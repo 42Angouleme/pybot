@@ -34,7 +34,7 @@ voice_directory = os.path.join(current_folder, "voix")
 audio_directory = os.path.join(current_folder, "fichiers_audio")
 
 
-class Lecteur:
+class HautParleur:
     _voices = {
         "homme": [
             os.path.join(voice_directory, "./fr_FR-tom2.onnx"),
@@ -70,14 +70,14 @@ class Lecteur:
         """
         `True` if the robot is currently reading something. Otherwise `False`.
         """
-        return Lecteur.__reading_in_progress
+        return HautParleur.__reading_in_progress
     
     @property
     def lecture_en_cours(self) -> bool:
         """
         `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`.
         """
-        return Lecteur.__reading_in_progress
+        return HautParleur.__reading_in_progress
 
     @thread
     def load_voice(self, voice: VoiceKey = default_voice_key):
@@ -156,12 +156,12 @@ class Lecteur:
         --------
             None
         """
-        if Lecteur.__playing_audio_file:
+        if HautParleur.__playing_audio_file:
             warn(
                 f"I am already playing an audio file, I cannot play 2 audio files at the same time."
             )
             return
-        Lecteur.__playing_audio_file = True
+        HautParleur.__playing_audio_file = True
 
         sd.stop()
 
@@ -178,7 +178,7 @@ class Lecteur:
             sd.wait()
         print(f"Fin de lecture...")
 
-        Lecteur.__playing_audio_file = False
+        HautParleur.__playing_audio_file = False
 
     @thread
     def lire_fichier_audio(self, chemin: str) -> None:
@@ -193,7 +193,7 @@ class Lecteur:
         -------
             Aucun
         """
-        if Lecteur.__playing_audio_file:
+        if HautParleur.__playing_audio_file:
             warn(
                 f"Je suis déjà en lire un fichier audio, je ne peux pas lire 2 fichiers audio en même temps."
             )
@@ -202,7 +202,7 @@ class Lecteur:
         self.play_audio_file(chemin, thread=False)
 
     @thread
-    def speak_in_file(self, voice: VoiceKey, text: str, path: str) -> bool:
+    def record_audio_to_file(self, voice: VoiceKey, text: str, path: str) -> bool:
         """
         Transform the text into an audio file and save it at the specified path. You must have called the `load_voice` function with the same voice as a parameter before.
 
@@ -236,7 +236,7 @@ class Lecteur:
         return True
 
     @thread
-    def parler_dans_fichier(self, voix: VoiceKey, texte: str, chemin: str) -> bool:
+    def enregistrer_audio_dans_fichier(self, voix: VoiceKey, texte: str, chemin: str) -> bool:
         """
         Transforme le texte en fichier audio et l'enregistre au chemin spécifié.
 
@@ -262,7 +262,7 @@ class Lecteur:
             )
             return False
 
-        return self.speak_in_file(voix, texte, chemin, thread=False)
+        return self.record_audio_to_file(voix, texte, chemin, thread=False)
 
     @thread
     def say(self, text: str) -> bool:
@@ -281,24 +281,24 @@ class Lecteur:
         -------
             `False` if a problem occurred, otherwise `True`
         """
-        if Lecteur.__reading_in_progress:
+        if HautParleur.__reading_in_progress:
             warn(
                 f"I am already reading, I cannot read 2 texts at the same time."
             )
             return False
 
-        Lecteur.__reading_in_progress = True
+        HautParleur.__reading_in_progress = True
 
         if self.voix_choisie is None:
             warn(f"No voice has been chosen, I cannot prepare the reading.")
             return False
 
-        self.parler_dans_fichier(
+        self.enregistrer_audio_dans_fichier(
             self.voix_choisie, text, self._last_tts_filepath, thread=False
         )
         self.lire_fichier_audio(self._last_tts_filepath, thread=False)
 
-        Lecteur.__reading_in_progress = False
+        HautParleur.__reading_in_progress = False
 
         return True
     
@@ -317,7 +317,7 @@ class Lecteur:
         -------
             `False` si un problème est survenu, sinon `True`
         """
-        if Lecteur.__reading_in_progress:
+        if HautParleur.__reading_in_progress:
             warn(
                 f"Je suis déjà en train de lire, je ne peux pas lire 2 textes en même temps."
             )

@@ -1,7 +1,7 @@
 import pyttsx3
 
-def run(txt = "welcome to the audio module"):
-    print("Hello Module Audio")
+def run(txt = "welcome to the speaker module"):
+    print("Hello Module Speaker")
 
     # To initialize the motor
     engine = pyttsx3.init()
