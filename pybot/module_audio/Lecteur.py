@@ -66,7 +66,7 @@ class Lecteur:
             self.utiliser_voix(utiliser_voix)
 
     @property
-    def currently_reading(self) -> bool:
+    def is_currently_reading(self) -> bool:
         """
         `True` if the robot is currently reading something. Otherwise `False`.
         """

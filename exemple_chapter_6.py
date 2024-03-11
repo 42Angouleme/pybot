@@ -73,7 +73,7 @@ def boucle_boutons():
         texte_utilisateur = text_area.ecrire(robot)
         réponse = robot.IA.poser_question(texte_utilisateur)
         print(réponse)
-        emotion = robot.IA.obtenir_emotion(réponse)
+        emotion = robot.IA.donner_emotion(réponse)
         image = robot.fenetre.obtenir_image_emotion(emotion)
         robot.fenetre.afficher_image(image, 300, 300)
 

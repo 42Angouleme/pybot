@@ -306,7 +306,7 @@ class ChatBot:
 
         return emotion
 
-    def obtenir_emotion(self, phrase: str) -> str:
+    def donner_emotion(self, phrase: str) -> str:
         """
         Obtenez l'émotion associée à une phrase donnée.
 
