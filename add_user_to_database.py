@@ -14,45 +14,57 @@ robot.attributs.manque_information = False
 
 ## INITIALISATION ##
 
-def demarrer_module() :
+
+def demarrer_module():
     robot.demarrer_module_fenetre()
     robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
     robot.demarrer_module_camera()
     robot.demarrer_module_utilisateur()
 
-def parametrer_fenetre() :
+
+def parametrer_fenetre():
     robot.fenetre.changer_couleur_fond(Couleur.NOIR)
     robot.fenetre.changer_titre("Ajouter un utilisateur")
 
-def initialisation_evenements() :
+
+def initialisation_evenements():
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("espace", "photo")
 
-def initialisation_boutons() :
+
+def initialisation_boutons():
     boutons = robot.attributs.boutons
-    boutons.creation = robot.fenetre.creer_bouton(200, 60, 980, 70, Couleur.CYAN)
+    boutons.creation = robot.fenetre.creer_bouton(
+        200, 60, 980, 70, Couleur.CYAN)
     boutons.creation.ajouter_texte("Créer  utilisateur", 20, 20)
 
-    boutons.deconnexion = robot.fenetre.creer_bouton(200, 60, 360, 510, Couleur.ORANGE)
+    boutons.deconnexion = robot.fenetre.creer_bouton(
+        200, 60, 360, 510, Couleur.ORANGE)
     boutons.deconnexion.ajouter_texte("Deconnexion", 5, 20)
 
-    boutons.suppression = robot.fenetre.creer_bouton(200, 60, 670, 510, Couleur.ROUGE)
+    boutons.suppression = robot.fenetre.creer_bouton(
+        200, 60, 670, 510, Couleur.ROUGE)
     boutons.suppression.ajouter_texte("Supprimer utilisateur", 5, 20)
 
-def initialisation_session() :
+
+def initialisation_session():
     robot.attributs.session_ouverte = False
     robot.attributs.derniere_carte_detectee = None
 
-def initialisation_zone_de_texte() :
+
+def initialisation_zone_de_texte():
     zones_de_texte = robot.attributs.zones_de_texte
 
-    zones_de_texte.nom = robot.fenetre.creer_zone_de_texte(200, 60, 980, 200, Couleur.GRIS)
+    zones_de_texte.nom = robot.fenetre.creer_zone_de_texte(
+        200, 60, 980, 200, Couleur.GRIS)
 
-    zones_de_texte.prenom = robot.fenetre.creer_zone_de_texte(200, 60, 980, 400, Couleur.GRIS)
+    zones_de_texte.prenom = robot.fenetre.creer_zone_de_texte(
+        200, 60, 980, 400, Couleur.GRIS)
 
 ## BOUCLES ##
 
-def boucle_evenements() :
+
+def boucle_evenements():
     zones_de_texte = robot.attributs.zones_de_texte
     events = robot.verifier_evenements()
     if "stop" in events:
@@ -66,7 +78,8 @@ def boucle_evenements() :
             robot.attributs.derniere_carte_detectee = None
             return
 
-        robot.utilisateur.creer_utilisateur(nom, prenom, robot.attributs.derniere_carte_detectee)
+        robot.utilisateur.creer_utilisateur(
+            nom, prenom, robot.attributs.derniere_carte_detectee)
         zones_de_texte.nom.effacer_texte()
         zones_de_texte.prenom.effacer_texte()
         robot.attributs.derniere_carte_detectee = None
@@ -74,29 +87,33 @@ def boucle_evenements() :
         # ou affichage d'un message de succès dans le terminal
         robot.attributs.mettre_a_jour_affichage = True
 
-def boucle_zone_de_texte() :
+
+def boucle_zone_de_texte():
     zones_de_texte = robot.attributs.zones_de_texte
     if zones_de_texte.nom.est_actif():
         zones_de_texte.nom.ecrire(robot)
     if zones_de_texte.prenom.est_actif():
         zones_de_texte.prenom.ecrire(robot)
 
+
 def boucle_d_affichage():
     bouttons = robot.attributs.boutons
     zones_de_texte = robot.attributs.zones_de_texte
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
     robot.camera.afficher_camera(300, 10)
-    if mettre_a_jour_affichage :
+    if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
-        if robot.attributs.manque_information :
+        if robot.attributs.manque_information:
             robot.attributs.manque_information = False
-            robot.fenetre.afficher_texte("Veuillez remplir tous les champs", 360, 510, 20, Couleur.ROUGE)
-        if robot.attributs.session_ouverte :
+            robot.fenetre.afficher_texte(
+                "Veuillez remplir tous les champs", 360, 510, 20, Couleur.ROUGE)
+        if robot.attributs.session_ouverte:
             bouttons.deconnexion.afficher()
             bouttons.suppression.afficher()
             user = robot.utilisateur.obtenir_utilisateur_connecte()
             robot.fenetre.afficher_texte(user.nom, 25, 200, 30, Couleur.BLANC)
-            robot.fenetre.afficher_texte(user.prenom, 25, 300, 30, Couleur.BLANC)
+            robot.fenetre.afficher_texte(
+                user.prenom, 25, 300, 30, Couleur.BLANC)
         else:
             bouttons.creation.afficher()
             robot.fenetre.afficher_texte("Nom", 980, 150, 20, Couleur.BLANC)
@@ -109,8 +126,9 @@ def boucle_d_affichage():
 
         robot.attributs.mettre_a_jour_affichage = False
 
+
 def boucle_session():
-    if not robot.attributs.session_ouverte :
+    if not robot.attributs.session_ouverte:
         # Essai de connexion
         robot.utilisateur.connecter()
         if robot.utilisateur.verifier_session():
@@ -123,7 +141,8 @@ def boucle_session():
                 robot.fenetre.afficher_carte_detectee(carte_detectee, 60, 150)
                 robot.attributs.derniere_carte_detectee = carte_detectee
 
-def boucle_boutons() :
+
+def boucle_boutons():
     bouttons = robot.attributs.boutons
     zones_de_texte = robot.attributs.zones_de_texte
 
@@ -139,7 +158,7 @@ def boucle_boutons() :
             robot.utilisateur.deconnecter()
             robot.attributs.session_ouverte = False
             robot.attributs.mettre_a_jour_affichage = True
-    
+
     if bouttons.creation.est_actif():
         nom = zones_de_texte.nom.obtenir_texte()
         prenom = zones_de_texte.prenom.obtenir_texte()
@@ -149,13 +168,15 @@ def boucle_boutons() :
             robot.attributs.derniere_carte_detectee = None
             return
 
-        robot.utilisateur.creer_utilisateur(nom, prenom, robot.attributs.derniere_carte_detectee)
+        robot.utilisateur.creer_utilisateur(
+            nom, prenom, robot.attributs.derniere_carte_detectee)
         zones_de_texte.nom.effacer_texte()
         zones_de_texte.prenom.effacer_texte()
         robot.attributs.derniere_carte_detectee = None
         robot.attributs.mettre_a_jour_affichage = True
 
-if __name__ == "__main__" :
+
+if __name__ == "__main__":
     demarrer_module()
     parametrer_fenetre()
     initialisation_session()
@@ -163,7 +184,7 @@ if __name__ == "__main__" :
     initialisation_boutons()
     initialisation_zone_de_texte()
 
-    while robot.est_actif() :
+    while robot.est_actif():
         boucle_zone_de_texte()
         boucle_evenements()
         boucle_boutons()

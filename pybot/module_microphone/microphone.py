@@ -104,7 +104,8 @@ class Microphone:
                 return TraitementAudio()
 
         with SrMicrophone() as source:
-            _debug(f"J'écoute pendant {duree} secondes...")  # TODO humanize date
+            # TODO humanize date
+            _debug(f"J'écoute pendant {duree} secondes...")
             start_time = datetime.now()
             recording = self.r.record(source, duration=duree, offset=delai)
             _debug("Écoute terminée...")

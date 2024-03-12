@@ -6,7 +6,8 @@ from .module_fenetre.Input import Input
 from .module_webapp import create_app
 from .module_ia.IA import ChatBot
 from flask import Flask
-import os, sys
+import os
+import sys
 import time
 
 # Typing
@@ -17,53 +18,53 @@ from . import ensure
 
 class Robot:
     # English Module #
-    AI : ChatBot | None = None
-    camera : Camera | None = None
-    window : Fenetre | None = None
-    user : User_manager | None = None
-    speaker : HautParleur | None = None
+    AI: ChatBot | None = None
+    camera: Camera | None = None
+    window: Fenetre | None = None
+    user: User_manager | None = None
+    speaker: HautParleur | None = None
 
     # Module Francais #
-    IA : ChatBot | None = None
-    fenetre : Fenetre | None = None
-    utilisateur : User_manager | None = None
-    haut_parleur : Lecteur | None = None
+    IA: ChatBot | None = None
+    fenetre: Fenetre | None = None
+    utilisateur: User_manager | None = None
+    haut_parleur: HautParleur | None = None
 
     # Robot Attributs #
     events = []
-    __active : bool = True
-    __webapp : Flask | None = None
-    _isWriting : bool = False
+    __active: bool = True
+    __webapp: Flask | None = None
+    _isWriting: bool = False
 
-    __emotion_dict : dict[str, str] = {
-        "Neutre" : "/images/emotions/neutre.png",
-        "Amuser" : "/images/emotions/amuser.png",
-        "Celebration" : "/images/emotions/celebration.png",
-        "Colere" : "/images/emotions/colere.png",
-        "Contrariete" : "/images/emotions/contrariete.png",
-        "Degout" : "/images/emotions/degout.png",
-        "Fatigue" : "/images/emotions/fatigue.png",
-        "Incomprehension" : "/images/emotions/incomprehension.png",
-        "Inquietude" : "/images/emotions/inquietude.png",
-        "Joie" : "/images/emotions/joie.png",
-        "Peur" : "/images/emotions/peur.png",
-        "Reflexion" : "/images/emotions/reflexion.png",
-        "Soulagement" : "/images/emotions/soulagement.png",
-        "Surprise" : "/images/emotions/surprise.png",
-        "Tristesse" : "/images/emotions/tristesse.png",
+    __emotion_dict: dict[str, str] = {
+        "Neutre": "/images/emotions/neutre.png",
+        "Amuser": "/images/emotions/amuser.png",
+        "Celebration": "/images/emotions/celebration.png",
+        "Colere": "/images/emotions/colere.png",
+        "Contrariete": "/images/emotions/contrariete.png",
+        "Degout": "/images/emotions/degout.png",
+        "Fatigue": "/images/emotions/fatigue.png",
+        "Incomprehension": "/images/emotions/incomprehension.png",
+        "Inquietude": "/images/emotions/inquietude.png",
+        "Joie": "/images/emotions/joie.png",
+        "Peur": "/images/emotions/peur.png",
+        "Reflexion": "/images/emotions/reflexion.png",
+        "Soulagement": "/images/emotions/soulagement.png",
+        "Surprise": "/images/emotions/surprise.png",
+        "Tristesse": "/images/emotions/tristesse.png",
     }
 
-    attributs : AttributeDict = AttributeDict({"boutons": AttributeDict(), "zones_de_texte": AttributeDict()})
+    attributs: AttributeDict = AttributeDict(
+        {"boutons": AttributeDict(), "zones_de_texte": AttributeDict()})
 
     def __init__(self):
-        self.IA : ChatBot = self.AI
-        self.fenetre : Fenetre = self.window
-        self.utilisateur : User_manager = self.user
-        self.haut_parleur : Lecteur = self.speaker
-
+        self.IA: ChatBot = self.AI
+        self.fenetre: Fenetre = self.window
+        self.utilisateur: User_manager = self.user
+        self.haut_parleur: HautParleur = self.speaker
 
     @ensure.no_window('en')
-    def start_window_module(self) :
+    def start_window_module(self):
         """
         Start the window module with the specified width and length.
 
@@ -85,7 +86,7 @@ class Robot:
 
     @ensure.no_window('fr')
     @ensure.warn_webapp('fr')
-    def demarrer_module_fenetre(self) :
+    def demarrer_module_fenetre(self):
         """
         Démarre le module fenêtre avec la longueur et la largeur spécifiées.
 
@@ -105,12 +106,12 @@ class Robot:
         self.start_window_module()
 
     @ensure.no_AI("en")
-    def start_AI_module(self) :
+    def start_AI_module(self):
         """
         Starts the AI module.
 
         This method initializes the AI module if it has not already been started.
-        
+
         Note that the environment variables OPENAI_API_KEY and OPENAI_API_ORG_ID must be set before starting the AI module.
 
         Args:
@@ -121,19 +122,20 @@ class Robot:
         --------
             None
         """
-        try :
+        try:
             self.AI = ChatBot(list(self.__emotion_dict.keys()))
             self.IA = self.AI
-        except :
-            ensure.warn("Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before starting the AI module", "en")
+        except:
+            ensure.warn(
+                "Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before starting the AI module", "en")
 
     @ensure.no_AI('fr')
-    def demarrer_module_IA(self) :
+    def demarrer_module_IA(self):
         """
         Démarre le module IA.
 
         Cette méthode initialise le module IA si ce n'est pas déjà fait.
-        
+
         Notez que les variables d'environnement OPENAI_API_KEY et OPENAI_API_ORG_ID doivent être définies avant de démarrer le module IA.
 
         Paramètres:
@@ -148,7 +150,7 @@ class Robot:
 
     @ensure.window('en')
     @ensure.no_camera('en')
-    def start_camera_module(self) :
+    def start_camera_module(self):
         """
         Starts the camera module.
 
@@ -167,7 +169,7 @@ class Robot:
 
     @ensure.window('fr')
     @ensure.no_camera('fr')
-    def demarrer_module_camera(self) :
+    def demarrer_module_camera(self):
         """
         Démarre le module caméra.
 
@@ -187,7 +189,7 @@ class Robot:
     @ensure.webapp('en')
     @ensure.camera('en')
     @ensure.no_user('en')
-    def start_user_module(self) :
+    def start_user_module(self):
         """
         Starts the user module.
 
@@ -209,7 +211,7 @@ class Robot:
     @ensure.webapp('fr')
     @ensure.camera('fr')
     @ensure.no_user('fr')
-    def demarrer_module_utilisateur(self) :
+    def demarrer_module_utilisateur(self):
         """
         Démarre le module utilisateur.
 
@@ -226,7 +228,7 @@ class Robot:
         """
         self.start_user_module()
 
-    def start_speaker_module(self) :
+    def start_speaker_module(self):
         """
         Starts the speaker module.
 
@@ -240,10 +242,10 @@ class Robot:
         --------
             None
         """
-        self.speaker = Lecteur()
+        self.speaker = HautParleur()
         self.haut_parleur = self.speaker
 
-    def demarrer_module_haut_parleur(self) :
+    def demarrer_module_haut_parleur(self):
         """
         Démarre le module haut_parleur.
 
@@ -260,7 +262,7 @@ class Robot:
         self.start_speaker_module()
 
     ### Robot Module Methode ###
-    
+
     def start_webapp(self):
         """
         Starts the web application.
@@ -275,13 +277,14 @@ class Robot:
         --------
             None
         """
-        self.__webapp = create_app(root_dir=os.path.dirname(os.path.abspath(__file__)))
+        self.__webapp = create_app(
+            root_dir=os.path.dirname(os.path.abspath(__file__)))
         pid = os.fork()
         if pid:
             self.__webapp.run()
             sys.exit()
 
-    def demarrer_webapp(self) :
+    def demarrer_webapp(self):
         """
         Démarre l'application web.
 
@@ -296,8 +299,8 @@ class Robot:
             Aucun
         """
         self.start_webapp()
-    
-    def sleep(self, secondes: int) :
+
+    def sleep(self, secondes: int):
         """
         Pause the execution of the robot for the specified number of seconds.
 
@@ -311,7 +314,7 @@ class Robot:
         """
         time.sleep(secondes)
 
-    def dort(self, secondes: int) :
+    def dort(self, secondes: int):
         """
         Met en pause l'exécution du robot pendant le nombre de secondes spécifié.
 
@@ -325,7 +328,7 @@ class Robot:
         """
         self.sleep(secondes)
 
-    def is_active(self) -> bool :
+    def is_active(self) -> bool:
         """
         Check if the robot is active.
 
@@ -338,8 +341,8 @@ class Robot:
             bool: True if the robot is active, False otherwise.
         """
         return self.__active
-    
-    def est_actif(self) -> bool :
+
+    def est_actif(self) -> bool:
         """
         Vérifie si le robot est actif.
 
@@ -352,7 +355,7 @@ class Robot:
             bool: True si le robot est actif, False sinon.
         """
         return self.is_active()
-    
+
     ### Robot Evenements ###
 
     def add_event(self, key: str, name: str):
@@ -364,7 +367,7 @@ class Robot:
         -----
             key (str): The key of the event.
             name (str): The name of the event.
-        
+
         Returns:
         --------
             None
@@ -373,7 +376,7 @@ class Robot:
         if new not in self.events:
             self.events.append(new)
 
-    def ajouter_evenement(self, touche: str, nom: str) :
+    def ajouter_evenement(self, touche: str, nom: str):
         """
         Ajoute des évènements à la liste des évènements du robot.
         Voir la documentation pour la liste des touches possibles.
@@ -382,7 +385,7 @@ class Robot:
         ------------
             touche (str): La touche de l'évènement.
             nom (str): Le nom de l'évènement.
-        
+
         Retour:
         -------
             Aucun
@@ -405,7 +408,7 @@ class Robot:
             if e[1] == name:
                 self.events.remove(e)
 
-    def supprimer_evenement(self, nom: str) :
+    def supprimer_evenement(self, nom: str):
         """
         Supprime les évènements ayant le nom donné de la liste des évènements.
 
@@ -418,8 +421,8 @@ class Robot:
             Aucun
         """
         self.delete_event(nom)
-    
-    def check_events(self) -> List[str] :
+
+    def check_events(self) -> List[str]:
         """
         Check all the events and return a list of detected events.
 
@@ -433,7 +436,7 @@ class Robot:
         """
         return Input.check(self.events, self)
 
-    def verifier_evenements(self) -> List[str] :
+    def verifier_evenements(self) -> List[str]:
         """
         Vérifie tous les évènements et renvoie une liste d'évènements détectés.
 
@@ -461,7 +464,7 @@ class Robot:
             None
         """
         try:
-            if (self.camera is not None) :
+            if (self.camera is not None):
                 self.camera._stop()
             self.window._stop()
             self.__active = False
@@ -469,7 +472,7 @@ class Robot:
         except AttributeError:
             pass
 
-    def desactiver(self) :
+    def desactiver(self):
         """
         Désactive le robot en arrêtant la caméra et la fenêtre et définit l'attribut actif à False.
         Un robot qui a été désactivé ne pourra pas effectuer d'action.

@@ -2,7 +2,8 @@ import sounddevice as sd
 import numpy as np
 from typing import Literal
 import wave
-import os, sys
+import os
+import sys
 
 from piper import PiperVoice
 
@@ -52,7 +53,8 @@ class HautParleur:
             None,
         ],
     }
-    _last_tts_filepath: str = os.path.join(audio_directory, "./derniere_lecture.wav")
+    _last_tts_filepath: str = os.path.join(
+        audio_directory, "./derniere_lecture.wav")
     _voice: PiperVoice | None = None
     voix_choisie: VoiceKey | None = None
     __reading_in_progress: bool = False
@@ -71,7 +73,7 @@ class HautParleur:
         `True` if the robot is currently reading something. Otherwise `False`.
         """
         return HautParleur.__reading_in_progress
-    
+
     @property
     def lecture_en_cours(self) -> bool:
         """
@@ -128,7 +130,7 @@ class HautParleur:
             None
         """
         self.voix_choisie = voice
-    
+
     def utiliser_voix(self, voix: VoiceKey) -> None:
         """
         Utilise une voix, pour qu'elle soit ensuite utilisée par la fonction `dire`. Il faut penser à charger cette voix en appelant la fonction `charger_voix` avant d'appeler `dire`.
@@ -301,7 +303,7 @@ class HautParleur:
         HautParleur.__reading_in_progress = False
 
         return True
-    
+
     @thread
     def dire(self, texte: str) -> bool:
         """
