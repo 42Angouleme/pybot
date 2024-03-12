@@ -7,7 +7,8 @@ import re
 def test_audiofile_to_text():
     EXPECT_REG = r"bonjour.*bienvenue.*42"
     AUDIO_FILEPATH = "bonjour42.wav"
-    AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), AUDIO_FILEPATH)
+    AUDIO_FILE = path.join(path.dirname(
+        path.realpath(__file__)), AUDIO_FILEPATH)
 
     with AudioFile(AUDIO_FILE) as source:  # use the audio file as the audio source
         recording = Recognizer().record(source)  # read the entire audio file

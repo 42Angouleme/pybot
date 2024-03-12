@@ -12,13 +12,16 @@ robot.demarrer_module_fenetre()
 robot.fenetre.ouvrir_fenetre(long, haut)
 robot.fenetre.changer_titre("Bonjour!")
 
+
 def initialisation_evenements():
-    print("Creation des eveneemnts sur les touches <ECHAP> ou <C>")
+    print("Creation des evenements sur les touches <ECHAP> ou <C>")
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("C", "carotte")
 # ----------------------------------------
 
 # -------- Dans main_boucle.py -----------
+
+
 def boucle_evenements():
     evenements = robot.verifier_evenements()
     if "stop" in evenements:
