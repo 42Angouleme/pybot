@@ -1,5 +1,5 @@
 from pybot import Couleur
-from main_initialisation import robot
+from main_initialiser import robot
 
 # --- FENETRE ---
 

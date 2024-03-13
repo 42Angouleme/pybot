@@ -1,12 +1,12 @@
 from pybot import Robot, Couleur
 
-# ---- Dans main_initialisation.py -------
+# ---- Dans main_initialiser.py -------
 robot = Robot()
 robot.demarrer_webapp()
 long = 840
 haut = 300
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.zone = "menu"
@@ -21,13 +21,13 @@ robot.attributs.paroles = [
 ]
 
 
-def initialisation_fenetre():
+def initialiser_fenetre():
     robot.fenetre.ouvrir_fenetre(long, haut)
     robot.fenetre.changer_titre("Bonjour boutons!")
     robot.fenetre.changer_couleur_fond(Couleur.ROSE)
 
 
-def initialisation_boutons():
+def initialiser_boutons():
     boutons = robot.attributs.boutons
     boutons.menu = robot.fenetre.creer_bouton(120, 50, 10, 10, Couleur.CYAN)
     boutons.menu.ajouter_texte("Menu", couleur=Couleur.VIOLET)
@@ -41,7 +41,7 @@ def initialisation_boutons():
     boutons.plus.ajouter_texte("suite du texte", 10, 10, 20, Couleur.NOIR)
 
 
-def initialisation_evenements():
+def initialiser_evenements():
     robot.ajouter_evenement("echap", "stop")
 # ----------------------------------------
 
@@ -95,9 +95,9 @@ def boucle_fenetre():
 
 
 if __name__ == "__main__":
-    initialisation_fenetre()
-    initialisation_evenements()
-    initialisation_boutons()
+    initialiser_fenetre()
+    initialiser_evenements()
+    initialiser_boutons()
     while robot.est_actif():
         boucle_evenements()
         boucle_boutons()

@@ -1,30 +1,30 @@
 from pybot import Robot, Couleur
 
-# ---- Dans main_initialisation.py -------
+# ---- Dans main_initialiser.py -------
 robot = Robot()
 
 long = 1200
 haut = 1000
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 robot.attributs.afficher_camera = False
 robot.attributs.afficher_photo = False
 robot.attributs.mettre_a_jour_affichage = True
 
 
-def initialisation_fenetre():
+def initialiser_fenetre():
     robot.fenetre.ouvrir_fenetre(long, haut)
-    robot.demarrer_module_camera()
+    robot.initialiser_module_camera()
     robot.fenetre.changer_titre("Bonjour camera!")
     robot.fenetre.changer_couleur_fond(Couleur.NOIR)
 
 
-def initialisation_evenements():
+def initialiser_evenements():
     robot.ajouter_evenement("echap", "stop")
 
 
-def initialisation_boutons():
+def initialiser_boutons():
     boutons = robot.attributs.boutons
     boutons.camera = robot.fenetre.creer_bouton(180, 60, 10, 10, Couleur.BLEU)
     boutons.camera.ajouter_texte("camera - allumer", 5, 20)
@@ -148,9 +148,9 @@ def boucle_boutons():
 
 
 if __name__ == "__main__":
-    initialisation_fenetre()
-    initialisation_evenements()
-    initialisation_boutons()
+    initialiser_fenetre()
+    initialiser_evenements()
+    initialiser_boutons()
     while robot.est_actif():
         boucle_evenements()
         boucle_boutons()

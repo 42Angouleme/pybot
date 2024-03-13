@@ -66,7 +66,7 @@ class Robot:
         self.haut_parleur: HautParleur = self.speaker
 
     @ensure.no_window('en')
-    def start_window_module(self):
+    def init_window_module(self):
         """
         Start the window module with the specified width and length.
 
@@ -88,9 +88,9 @@ class Robot:
 
     @ensure.no_window('fr')
     @ensure.warn_webapp('fr')
-    def demarrer_module_fenetre(self):
+    def initialiser_module_fenetre(self):
         """
-        Démarre le module fenêtre avec la longueur et la largeur spécifiées.
+        Initialise le module fenêtre avec la longueur et la largeur spécifiées.
 
         Cette méthode initialise le module fenêtre si ce n'est pas déjà fait.
 
@@ -105,12 +105,12 @@ class Robot:
         -------
             Aucun
         """
-        self.start_window_module()
+        self.init_window_module()
 
     @ensure.no_AI("en")
-    def start_AI_module(self):
+    def init_AI_module(self):
         """
-        Starts the AI module.
+        Initialize the AI module.
 
         This method initializes the AI module if it has not already been started.
 
@@ -132,9 +132,9 @@ class Robot:
                 "Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before starting the AI module", "en")
 
     @ensure.no_AI('fr')
-    def demarrer_module_IA(self):
+    def initialiser_module_IA(self):
         """
-        Démarre le module IA.
+        Initialise le module IA.
 
         Cette méthode initialise le module IA si ce n'est pas déjà fait.
 
@@ -148,13 +148,13 @@ class Robot:
         -------
             Aucun
         """
-        self.start_AI_module()
+        self.init_AI_module()
 
     @ensure.window('en')
     @ensure.no_camera('en')
-    def start_camera_module(self):
+    def init_camera_module(self):
         """
-        Starts the camera module.
+        Initialize the camera module.
 
         This method initializes the camera module if it has not already been started.
         Note that the window module must be started before this module.
@@ -171,9 +171,9 @@ class Robot:
 
     @ensure.window('fr')
     @ensure.no_camera('fr')
-    def demarrer_module_camera(self):
+    def initialiser_module_camera(self):
         """
-        Démarre le module caméra.
+        Initialise le module caméra.
 
         Cette méthode initialise le module caméra s'il n'a pas déjà été démarré.
         Notez que le module fenêtre doit être démarré avant ce module.
@@ -186,14 +186,14 @@ class Robot:
         -------
             Aucun
         """
-        self.start_camera_module()
+        self.init_camera_module()
 
     @ensure.webapp('en')
     @ensure.camera('en')
     @ensure.no_user('en')
-    def start_user_module(self):
+    def init_user_module(self):
         """
-        Starts the user module.
+        Initialize the user module.
 
         This method initializes the user module if it has not already been started.
         Note that the webapp and the camera module must be started before this module.
@@ -213,9 +213,9 @@ class Robot:
     @ensure.webapp('fr')
     @ensure.camera('fr')
     @ensure.no_user('fr')
-    def demarrer_module_utilisateur(self):
+    def initialiser_module_utilisateur(self):
         """
-        Démarre le module utilisateur.
+        Initialise le module utilisateur.
 
         Cette méthode initialise le module utilisateur s'il n'a pas déjà été démarré.
         Notez que l'application web et le module caméra doivent être démarrés avant ce module.
@@ -228,11 +228,11 @@ class Robot:
         -------
             Aucun
         """
-        self.start_user_module()
+        self.init_user_module()
 
     def start_microphone_module(self):
         """
-        Starts the microphone module.
+        Initialize the microphone module.
 
         This method initializes the microphone module if it has not already been started.
 
@@ -246,9 +246,9 @@ class Robot:
         """
         self.microphone = Microphone()
 
-    def demarrer_module_microphone(self):
+    def initialiser_module_microphone(self):
         """
-        Démarre le module microphone.
+        Initialise le module microphone.
 
         Cette méthode initialise le module microphone s'il n'a pas déjà été démarré.
 
@@ -260,11 +260,11 @@ class Robot:
         -------
             Aucun
         """
-        self.start_microphone_module()
+        self.init_microphone_module()
 
-    def start_speaker_module(self):
+    def init_speaker_module(self):
         """
-        Starts the speaker module.
+        Initialize the speaker module.
 
         This method initializes the speaker module if it has not already been started.
 
@@ -279,9 +279,9 @@ class Robot:
         self.speaker = HautParleur()
         self.haut_parleur = self.speaker
 
-    def demarrer_module_haut_parleur(self):
+    def initialiser_module_haut_parleur(self):
         """
-        Démarre le module haut_parleur.
+        Initialise le module haut_parleur.
 
         Cette méthode initialise le module haut_parleur s'il n'a pas déjà été démarré.
 
@@ -293,7 +293,7 @@ class Robot:
         -------
             Aucun
         """
-        self.start_speaker_module()
+        self.init_speaker_module()
 
     ### Robot Module Methode ###
 

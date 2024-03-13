@@ -10,8 +10,8 @@ largeur_fenetre = 1200
 hauteur_fenetre = 500
 discussion_commencer = False
 
-robot.demarrer_module_fenetre()
-robot.demarrer_module_IA()
+robot.initialiser_module_fenetre()
+robot.initialiser_module_IA()
 
 
 # --- FENETRE ---

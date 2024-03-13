@@ -2,7 +2,7 @@ from pybot import Robot
 
 robot = Robot()
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 robot.fenetre.changer_titre("bonjour,pybot!")
 robot.fenetre.ouvrir_fenetre()

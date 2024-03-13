@@ -1,9 +1,11 @@
-import sounddevice as sd
 import numpy as np
 from typing import Literal
 import wave
 import os
 import sys
+import pyaudio
+from ctypes import *
+import contextlib
 
 from piper import PiperVoice
 
@@ -165,19 +167,35 @@ class HautParleur:
             return
         HautParleur.__playing_audio_file = True
 
-        sd.stop()
 
         print(f"Début de la lecture...")
-        with wave.open(path, "rb") as wav_file:
-            # Get the WAV file parameters
-            params = wav_file.getparams()
-            # Read the audio data from the WAV file
-            audio_data = wav_file.readframes(params.nframes)
-            audio_array = np.frombuffer(audio_data, dtype=np.int16)
-            # Play the audio using sounddevice
-            sd.play(audio_array, params.framerate)
-            # Wait for playback to finish
-            sd.wait()
+        wav_file = wave.open(path, 'rb')
+        chunk = 8192
+
+        with silence():
+            # create an audio object
+            p = pyaudio.PyAudio()
+
+        # open stream based on the wave object which has been input.
+        stream = p.open(format =
+                    p.get_format_from_width(wav_file.getsampwidth()),
+                    channels = wav_file.getnchannels(),
+                    rate = wav_file.getframerate(),
+                    output = True)
+
+        # read data (based on the chunk size)
+        data = wav_file.readframes(chunk)
+
+        # play stream (looping from beginning of file to the end)
+        while data:
+            # writing to the stream is what *actually* plays the sound.
+            stream.write(data)
+            data = wav_file.readframes(chunk)
+
+        # cleanup
+        wav_file.close()
+        stream.close()    
+        p.terminate()
         print(f"Fin de lecture...")
 
         HautParleur.__playing_audio_file = False
@@ -330,3 +348,17 @@ class HautParleur:
             return False
 
         self.say(texte, thread=False)
+
+# ... Another trick to have a clean console (This silence pyaudio trying to connect to Jack server and some bad configuration from /usr/share/alsa/alsa.conf)    
+@contextlib.contextmanager
+def silence():
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    old_stderr = os.dup(2)
+    sys.stderr.flush()
+    os.dup2(devnull, 2)
+    os.close(devnull)
+    try:
+        yield
+    finally:
+        os.dup2(old_stderr, 2)
+        os.close(old_stderr)
