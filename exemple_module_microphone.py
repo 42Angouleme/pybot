@@ -1,5 +1,5 @@
 from pybot.module_fenetre.Interface import Button
-from pybot.module_microphone import Microphone
+from pybot.module_microphone.Microphone import Microphone
 from pybot import Robot, Couleur
 
 # --- GENERAL ---

@@ -1,4 +1,4 @@
 from .module import run
-from .microphone import Microphone, ecoute
+from .Microphone import Microphone
 from .filepath_schema import FilepathSchema
 from .traitement_audio import TraitementAudio

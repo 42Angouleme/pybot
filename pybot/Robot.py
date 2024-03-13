@@ -2,6 +2,7 @@ from .module_fenetre.Fenetre import Fenetre
 from .module_user.User import User_manager
 from .module_haut_parleur.HautParleur import HautParleur
 from .module_camera.Camera import Camera
+from .module_microphone.Microphone import Microphone
 from .module_fenetre.Input import Input
 from .module_webapp import create_app
 from .module_ia.IA import ChatBot
@@ -20,6 +21,7 @@ class Robot:
     # English Module #
     AI: ChatBot | None = None
     camera: Camera | None = None
+    microphone: Microphone | None = None
     window: Fenetre | None = None
     user: User_manager | None = None
     speaker: HautParleur | None = None
@@ -227,6 +229,38 @@ class Robot:
             Aucun
         """
         self.start_user_module()
+
+    def start_microphone_module(self):
+        """
+        Starts the microphone module.
+
+        This method initializes the microphone module if it has not already been started.
+
+        Parameters:
+        -----------
+            None
+
+        Returns:
+        --------
+            None
+        """
+        self.microphone = Microphone()
+
+    def demarrer_module_microphone(self):
+        """
+        Démarre le module microphone.
+
+        Cette méthode initialise le module microphone s'il n'a pas déjà été démarré.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
+        """
+        self.start_microphone_module()
 
     def start_speaker_module(self):
         """
