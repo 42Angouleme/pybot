@@ -99,19 +99,19 @@ class HautParleur:
         # print(f"Chargement de la voix '{voix}'...")
         voice_path, loaded_event, _voice = self._voices[voice]
         # if voice is not None:
-        #     print(f"La voix '{voix}' Ã©tait dÃ©jÃ  chargÃ©e...")
+        #     print(f"La voix '{voix}' était déjà chargée...")
         self._voices[voice][2] = PiperVoice.load(voice_path)
         loaded_event.set()
-        # print(f"Voix {voix}Â chargÃ©e.")
+        # print(f"Voix {voix} chargée.")
 
     @thread
     def charger_voix(self, voix: VoiceKey = default_voice_key):
         """
-        Charge une voix qui pourra ensuite Ãªtre utilisÃ©e pour parler.
+        Charge une voix qui pourra ensuite être utilisée pour parler.
 
-        ParamÃ¨tres:
+        Paramètres:
         ----------
-            voix (str): Le nom de la voix Ã  charger.
+            voix (str): Le nom de la voix à charger.
 
         Retour:
         -------
@@ -135,11 +135,11 @@ class HautParleur:
 
     def utiliser_voix(self, voix: VoiceKey) -> None:
         """
-        Utilise une voix, pour qu'elle soit ensuite utilisÃ©e par la fonction `dire`. Il faut penser Ã  charger cette voix en appelant la fonction `charger_voix` avant d'appeler `dire`.
+        Utilise une voix, pour qu'elle soit ensuite utilisée par la fonction `dire`. Il faut penser à charger cette voix en appelant la fonction `charger_voix` avant d'appeler `dire`.
 
-        ParamÃ¨tres:
+        Paramètres:
         ----------
-            voix (str): Le nom de la voix Ã  charger.
+            voix (str): Le nom de la voix à charger.
 
         Retour:
         -------
@@ -168,21 +168,7 @@ class HautParleur:
         HautParleur.__playing_audio_file = True
 
 
-        print(f"DÃ©but de la lecture...")
-        # sd.stop()
-        # with wave.open(path, "rb") as wav_file:
-            # # Get the WAV file parameters
-            # params = wav_file.getparams()
-            # # Read the audio data from the WAV file
-            # audio_data = wav_file.readframes(params.nframes)
-            # audio_array = np.frombuffer(audio_data, dtype=np.int16)
-            # # Play the audio using sounddevice
-            # print(params.framerate)
-            # sd.play(audio_array, params.framerate)
-            # # Wait for playback to finish
-            # sd.wait()
-            # open the file for reading.
-
+        print(f"Début de la lecture...")
         wav_file = wave.open(path, 'rb')
         chunk = 8192
 
@@ -219,7 +205,7 @@ class HautParleur:
         """
         Lire un fichier audio.
 
-        ParamÃ¨tres:
+        Paramètres:
         ----------
             chemin (str): Le chemin complet du fichier audio.
 
@@ -229,7 +215,7 @@ class HautParleur:
         """
         if HautParleur.__playing_audio_file:
             warn(
-                f"Je suis dÃ©jÃ  en lire un fichier audio, je ne peux pas lire 2 fichiers audio en mÃªme temps."
+                f"Je suis déjà en lire un fichier audio, je ne peux pas lire 2 fichiers audio en même temps."
             )
             return
 
@@ -272,19 +258,19 @@ class HautParleur:
     @thread
     def enregistrer_audio_dans_fichier(self, voix: VoiceKey, texte: str, chemin: str) -> bool:
         """
-        Transforme le texte en fichier audio et l'enregistre au chemin spÃ©cifiÃ©.
+        Transforme le texte en fichier audio et l'enregistre au chemin spécifié.
 
-        Il faut au prÃ©alable avoir appelÃ© la fonction `charger_voix` avec cette mÃªme voix en paramÃ¨tre.
+        Il faut au préalable avoir appelé la fonction `charger_voix` avec cette même voix en paramètre.
 
-        ParamÃ¨tres:
+        Paramètres:
         ----------
-            voix (str): Le nom de la voix Ã  utiliser.
-            texte (str): Le texte Ã  synthÃ©tiser.
-            chemin (str): Le chemin oÃ¹ enregistrer le fichier audio.
+            voix (str): Le nom de la voix à utiliser.
+            texte (str): Le texte à synthétiser.
+            chemin (str): Le chemin où enregistrer le fichier audio.
 
         Retour:
         -------
-            `False` si un problÃ¨me est survenu, sinon `True`
+            `False` si un problème est survenu, sinon `True`
         """
         timeout = 10
         loaded_event = self._voices[voix][1]
@@ -292,7 +278,7 @@ class HautParleur:
         loaded = loaded_event.wait(timeout)
         if not loaded:
             warn(
-                f"La voix choisie ({voix}) n'a pas Ã©tÃ© charger, je ne peux pas prÃ©parer la lecture."
+                f"La voix choisie ({voix}) n'a pas été charger, je ne peux pas préparer la lecture."
             )
             return False
 
@@ -339,26 +325,26 @@ class HautParleur:
     @thread
     def dire(self, texte: str) -> bool:
         """
-        RÃ©cite le texte donnÃ© en paramÃ¨tre avec une voix humaine.
-        Il faut au prÃ©alable avoir prÃ©parÃ© une voix en appelant les fonction `charger_voix` et `utiliser_voix`.
-        Le robot ne doit pas dÃ©jÃ  Ãªtre en train de parler.
+        Récite le texte donné en paramètre avec une voix humaine.
+        Il faut au préalable avoir préparé une voix en appelant les fonction `charger_voix` et `utiliser_voix`.
+        Le robot ne doit pas déjà être en train de parler.
 
-        ParamÃ¨tres:
+        Paramètres:
         ----------
-            texte (str): Le texte Ã  rÃ©citer.
+            texte (str): Le texte à réciter.
 
         Retour:
         -------
-            `False` si un problÃ¨me est survenu, sinon `True`
+            `False` si un problème est survenu, sinon `True`
         """
         if HautParleur.__reading_in_progress:
             warn(
-                f"Je suis dÃ©jÃ  en train de lire, je ne peux pas lire 2 textes en mÃªme temps."
+                f"Je suis déjà en train de lire, je ne peux pas lire 2 textes en même temps."
             )
             return False
 
         if self.voix_choisie is None:
-            warn(f"Aucune voix n'a Ã©tÃ© choisie, je ne peux pas prÃ©parer la lecture.")
+            warn(f"Aucune voix n'a été choisie, je ne peux pas préparer la lecture.")
             return False
 
         self.say(texte, thread=False)
