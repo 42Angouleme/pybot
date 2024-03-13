@@ -1,25 +1,5 @@
-# import time
-# from pybot.module_haut_parleur import HautParleur
-
-
-# haut_parleur = HautParleur()
-
-# haut_parleur.charger_voix("femme")
-# haut_parleur.charger_voix("homme")
-
-# haut_parleur.utiliser_voix("femme")
-
-# phrase = """Maître Corbeau, sur un arbre perché, tenait en son bec un fromage."""
-
-# haut_parleur.dire(phrase)
-
-# while haut_parleur.lecture_en_cours:
-#     time.sleep(1)
-
-# haut_parleur.utiliser_voix("homme")
-# haut_parleur.dire(phrase)
-
-from pybot.module_fenetre.Interface import Button, TextArea
+from pybot.module_fenetre.Interface import Button
+from pybot.module_microphone import Microphone
 from pybot import Robot, Couleur
 
 # --- GENERAL ---
@@ -44,9 +24,8 @@ robot.fenetre.changer_titre("Bonjour Robot!")
 robot.haut_parleur.charger_voix("homme")
 robot.haut_parleur.utiliser_voix("homme")
 
+
 # - Boucle -
-
-
 def boucle_fenetre():
     global mettre_a_jour_affichage
     if mettre_a_jour_affichage:
@@ -54,8 +33,6 @@ def boucle_fenetre():
         bouton_microphone.afficher()
         bouton_question.afficher()
         bouton_stop.afficher()
-        if (discussion_commencer):
-            text_area.afficher()
         mettre_a_jour_affichage = False
 
 
@@ -64,9 +41,8 @@ def boucle_fenetre():
 robot.ajouter_evenement("echap", "stop")
 robot.ajouter_evenement("C", "C")
 
+
 # - Boucle -
-
-
 def boucle_evenements():
     events = robot.check_events()
     if "stop" in events:
@@ -77,40 +53,37 @@ def boucle_evenements():
 
 # --- BOUTONS ---
 # - Preparation -
+
+# Bouton pour lancer un enregistrement
 bouton_microphone: Button = robot.fenetre.creer_bouton(
-    300, 60, 10, 400, Couleur.CYAN)
+    300, 60, 10, 400, Couleur.ROSE)
 bouton_microphone.ajouter_texte("Enregistrer une phrase", 5, 20)
+
+# Bouton pour lire le fichier audio
 bouton_question: Button = robot.fenetre.creer_bouton(
     300, 60, 10, 200, Couleur.CYAN)
 bouton_question.ajouter_texte("Faire dire une phrase", 5, 20)
+
+# Bouton pour quitter
 bouton_stop: Button = robot.fenetre.creer_bouton(
     200, 60, 10, 300, Couleur.ROUGE)
 bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
-text_area: TextArea = robot.fenetre.creer_zone_de_texte(
-    400, 100, 600, 200, Couleur.GRIS)
-text_area.modifier_couleur_police(Couleur.VERT_SAPIN)
+
+# --- MICROPHONE ---
+microphone = Microphone()
+
 
 # - Boucle -
-
-
 def boucle_boutons():
-    global mettre_a_jour_affichage, discussion_commencer, text_area
     if bouton_microphone.est_actif():
-        print("Enregistrement de la phrase")
+        microphone.pendant("5 secondes").enregistrer_sous(
+            "example_microphone.wav").transcrire()
     if bouton_question.est_actif():
-        discussion_commencer = not discussion_commencer
-        if discussion_commencer:
-            bouton_question.ajouter_texte("Arreter de faire dire une phrase")
-        else:
-            bouton_question.ajouter_texte("Faire dire une phrase")
-        mettre_a_jour_affichage = True
-    if bouton_stop.est_actif():
-        robot.desactiver()
-    if discussion_commencer and text_area.est_actif():
-        texte_utilisateur = text_area.ecrire(robot)
-        robot.haut_parleur.dire(texte_utilisateur)
+        robot.haut_parleur.lire_fichier_audio("example_microphone.wav")
         while robot.haut_parleur.lecture_en_cours:
             robot.dort(1)
+    if bouton_stop.est_actif():
+        robot.desactiver()
 
 
 if __name__ == "__main__":

@@ -63,7 +63,7 @@ class Microphone:
         Retour:
             TraitementAudio: L'enregistrement prêt à être manipulé.
         """
-        with SrMicrophone() as source:
+        with self.mic as source:
             _debug("Écoute d'une phrase")
             start_time = datetime.now()
             self.r.pause_threshold = 1
@@ -107,7 +107,7 @@ class Microphone:
             # TODO humanize date
             _debug(f"J'écoute pendant {duree} secondes...")
             start_time = datetime.now()
-            recording = self.r.record(source, duration=duree, offset=delai)
+            recording = self.r.listen(source, timeout=duree)
             _debug("Écoute terminée...")
             return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
 

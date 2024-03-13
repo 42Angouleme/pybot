@@ -1,5 +1,4 @@
 import os
-import sys
 from openai import OpenAI
 from dotenv import load_dotenv, find_dotenv
 from langchain_community.chat_models import ChatOpenAI
@@ -54,7 +53,13 @@ class ChatBot:
             "OPENAI_API_ORG_ID"), model_name="gpt-3.5-turbo")
         self.__memory = ConversationSummaryBufferMemory(
             llm=self.__chatGPT, max_token_limit=256)
-        self.__template = """
+        try:
+            prompt_file = open("prompt.txt", "r")
+            if prompt_file is not None:
+                file_content = prompt_file.read()
+        except Exception:
+            file_content = ""
+        self.__template = file_content + """
         You are the personal assistant for middle school students.
         You have to reply in french.
         Your answer must not exceed 256 tokens.
