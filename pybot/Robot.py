@@ -2,6 +2,7 @@ from .module_fenetre.Fenetre import Fenetre
 from .module_user.User import User_manager
 from .module_haut_parleur.HautParleur import HautParleur
 from .module_camera.Camera import Camera
+from .module_microphone.Microphone import Microphone
 from .module_fenetre.Input import Input
 from .module_webapp import create_app
 from .module_ia.IA import ChatBot
@@ -20,6 +21,7 @@ class Robot:
     # English Module #
     AI: ChatBot | None = None
     camera: Camera | None = None
+    microphone: Microphone | None = None
     window: Fenetre | None = None
     user: User_manager | None = None
     speaker: HautParleur | None = None
@@ -88,7 +90,7 @@ class Robot:
     @ensure.warn_webapp('fr')
     def initialiser_module_fenetre(self):
         """
-        Démarre le module fenêtre avec la longueur et la largeur spécifiées.
+        Initialise le module fenêtre avec la longueur et la largeur spécifiées.
 
         Cette méthode initialise le module fenêtre si ce n'est pas déjà fait.
 
@@ -108,7 +110,7 @@ class Robot:
     @ensure.no_AI("en")
     def init_AI_module(self):
         """
-        Starts the AI module.
+        Initialize the AI module.
 
         This method initializes the AI module if it has not already been started.
 
@@ -132,7 +134,7 @@ class Robot:
     @ensure.no_AI('fr')
     def initialiser_module_IA(self):
         """
-        Démarre le module IA.
+        Initialise le module IA.
 
         Cette méthode initialise le module IA si ce n'est pas déjà fait.
 
@@ -152,7 +154,7 @@ class Robot:
     @ensure.no_camera('en')
     def init_camera_module(self):
         """
-        Starts the camera module.
+        Initialize the camera module.
 
         This method initializes the camera module if it has not already been started.
         Note that the window module must be started before this module.
@@ -171,7 +173,7 @@ class Robot:
     @ensure.no_camera('fr')
     def initialiser_module_camera(self):
         """
-        Démarre le module caméra.
+        Initialise le module caméra.
 
         Cette méthode initialise le module caméra s'il n'a pas déjà été démarré.
         Notez que le module fenêtre doit être démarré avant ce module.
@@ -191,7 +193,7 @@ class Robot:
     @ensure.no_user('en')
     def init_user_module(self):
         """
-        Starts the user module.
+        Initialize the user module.
 
         This method initializes the user module if it has not already been started.
         Note that the webapp and the camera module must be started before this module.
@@ -213,7 +215,7 @@ class Robot:
     @ensure.no_user('fr')
     def initialiser_module_utilisateur(self):
         """
-        Démarre le module utilisateur.
+        Initialise le module utilisateur.
 
         Cette méthode initialise le module utilisateur s'il n'a pas déjà été démarré.
         Notez que l'application web et le module caméra doivent être démarrés avant ce module.
@@ -228,9 +230,41 @@ class Robot:
         """
         self.init_user_module()
 
+    def start_microphone_module(self):
+        """
+        Initialize the microphone module.
+
+        This method initializes the microphone module if it has not already been started.
+
+        Parameters:
+        -----------
+            None
+
+        Returns:
+        --------
+            None
+        """
+        self.microphone = Microphone()
+
+    def initialiser_module_microphone(self):
+        """
+        Initialise le module microphone.
+
+        Cette méthode initialise le module microphone s'il n'a pas déjà été démarré.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
+        """
+        self.init_microphone_module()
+
     def init_speaker_module(self):
         """
-        Starts the speaker module.
+        Initialize the speaker module.
 
         This method initializes the speaker module if it has not already been started.
 
@@ -247,7 +281,7 @@ class Robot:
 
     def initialiser_module_haut_parleur(self):
         """
-        Démarre le module haut_parleur.
+        Initialise le module haut_parleur.
 
         Cette méthode initialise le module haut_parleur s'il n'a pas déjà été démarré.
 

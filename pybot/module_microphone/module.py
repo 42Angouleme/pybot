@@ -1,5 +1,5 @@
-from .microphone import ecoute
 from .traitement_audio import TraitementAudio
+from .Microphone import Microphone
 import logging
 
 # Uncomment for debug message
@@ -33,6 +33,9 @@ def save_one_phrase():
     )
 
     print("Fichier sauvegardé au chemin " + chemin)
+
+
+ecoute = Microphone()
 
 
 def run():
