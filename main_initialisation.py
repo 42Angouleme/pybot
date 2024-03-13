@@ -12,27 +12,27 @@ hauteur_fenetre = 500
 # --- FENETRE ---
 
 
-def initialisation_fenetre():
-    robot.demarrer_module_fenetre()
+def initialiser_fenetre():
+    robot.initialiser_module_fenetre()
     robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
     robot.fenetre.changer_couleur_fond(Couleur.NOIR)
 
 # --- EVENEMENTS ---
 
 
-def initialisation_evenements():
+def initialiser_evenements():
     robot.ajouter_evenement("echap", "stop")
 
 # --- SESSION ---
 
 
-def initialisation_session():
+def initialiser_session():
     robot.attributs.derniere_carte_detectee = None
     robot.attributs.session_ouverte = False
 
 
 # --- BOUTONS ---
-def initialisation_boutons():
+def initialiser_boutons():
     boutons = robot.attributs.boutons
     boutons.deconnexion = robot.fenetre.creer_bouton(
         200, 60, 980, 200, Couleur.ORANGE)

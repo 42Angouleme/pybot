@@ -64,7 +64,7 @@ class Robot:
         self.haut_parleur: HautParleur = self.speaker
 
     @ensure.no_window('en')
-    def start_window_module(self):
+    def init_window_module(self):
         """
         Start the window module with the specified width and length.
 
@@ -86,7 +86,7 @@ class Robot:
 
     @ensure.no_window('fr')
     @ensure.warn_webapp('fr')
-    def demarrer_module_fenetre(self):
+    def initialiser_module_fenetre(self):
         """
         Démarre le module fenêtre avec la longueur et la largeur spécifiées.
 
@@ -103,10 +103,10 @@ class Robot:
         -------
             Aucun
         """
-        self.start_window_module()
+        self.init_window_module()
 
     @ensure.no_AI("en")
-    def start_AI_module(self):
+    def init_AI_module(self):
         """
         Starts the AI module.
 
@@ -130,7 +130,7 @@ class Robot:
                 "Please add OPENAI_API_KEY and OPENAI_API_ORG_ID to the environment before starting the AI module", "en")
 
     @ensure.no_AI('fr')
-    def demarrer_module_IA(self):
+    def initialiser_module_IA(self):
         """
         Démarre le module IA.
 
@@ -146,11 +146,11 @@ class Robot:
         -------
             Aucun
         """
-        self.start_AI_module()
+        self.init_AI_module()
 
     @ensure.window('en')
     @ensure.no_camera('en')
-    def start_camera_module(self):
+    def init_camera_module(self):
         """
         Starts the camera module.
 
@@ -169,7 +169,7 @@ class Robot:
 
     @ensure.window('fr')
     @ensure.no_camera('fr')
-    def demarrer_module_camera(self):
+    def initialiser_module_camera(self):
         """
         Démarre le module caméra.
 
@@ -184,12 +184,12 @@ class Robot:
         -------
             Aucun
         """
-        self.start_camera_module()
+        self.init_camera_module()
 
     @ensure.webapp('en')
     @ensure.camera('en')
     @ensure.no_user('en')
-    def start_user_module(self):
+    def init_user_module(self):
         """
         Starts the user module.
 
@@ -211,7 +211,7 @@ class Robot:
     @ensure.webapp('fr')
     @ensure.camera('fr')
     @ensure.no_user('fr')
-    def demarrer_module_utilisateur(self):
+    def initialiser_module_utilisateur(self):
         """
         Démarre le module utilisateur.
 
@@ -226,9 +226,9 @@ class Robot:
         -------
             Aucun
         """
-        self.start_user_module()
+        self.init_user_module()
 
-    def start_speaker_module(self):
+    def init_speaker_module(self):
         """
         Starts the speaker module.
 
@@ -245,7 +245,7 @@ class Robot:
         self.speaker = HautParleur()
         self.haut_parleur = self.speaker
 
-    def demarrer_module_haut_parleur(self):
+    def initialiser_module_haut_parleur(self):
         """
         Démarre le module haut_parleur.
 
@@ -259,7 +259,7 @@ class Robot:
         -------
             Aucun
         """
-        self.start_speaker_module()
+        self.init_speaker_module()
 
     ### Robot Module Methode ###
 

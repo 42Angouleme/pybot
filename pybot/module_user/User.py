@@ -23,7 +23,7 @@ class User_manager:
         self.__user_logged_in: UserResponse | None = None
         self.__load_env_file(".env")
 
-    def logging(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85):
+    def login(self, minimum_threshold: float = 0.75, search_stop_threshold: float = 0.85):
         """
         Logs in a user if a recognized user is found.
         Draw a square around the recognized user's card.
@@ -193,7 +193,7 @@ class User_manager:
         """
         return self.get_logged_in_user()
 
-    def create_user(self, first_name: str, last_name: str, card: MatLike):
+    def create(self, first_name: str, last_name: str, card: MatLike):
         """
         Create a new user with the given first name, last name, and card image.
 
@@ -237,7 +237,7 @@ class User_manager:
             except Exception as e:
                 err("[HTTP EXCEPTION]" + str(e), "en")
 
-    def creer_utilisateur(self, prenom: str, nom: str, carte: MatLike):
+    def creer(self, prenom: str, nom: str, carte: MatLike):
         """
         Crée un nouvel utilisateur avec le prénom, le nom et l'image de la carte donnés.
 
@@ -257,9 +257,9 @@ class User_manager:
         elif carte is None:
             warn("Création d'un utilisateur avec une carte invalide (=None)", "fr")
             return
-        self.create_user(prenom, nom, carte)
+        self.create(prenom, nom, carte)
 
-    def delete_user(self):
+    def delete(self):
         """
         Deletes the current user.
 
@@ -287,7 +287,7 @@ class User_manager:
         except Exception as e:
             err("[HTTP EXCEPTION]" + str(e), "en")
 
-    def supprimer_utilisateur(self):
+    def supprimer(self):
         """
         Supprime l'utilisateur actuel.
 
@@ -358,7 +358,7 @@ class User_manager:
         with self.__webapp.app_context():
             return user.get(id=user_id).conversation_summary
 
-    def obtenir_historique_conversation_utilisateur(self) -> str:
+    def obtenir_historique_conversation(self) -> str:
         """
         Récupère l'historique de la conversation de l'utilisateur actuel.
 
@@ -370,7 +370,7 @@ class User_manager:
         -------
             str: L'historique de la conversation de l'utilisateur actuel, ou None si aucun utilisateur n'est connecté.
         """
-        return self.get_user_conversation_history()
+        return self.get_conversation_history()
 
     ### Private Methode ###
 

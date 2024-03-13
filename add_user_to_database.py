@@ -15,11 +15,11 @@ robot.attributs.manque_information = False
 ## INITIALISATION ##
 
 
-def demarrer_module():
-    robot.demarrer_module_fenetre()
+def initialiser_module():
+    robot.initialiser_module_fenetre()
     robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
-    robot.demarrer_module_camera()
-    robot.demarrer_module_utilisateur()
+    robot.initialiser_module_camera()
+    robot.initialiser_module_utilisateur()
 
 
 def parametrer_fenetre():
@@ -27,12 +27,12 @@ def parametrer_fenetre():
     robot.fenetre.changer_titre("Ajouter un utilisateur")
 
 
-def initialisation_evenements():
+def initialiser_evenements():
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("espace", "photo")
 
 
-def initialisation_boutons():
+def initialiser_boutons():
     boutons = robot.attributs.boutons
     boutons.creation = robot.fenetre.creer_bouton(
         200, 60, 980, 70, Couleur.CYAN)
@@ -47,12 +47,12 @@ def initialisation_boutons():
     boutons.suppression.ajouter_texte("Supprimer utilisateur", 5, 20)
 
 
-def initialisation_session():
+def initialiser_session():
     robot.attributs.session_ouverte = False
     robot.attributs.derniere_carte_detectee = None
 
 
-def initialisation_zone_de_texte():
+def initialiser_zone_de_texte():
     zones_de_texte = robot.attributs.zones_de_texte
 
     zones_de_texte.nom = robot.fenetre.creer_zone_de_texte(
@@ -177,12 +177,12 @@ def boucle_boutons():
 
 
 if __name__ == "__main__":
-    demarrer_module()
+    initialiser_module()
     parametrer_fenetre()
-    initialisation_session()
-    initialisation_evenements()
-    initialisation_boutons()
-    initialisation_zone_de_texte()
+    initialiser_session()
+    initialiser_evenements()
+    initialiser_boutons()
+    initialiser_zone_de_texte()
 
     while robot.est_actif():
         boucle_zone_de_texte()
