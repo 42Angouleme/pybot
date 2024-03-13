@@ -300,7 +300,7 @@ class ChatBot:
         # openai.organization = os.getenv("OPENAI_API_ORG_ID")
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"),
                         organization=os.getenv("OPENAI_API_ORG_ID"))
-        preprompt = f"""Pick one word from [ {choices_str} ] that fits well with the following sentence: {sentence}.
+        preprompt = f"""Pick the word from [ {choices_str} ] that fits the best the following sentence: {sentence}.
         Answer only one word. Answer 'Neutre' if you really can't find any match"""
         # reponse =  openai.ChatCompletion.create(
         reponse = client.chat.completions.create(
