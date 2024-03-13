@@ -20,16 +20,15 @@ robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
 robot.fenetre.change_background_color(Couleur.NOIR)
 robot.fenetre.changer_titre("Bonjour Robot!")
 
+
 # - Boucle -
-
-
 def boucle_fenetre():
     global mettre_a_jour_affichage
     if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
         bouton_question.afficher()
         bouton_stop.afficher()
-        if (discussion_commencer):
+        if discussion_commencer:
             text_area.afficher()
         mettre_a_jour_affichage = False
 
@@ -39,9 +38,8 @@ def boucle_fenetre():
 robot.ajouter_evenement("echap", "stop")
 robot.ajouter_evenement("C", "C")
 
+
 # - Boucle -
-
-
 def boucle_evenements():
     events = robot.check_events()
     if "stop" in events:
@@ -62,11 +60,10 @@ text_area: TextArea = robot.fenetre.creer_zone_de_texte(
     400, 100, 600, 200, Couleur.GRIS)
 text_area.modifier_couleur_police(Couleur.VERT_SAPIN)
 
+
 # - Boucle -
-
-
 def boucle_boutons():
-    global mettre_a_jour_affichage, discussion_commencer, text_area
+    global mettre_a_jour_affichage, discussion_commencer
     if bouton_question.est_actif():
         discussion_commencer = not discussion_commencer
         if discussion_commencer:
