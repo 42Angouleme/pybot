@@ -1,19 +1,19 @@
 from pybot import Robot
 
 
-# ---- Dans main_initialisation.py -------
+# ---- Dans main_initialiser.py -------
 robot = Robot()
 
 long = 1024
 haut = 800
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 robot.fenetre.ouvrir_fenetre(long, haut)
 robot.fenetre.changer_titre("Bonjour!")
 
 
-def initialisation_evenements():
+def initialiser_evenements():
     print("Creation des evenements sur les touches <ECHAP> ou <C>")
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("C", "carotte")
@@ -41,7 +41,7 @@ def boucle_evenements():
 
 
 if __name__ == '__main__':
-    initialisation_evenements()
+    initialiser_evenements()
     while robot.est_actif():
         boucle_evenements()
         robot.fenetre.actualiser_affichage()

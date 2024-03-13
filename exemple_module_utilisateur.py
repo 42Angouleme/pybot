@@ -9,13 +9,13 @@ mettre_a_jour_affichage = True
 largeur_fenetre = 1200
 hauteur_fenetre = 500
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 # --- FENETRE ---
 # - Preparation -
 robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
-robot.demarrer_module_camera()
-robot.demarrer_module_utilisateur()
+robot.initialiser_module_camera()
+robot.initialiser_module_utilisateur()
 robot.fenetre.changer_couleur_fond(Couleur.NOIR)
 
 # - Boucle -
@@ -38,7 +38,7 @@ def boucle_fenetre():
 
 # --- SESSION ---
 # - Preparation -
-def initialisation_session():
+def initialiser_session():
     robot.attributs.session_ouverte = False
     robot.attributs.derniere_carte_detectee = None
 
@@ -46,7 +46,7 @@ def initialisation_session():
 # --- EVENEMENTS ---
 # - Preparation -
 robot.ajouter_evenement("echap", "stop")
-initialisation_session()
+initialiser_session()
 
 # - Boucle -
 

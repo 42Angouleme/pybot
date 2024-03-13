@@ -1,12 +1,12 @@
 from main_boucle import boucle_boutons, boucle_fenetre, boucle_session, boucle_evenements
-from main_initialisation import robot, initialisation_boutons, initialisation_evenements, initialisation_fenetre, initialisation_session
+from main_initialiser import robot, initialiser_boutons, initialiser_evenements, initialiser_fenetre, initialiser_session
 
 #
 # if __name__ == "__main__":
-#     initialisation_fenetre()
-#     initialisation_evenements()
-#     initialisation_boutons()
-#     initialisation_session()
+#     initialiser_fenetre()
+#     initialiser_evenements()
+#     initialiser_boutons()
+#     initialiser_session()
 #     while robot.est_actif():
 #         boucle_evenements()
 #         boucle_boutons()
@@ -19,12 +19,12 @@ robot = Robot()
 
 robot.demarrer_webapp()
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 robot.fenetre.ouvrir_fenetre(1500, 1000)
-robot.demarrer_module_camera()
+robot.initialiser_module_camera()
 
-robot.demarrer_module_utilisateur()
+robot.initialiser_module_utilisateur()
 
 boutons = robot.attributs.boutons
 boutons.quitter = robot.fenetre.creer_bouton(100, 50, 10, 80, Couleur.BLANC)

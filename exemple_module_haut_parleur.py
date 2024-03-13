@@ -30,8 +30,8 @@ largeur_fenetre = 1200
 hauteur_fenetre = 500
 discussion_commencer = False
 
-robot.demarrer_module_fenetre()
-robot.demarrer_module_haut_parleur()
+robot.initialiser_module_fenetre()
+robot.initialiser_module_haut_parleur()
 
 # --- FENETRE ---
 # - Preparation -
