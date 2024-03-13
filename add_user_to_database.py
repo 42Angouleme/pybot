@@ -12,7 +12,7 @@ hauteur_fenetre = 800
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.manque_information = False
 
-## initialiser ##
+## INITIALISATION ##
 
 
 def initialiser_module():
