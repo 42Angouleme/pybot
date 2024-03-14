@@ -27,6 +27,9 @@ def initialiser_evenements():
 
 
 def initialiser_session():
+    robot.initialiser_module_camera()
+    robot.initialiser_module_utilisateur()
+    robot.initialiser_module_IA()
     robot.attributs.derniere_carte_detectee = None
     robot.attributs.session_ouverte = False
 
