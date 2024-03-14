@@ -9,20 +9,26 @@ def boucle_fenetre():
     boutons = robot.attributs.boutons
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
     session_ouverte = robot.attributs.session_ouverte
+    image_emotion = robot.attributs.image_emotion
 
-    robot.camera.afficher_camera(300, 10)
+    robot.camera.afficher_camera(1200, 500)
     if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
         if session_ouverte:
+            utilisateur = robot.utilisateur.obtenir_utilisateur_connecte()
+            robot.fenetre.afficher_texte(
+                f"Bonjour, {utilisateur.prenom} {utilisateur.nom}", 425, 5, 30, Couleur.BLANC)
+            robot.fenetre.afficher_image(image_emotion, 50, 200)
             boutons.deconnexion.afficher()
-            boutons.suppression.afficher()
-        else:
-            boutons.creation.afficher()
-        boutons.question.afficher()
+            boutons.question.afficher()
+            boutons.texte.afficher()
         if robot.attributs.discussion_commencee:
             boutons.texte.afficher()
-        robot.fenetre.afficher_texte("CHAT IA", 90, 5, 30, Couleur.BLANC)
-        robot.fenetre.afficher_texte("SESSION", 1015, 5, 30, Couleur.BLANC)
+        if not session_ouverte:
+            robot.fenetre.afficher_image(
+                "/images/emotions/amuser.png", 550, 200)
+            robot.fenetre.afficher_texte(
+                "Scan ta carte", 450, 100, 50, Couleur.BLANC)
         robot.attributs.mettre_a_jour_affichage = False
 
 
@@ -49,8 +55,6 @@ def boucle_session():
             # Affichage de carte détéctée non connectée
             carte_detectee = robot.utilisateur.detecter_carte()
             if carte_detectee:
-                robot.fenetre.afficher_carte_detectee(
-                    carte_detectee, 980, 200)
                 attributs.derniere_carte_detectee = carte_detectee
 
 
@@ -60,41 +64,36 @@ def boucle_boutons():
     attributs = robot.attributs
     boutons = robot.attributs.boutons
     chat_commence = attributs.discussion_commencee
+    image = attributs.image_emotion
 
     # Mise à jour du status de la session
     if robot.utilisateur.verifier_session() != attributs.session_ouverte:
         attributs.session_ouverte = robot.utilisateur.verifier_session()
         attributs.mettre_a_jour_affichage = True
     elif attributs.session_ouverte:
-        # Vérification des boutons de session
-        if boutons.suppression.est_actif():
-            robot.utilisateur.supprimer()
-            attributs.session_ouverte = False
-            attributs.mettre_a_jour_affichage = True
         if boutons.deconnexion.est_actif():
             robot.utilisateur.deconnecter()
             attributs.session_ouverte = False
             attributs.mettre_a_jour_affichage = True
-    if boutons.creation.est_actif():
-        nom_utilisateur = "Ada"
-        prenom_utilisateur = "Lovelace"
-        robot.utilisateur.creer(prenom_utilisateur,
-                                nom_utilisateur,
-                                attributs.derniere_carte_detectee)
-        attributs.session_ouverte = False
-        attributs.mettre_a_jour_affichage = True
     if boutons.question.est_actif():
         chat_commence = not chat_commence
         robot.attributs.discussion_commencee = chat_commence
+        boutons.texte.effacer_texte()
         if chat_commence:
-            boutons.question.ajouter_texte("Arreter la discussion")
             robot.IA.demarrer_discussion()
+            texte_utilisateur = robot.microphone.pendant(
+                "1 seconde").transcrire()
+            print(texte_utilisateur)
+            boutons.texte.ajouter_texte(texte_utilisateur)
+            reponse = robot.IA.poser_question(texte_utilisateur)
+            print(reponse)
+            boutons.texte.ajouter_texte(texte_utilisateur + " " + reponse)
+            emotion = robot.IA.donner_emotion(reponse)
+            image = robot.fenetre.obtenir_image_emotion(emotion)
+            robot.fenetre.afficher_image(image, 50, 200)
+            robot.haut_parleur.dire(reponse)
+            while robot.haut_parleur.lecture_en_cours:
+                robot.dort(1)
         else:
-            boutons.question.ajouter_texte("Poser question")
             robot.IA.arreter_discussion()
         robot.attributs.mettre_a_jour_affichage = True
-    if chat_commence and boutons.texte.est_actif():
-        texte_utilisateur = boutons.texte.ecrire(robot)
-        reponse = robot.IA.poser_question(texte_utilisateur)
-        print(reponse)
-        boutons.texte.effacer_texte()

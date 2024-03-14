@@ -151,7 +151,7 @@ def boucle_boutons():
         robot.attributs.mettre_a_jour_affichage = True
     elif robot.attributs.session_ouverte:
         if bouttons.suppression.est_actif():
-            robot.utilisateur.supprimer_utilisateur()
+            robot.utilisateur.supprimer()
             robot.attributs.session_ouverte = False
             robot.attributs.mettre_a_jour_affichage = True
         if bouttons.deconnexion.est_actif():
@@ -168,7 +168,7 @@ def boucle_boutons():
             robot.attributs.derniere_carte_detectee = None
             return
 
-        robot.utilisateur.creer_utilisateur(
+        robot.utilisateur.creer(
             nom, prenom, robot.attributs.derniere_carte_detectee)
         zones_de_texte.nom.effacer_texte()
         zones_de_texte.prenom.effacer_texte()

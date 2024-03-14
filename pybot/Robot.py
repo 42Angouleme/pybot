@@ -260,7 +260,7 @@ class Robot:
         -------
             Aucun
         """
-        self.init_microphone_module()
+        self.start_microphone_module()
 
     def init_speaker_module(self):
         """
