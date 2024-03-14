@@ -3,7 +3,7 @@
 __pycache__
 venv
 .venv
-.env
+# .env
 # Ignore Jupyter notebook backup files
 *-checkpoint.ipynb
 .DS_Store
