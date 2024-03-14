@@ -12,4 +12,4 @@ if __name__ == "__main__":
         boucle_boutons()
         boucle_fenetre()
         boucle_session()
-        robot.actualiser_affichage()
+        robot.fenetre.actualiser_affichage()

@@ -68,7 +68,7 @@ def boucle_boutons():
     elif attributs.session_ouverte:
         # Vérification des boutons de session
         if boutons.suppression.est_actif():
-            robot.utilisateur.supprimer_utilisateur()
+            robot.utilisateur.supprimer()
             attributs.session_ouverte = False
             attributs.mettre_a_jour_affichage = True
         if boutons.deconnexion.est_actif():
@@ -78,9 +78,9 @@ def boucle_boutons():
     if boutons.creation.est_actif():
         nom_utilisateur = "Ada"
         prenom_utilisateur = "Lovelace"
-        robot.utilisateur.creer_utilisateur(prenom_utilisateur,
-                                            nom_utilisateur,
-                                            attributs.derniere_carte_detectee)
+        robot.utilisateur.creer(prenom_utilisateur,
+                                nom_utilisateur,
+                                attributs.derniere_carte_detectee)
         attributs.session_ouverte = False
         attributs.mettre_a_jour_affichage = True
     if boutons.question.est_actif():
@@ -94,7 +94,7 @@ def boucle_boutons():
             robot.IA.arreter_discussion()
         robot.attributs.mettre_a_jour_affichage = True
     if chat_commence and boutons.texte.est_actif():
-        # texte_utilisateur = robot.fenetre.ecrire(boutons.texte)
+        texte_utilisateur = boutons.texte.ecrire(robot)
+        reponse = robot.IA.poser_question(texte_utilisateur)
+        print(reponse)
         boutons.texte.effacer_texte()
-        # print("Texte entré par utilisateur:", texte_utilisateur)
-        # robot.repondre_question(texte_utilisateur)
