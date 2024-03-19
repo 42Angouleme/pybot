@@ -12,3 +12,4 @@ module_webapp/static/thumbnails/
 
 module_webapp/database.db
 !pybot/module_haut_parleur/fichiers_audio/derniere_lecture.wav
+.env
