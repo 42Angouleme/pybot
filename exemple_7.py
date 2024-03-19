@@ -30,8 +30,8 @@ largeur_fenetre = 1200
 hauteur_fenetre = 500
 discussion_commencer = False
 
-robot.demarrer_module_fenetre()
-robot.demarrer_module_lecteur()
+robot.initialiser_module_fenetre()
+robot.initialiser_module_haut_parleur()
 
 # --- FENETRE ---
 # - Preparation -
@@ -41,8 +41,8 @@ robot.fenetre.changer_titre("Bonjour Robot!")
 
 # --- LECTEUR ---
 # - Preparation -
-robot.lecteur.charger_voix("homme")
-robot.lecteur.utiliser_voix("homme")
+robot.haut_parleur.charger_voix("homme")
+robot.haut_parleur.utiliser_voix("homme")
 
 # - Boucle -
 def boucle_fenetre():
@@ -91,8 +91,8 @@ def boucle_boutons():
         robot.desactiver()
     if discussion_commencer and text_area.est_actif():
         texte_utilisateur = text_area.ecrire(robot)
-        robot.lecteur.dire(texte_utilisateur)
-        while robot.lecteur.lecture_en_cours:
+        robot.haut_parleur.dire(texte_utilisateur)
+        while robot.haut_parleur.lecture_en_cours:
             robot.dort(1)
 
 if __name__ == "__main__":

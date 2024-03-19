@@ -302,7 +302,7 @@ class User_manager:
         if not self.verifier_session():
             warn("Aucun utilisateur n'est connecté", "fr")
             return
-        self.delete_user()
+        self.delete()
 
     def save_conversation_history(self, summary: str) -> bool:
         """

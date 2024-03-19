@@ -6,7 +6,7 @@ robot.demarrer_webapp()
 long = 840
 haut = 300
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.zone = "menu"

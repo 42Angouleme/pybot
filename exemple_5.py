@@ -9,13 +9,13 @@ mettre_a_jour_affichage = True
 largeur_fenetre = 1200
 hauteur_fenetre = 500
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 # --- FENETRE ---
 # - Preparation -
 robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
-robot.demarrer_module_camera()
-robot.demarrer_module_utilisateur()
+robot.initialiser_module_camera()
+robot.initialiser_module_utilisateur()
 robot.fenetre.changer_couleur_fond(Couleur.NOIR)
 
 # - Boucle -
@@ -86,7 +86,7 @@ def boucle_boutons():
     elif robot.attributs.session_ouverte:
         # Vérification des boutons de session
         if bouton_suppression.est_actif():
-            robot.utilisateur.supprimer_utilisateur()
+            robot.utilisateur.supprimer()
             robot.attributs.session_ouverte = False
             mettre_a_jour_affichage = True
         if bouton_deconnexion.est_actif():
@@ -96,7 +96,7 @@ def boucle_boutons():
     if bouton_creation.est_actif():
         nom_utilisateur = "Ada"
         prenom_utilisateur = "Lovelace"
-        robot.utilisateur.creer_utilisateur(prenom_utilisateur,
+        robot.utilisateur.creer(prenom_utilisateur,
                                 nom_utilisateur,
                                 robot.attributs.derniere_carte_detectee)
         robot.attributs.session_ouverte = False

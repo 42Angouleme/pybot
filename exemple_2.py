@@ -7,7 +7,7 @@ robot = Robot()
 long = 1024
 haut = 800
 
-robot.demarrer_module_fenetre()
+robot.initialiser_module_fenetre()
 
 robot.fenetre.ouvrir_fenetre(long, haut)
 robot.fenetre.changer_titre("Bonjour!")
