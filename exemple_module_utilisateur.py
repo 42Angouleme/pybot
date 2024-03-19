@@ -19,6 +19,8 @@ robot.initialiser_module_utilisateur()
 robot.fenetre.changer_couleur_fond(Couleur.NOIR)
 
 # - Boucle -
+
+
 def boucle_fenetre():
     global mettre_a_jour_affichage
     robot.camera.afficher_camera(300, 10)
@@ -36,24 +38,29 @@ def boucle_fenetre():
 
 # --- SESSION ---
 # - Preparation -
-def initialisation_session():
+def initialiser_session():
     robot.attributs.session_ouverte = False
     robot.attributs.derniere_carte_detectee = None
+
 
 # --- EVENEMENTS ---
 # - Preparation -
 robot.ajouter_evenement("echap", "stop")
-initialisation_session()
+initialiser_session()
 
 # - Boucle -
+
+
 def boucle_evenements():
     events = robot.verifier_evenements()
     if "stop" in events:
         robot.desactiver()
 
 # - Boucle -
+
+
 def boucle_session():
-    if not robot.attributs.session_ouverte :
+    if not robot.attributs.session_ouverte:
         # Essai de connexion
         robot.utilisateur.connecter()
         if robot.utilisateur.verifier_session():
@@ -69,14 +76,19 @@ def boucle_session():
 
 # --- BOUTONS ---
 # - Preparation -
-bouton_deconnexion : Button = robot.fenetre.creer_bouton(200, 60, 25, 200, Couleur.ORANGE)
+bouton_deconnexion: Button = robot.fenetre.creer_bouton(
+    200, 60, 25, 200, Couleur.ORANGE)
 bouton_deconnexion.ajouter_texte("Deconnexion", 5, 20)
-bouton_suppression : Button = robot.fenetre.creer_bouton(200, 60, 25, 300, Couleur.ROUGE)
+bouton_suppression: Button = robot.fenetre.creer_bouton(
+    200, 60, 25, 300, Couleur.ROUGE)
 bouton_suppression.ajouter_texte("Supprimer utilisateur", 5, 20)
-bouton_creation : Button = robot.fenetre.creer_bouton(200, 60, 980, 100, (0, 150, 0))
+bouton_creation: Button = robot.fenetre.creer_bouton(
+    200, 60, 980, 100, (0, 150, 0))
 bouton_creation.ajouter_texte("Créer  utilisateur", 20, 20)
 
 # - Boucle -
+
+
 def boucle_boutons():
     global mettre_a_jour_affichage, carte_detectee
     # Mise à jour du status de la session
@@ -86,7 +98,7 @@ def boucle_boutons():
     elif robot.attributs.session_ouverte:
         # Vérification des boutons de session
         if bouton_suppression.est_actif():
-            robot.utilisateur.supprimer()
+            robot.utilisateur.supprimer_utilisateur()
             robot.attributs.session_ouverte = False
             mettre_a_jour_affichage = True
         if bouton_deconnexion.est_actif():
@@ -96,9 +108,9 @@ def boucle_boutons():
     if bouton_creation.est_actif():
         nom_utilisateur = "Ada"
         prenom_utilisateur = "Lovelace"
-        robot.utilisateur.creer(prenom_utilisateur,
-                                nom_utilisateur,
-                                robot.attributs.derniere_carte_detectee)
+        robot.utilisateur.creer_utilisateur(prenom_utilisateur,
+                                            nom_utilisateur,
+                                            robot.attributs.derniere_carte_detectee)
         robot.attributs.session_ouverte = False
         mettre_a_jour_affichage = True
 
