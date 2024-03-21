@@ -21,7 +21,7 @@ def get_system():
 _ , systeme = get_system()
 
 if systeme == 2 :
-    from picamera2 import PiCamera2
+    from picamera2 import Picamera2
     from libcamera import controls
 
 
@@ -35,7 +35,7 @@ class Camera :
         if systeme == 1 :
             self.__camera = cv2.VideoCapture(0)
         if systeme == 2 :
-            self.__camera = PiCamera2()
+            self.__camera = Picamera2()
             self.__camera.configure(self.__camera.create_preview_configuration(main={"format": "XRGB8888", "size": (640, 480)}))
             self.__camera.set_control({"Afmode" : controls.AfModeEnum.Continuous})
             self.__camera.start()
