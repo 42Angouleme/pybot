@@ -5,6 +5,25 @@ from flask import Flask
 import pygame as pg
 import numpy as np
 import cv2
+import os
+
+def verifier_systeme():
+    if os.path.exists('/etc/os-release'):
+        with open('/etc/os-release') as f:
+            for ligne in f:
+                if ligne.startswith('ID=ubuntu'):
+                    return 'Ubuntu', 1
+                elif ligne.startswith('ID=raspbian'):
+                    return 'Raspberry Pi OS', 2
+    return 'Système inconnu', 1
+
+_ , systeme = verifier_systeme()
+
+if systeme == 2 :
+    from picamera2 import PiCamera2
+    from libcamera import controls
+
+
 
 class Camera :
     def __init__(self, surface : pg.Surface):
@@ -12,7 +31,13 @@ class Camera :
         self.__y : float = 0
         self.__filters = Filtres()
         self.__frame : MatLike = None
-        self.__camera = cv2.VideoCapture(0)
+        if systeme == 1 :
+            self.__camera = cv2.VideoCapture(0)
+        if systeme == 2 :
+            self.__camera = PiCamera2()
+            self.__camera.configure(self.__camera.create_preview_configuration(main={"format": "XRGB8888", "size": (640, 480)}))
+            self.__camera.set_control({"Afmode" : controls.AfModeEnum.Continuous})
+            self.__camera.start()
         self.__surface : pg.Surface = surface
         self.__card_tracker: UserCardsTracker = None
 
@@ -32,7 +57,10 @@ class Camera :
         self.__x = position_x
         self.__y = position_y
         try:
-            ret ,self.__frame = self.__camera.read()
+            if systeme == 1 :
+                ret, self.__frame = self.__camera.read()
+            if systeme == 2 :
+                self.__frame = self.__camera.capture_array()
             self.__frame = cv2.cvtColor(self.__frame, cv2.COLOR_BGR2RGB)
             self.__frame = np.rot90(self.__frame)
             self.__frame = pg.surfarray.make_surface(self.__frame)
@@ -69,9 +97,12 @@ class Camera :
             None
         """
         try:
-            ret, frame = self.__camera.read()
-            if not ret:
-                return None
+            if systeme == 1 :
+                ret, frame = self.__camera.read()
+                if not ret:
+                    return None
+            if systeme == 2 :
+                frame = self.__camera.capture_array()
             frame = cv2.flip(frame, 1)
             cv2.imwrite("images/" + file_name + ".jpg", frame)
         except:
@@ -127,11 +158,17 @@ class Camera :
     ### Private Methode ###
 
     def _stop(self) :
-        self.__camera.release()
+        if systeme == 1 :
+            self.__camera.release()
+        if systeme == 2 :
+            self.__camera.close()
         cv2.destroyAllWindows()
     
     def _is_open(self) -> bool :
-        return self.__camera.isOpened()
+        if systeme == 1 :
+            return self.__camera.isOpened()
+        if systeme == 2 :
+            return True
 
     def _detect_user(self, min_threshold : float, stop_threshold : float):
         """
