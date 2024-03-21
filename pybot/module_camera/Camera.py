@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 import os
 
-def verifier_systeme():
+def get_system():
     if os.path.exists('/etc/os-release'):
         with open('/etc/os-release') as f:
             for ligne in f:
@@ -18,7 +18,7 @@ def verifier_systeme():
                         return 'Raspberry Pi OS', 2
     return 'Système inconnu', 1
 
-_ , systeme = verifier_systeme()
+_ , systeme = get_system()
 
 if systeme == 2 :
     from picamera2 import PiCamera2
