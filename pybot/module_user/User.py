@@ -370,7 +370,7 @@ class User_manager:
         -------
             str: L'historique de la conversation de l'utilisateur actuel, ou None si aucun utilisateur n'est connecté.
         """
-        return self.get_conversation_history()
+        return self.get_user_conversation_history()
 
     ### Private Methode ###
 

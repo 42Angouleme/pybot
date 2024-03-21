@@ -3,8 +3,8 @@ from pybot import Robot, Couleur
 # ---- Dans main_initialiser.py -------
 robot = Robot()
 
-long = 1200
-haut = 1000
+long = 1000
+haut = 600
 
 robot.initialiser_module_fenetre()
 

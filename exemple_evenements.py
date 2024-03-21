@@ -4,8 +4,8 @@ from pybot import Robot
 # ---- Dans main_initialiser.py -------
 robot = Robot()
 
-long = 1024
-haut = 800
+long = 1000
+haut = 500
 
 robot.initialiser_module_fenetre()
 

@@ -6,7 +6,7 @@ from pybot import Robot, Couleur
 robot = Robot()
 robot.demarrer_webapp()
 mettre_a_jour_affichage = True
-largeur_fenetre = 1200
+largeur_fenetre = 1000
 hauteur_fenetre = 500
 discussion_commencer = False
 
@@ -57,7 +57,7 @@ bouton_stop: Button = robot.fenetre.creer_bouton(
     200, 60, 10, 300, Couleur.ROUGE)
 bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
 text_area: TextArea = robot.fenetre.creer_zone_de_texte(
-    400, 100, 600, 200, Couleur.GRIS)
+    400, 100, 400, 200, Couleur.GRIS)
 text_area.modifier_couleur_police(Couleur.VERT_SAPIN)
 
 

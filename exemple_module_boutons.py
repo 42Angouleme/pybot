@@ -3,7 +3,7 @@ from pybot import Robot, Couleur
 # ---- Dans main_initialiser.py -------
 robot = Robot()
 robot.demarrer_webapp()
-long = 840
+long = 1000
 haut = 300
 
 robot.initialiser_module_fenetre()

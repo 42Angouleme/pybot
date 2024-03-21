@@ -6,7 +6,7 @@ from pybot import Robot, Couleur
 robot = Robot()
 robot.demarrer_webapp()
 mettre_a_jour_affichage = True
-largeur_fenetre = 1200
+largeur_fenetre = 1000
 hauteur_fenetre = 500
 discussion_commencer = False
 
