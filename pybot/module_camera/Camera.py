@@ -13,8 +13,9 @@ def verifier_systeme():
             for ligne in f:
                 if ligne.startswith('ID=ubuntu'):
                     return 'Ubuntu', 1
-                elif ligne.startswith('ID=raspbian'):
-                    return 'Raspberry Pi OS', 2
+                elif ligne.startswith('ID=debian'):
+                    if os.path.exists('/etc/rpi-issue'):
+                        return 'Raspberry Pi OS', 2
     return 'Système inconnu', 1
 
 _ , systeme = verifier_systeme()
