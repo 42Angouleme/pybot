@@ -37,7 +37,7 @@ class Camera :
         if systeme == 2 :
             self.__camera = Picamera2()
             self.__camera.configure(self.__camera.create_preview_configuration(main={"format": "XRGB8888", "size": (640, 480)}))
-            self.__camera.set_control({"Afmode" : controls.AfModeEnum.Continuous})
+            self.__camera.set_controls({"AfMode" : controls.AfModeEnum.Continuous})
             self.__camera.start()
         self.__surface : pg.Surface = surface
         self.__card_tracker: UserCardsTracker = None
