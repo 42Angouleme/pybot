@@ -61,7 +61,6 @@ def boucle_fenetre():
 # --- EVENEMENTS ---
 # - Preparation -
 robot.ajouter_evenement("echap", "stop")
-robot.ajouter_evenement("C", "C")
 
 # - Boucle -
 
