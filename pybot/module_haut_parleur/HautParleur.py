@@ -313,10 +313,10 @@ class HautParleur:
             warn(f"No voice has been chosen, I cannot prepare the reading.")
             return False
 
-        self.enregistrer_audio_dans_fichier(
+        self.record_audio_to_file(
             self.voix_choisie, text, self._last_tts_filepath, thread=False
         )
-        self.lire_fichier_audio(self._last_tts_filepath, thread=False)
+        self.play_audio_file(self._last_tts_filepath, thread=False)
 
         HautParleur.__reading_in_progress = False
 
