@@ -6,8 +6,8 @@ from pybot import Robot, Couleur
 robot = Robot()
 robot.demarrer_webapp()
 
-largeur_fenetre = 1200
-hauteur_fenetre = 800
+largeur_fenetre = 1050
+hauteur_fenetre = 650
 
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.manque_information = False
@@ -35,16 +35,16 @@ def initialiser_evenements():
 def initialiser_boutons():
     boutons = robot.attributs.boutons
     boutons.creation = robot.fenetre.creer_bouton(
-        200, 60, 980, 70, Couleur.CYAN)
+        200, 60, 850, 70, Couleur.CYAN)
     boutons.creation.ajouter_texte("Créer  utilisateur", 20, 20)
 
     boutons.deconnexion = robot.fenetre.creer_bouton(
-        200, 60, 360, 510, Couleur.ORANGE)
-    boutons.deconnexion.ajouter_texte("Deconnexion", 5, 20)
+        170, 60, 15, 200, Couleur.ORANGE)
+    boutons.deconnexion.ajouter_texte("Deconnexion", 5, 20, 14)
 
     boutons.suppression = robot.fenetre.creer_bouton(
-        200, 60, 670, 510, Couleur.ROUGE)
-    boutons.suppression.ajouter_texte("Supprimer utilisateur", 5, 20)
+        170, 60, 15, 300, Couleur.ROUGE)
+    boutons.suppression.ajouter_texte("Supprimer utilisateur", 5, 20, 14)
 
 
 def initialiser_session():
@@ -56,10 +56,10 @@ def initialiser_zone_de_texte():
     zones_de_texte = robot.attributs.zones_de_texte
 
     zones_de_texte.nom = robot.fenetre.creer_zone_de_texte(
-        200, 60, 980, 200, Couleur.GRIS)
+        200, 60, 850, 200, Couleur.GRIS)
 
     zones_de_texte.prenom = robot.fenetre.creer_zone_de_texte(
-        200, 60, 980, 400, Couleur.GRIS)
+        200, 60, 850, 400, Couleur.GRIS)
 
 ## BOUCLES ##
 
@@ -100,7 +100,7 @@ def boucle_d_affichage():
     bouttons = robot.attributs.boutons
     zones_de_texte = robot.attributs.zones_de_texte
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
-    robot.camera.afficher_camera(300, 10)
+    robot.camera.afficher_camera(200, 10)
     if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
         if robot.attributs.manque_information:
@@ -111,18 +111,17 @@ def boucle_d_affichage():
             bouttons.deconnexion.afficher()
             bouttons.suppression.afficher()
             user = robot.utilisateur.obtenir_utilisateur_connecte()
-            robot.fenetre.afficher_texte(user.nom, 25, 200, 30, Couleur.BLANC)
-            robot.fenetre.afficher_texte(
-                user.prenom, 25, 300, 30, Couleur.BLANC)
+            robot.fenetre.afficher_texte(user.nom, 325, 500, 30, Couleur.BLANC)
+            robot.fenetre.afficher_texte(user.prenom, 325, 550, 30, Couleur.BLANC)
         else:
             bouttons.creation.afficher()
-            robot.fenetre.afficher_texte("Nom", 980, 150, 20, Couleur.BLANC)
+            robot.fenetre.afficher_texte("Nom", 850, 150, 20, Couleur.BLANC)
             zones_de_texte.nom.afficher()
-            robot.fenetre.afficher_texte("Prenom", 980, 350, 20, Couleur.BLANC)
+            robot.fenetre.afficher_texte("Prenom", 850, 350, 20, Couleur.BLANC)
             zones_de_texte.prenom.afficher()
 
-        robot.fenetre.afficher_texte("PROFIL", 80, 5, 30, Couleur.BLANC)
-        robot.fenetre.afficher_texte("CREATION", 1000, 5, 30, Couleur.BLANC)
+        robot.fenetre.afficher_texte("PROFIL", 50, 5, 30, Couleur.BLANC)
+        robot.fenetre.afficher_texte("CREATION", 870, 5, 30, Couleur.BLANC)
 
         robot.attributs.mettre_a_jour_affichage = False
 
@@ -138,7 +137,7 @@ def boucle_session():
             # Affichage de carte détéctée non connectée
             carte_detectee = robot.utilisateur.detecter_carte()
             if carte_detectee:
-                robot.fenetre.afficher_carte_detectee(carte_detectee, 60, 150)
+                robot.fenetre.afficher_carte_detectee(carte_detectee, 5, 150)
                 robot.attributs.derniere_carte_detectee = carte_detectee
 
 
