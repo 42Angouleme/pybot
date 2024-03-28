@@ -69,8 +69,6 @@ def boucle_evenements():
     events = robot.check_events()
     if "stop" in events:
         robot.desactiver()
-    if "C" in events:
-        print("Vous appuyez sur C")
 
 
 # --- BOUTONS ---

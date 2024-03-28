@@ -24,7 +24,6 @@ robot.fenetre.changer_titre("Bonjour Robot!")
 robot.haut_parleur.charger_voix("homme")
 robot.haut_parleur.utiliser_voix("homme")
 
-
 # - Boucle -
 def boucle_fenetre():
     global mettre_a_jour_affichage
@@ -39,8 +38,6 @@ def boucle_fenetre():
 # --- EVENEMENTS ---
 # - Preparation -
 robot.ajouter_evenement("echap", "stop")
-robot.ajouter_evenement("C", "C")
-
 
 # - Boucle -
 def boucle_evenements():
@@ -69,7 +66,6 @@ bouton_stop.ajouter_texte("Quitter", 10, 10, 20)
 # --- MICROPHONE ---
 microphone = Microphone()
 
-
 # - Boucle -
 def boucle_boutons():
     if bouton_microphone.est_actif():
@@ -81,7 +77,6 @@ def boucle_boutons():
             robot.dort(1)
     if bouton_stop.est_actif():
         robot.desactiver()
-
 
 if __name__ == "__main__":
     while robot.est_actif():
