@@ -162,6 +162,7 @@ class Camera :
         if systeme == 1 :
             self.__camera.release()
         if systeme == 2 :
+            self.__camera.stop()
             self.__camera.close()
         cv2.destroyAllWindows()
     

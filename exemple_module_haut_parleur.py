@@ -46,7 +46,6 @@ robot.haut_parleur.utiliser_voix("homme")
 
 # - Boucle -
 
-
 def boucle_fenetre():
     global mettre_a_jour_affichage
     if mettre_a_jour_affichage:
@@ -64,12 +63,10 @@ robot.ajouter_evenement("echap", "stop")
 
 # - Boucle -
 
-
 def boucle_evenements():
     events = robot.check_events()
     if "stop" in events:
         robot.desactiver()
-
 
 # --- BOUTONS ---
 # - Preparation -
@@ -84,7 +81,6 @@ text_area: TextArea = robot.fenetre.creer_zone_de_texte(
 text_area.modifier_couleur_police(Couleur.VERT_SAPIN)
 
 # - Boucle -
-
 
 def boucle_boutons():
     global mettre_a_jour_affichage, discussion_commencer, text_area

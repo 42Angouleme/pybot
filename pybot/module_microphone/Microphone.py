@@ -27,10 +27,26 @@ class Microphone:
     """
 
     is_recording: bool = False
+    __listening_in_progress : bool = False
 
     def __init__(self, recognizer: Recognizer = _get_default_recognizer()) -> None:
         self.r = recognizer
+        #Bug d'Alsa crée par cette ligne par l'appelle de la bibliothèque PyAudio dans le code source.
         self.mic = SrMicrophone()
+    
+    @property
+    def is_listening(self) -> bool:
+        """
+        `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`.
+        """
+        return Microphone.__listening_in_progress
+
+    @property
+    def ecoute_en_cours(self) -> bool:
+        """
+        `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`.
+        """
+        return Microphone.__listening_in_progress
 
     def for_each_sentence(self, callback: Callable[[TraitementAudio], None]):
         """
@@ -51,7 +67,9 @@ class Microphone:
         _debug("J'écoute la parole en arrière plan...")
 
         # TODO add attribute is_recording for when recording is running
+        Microphone.__listening_in_progress = True
         self.stop = self.r.listen_in_background(self.mic, cb)
+        Microphone.__listening_in_progress = False
         return self.stop
 
     def pour_chaque_phrase(self, callback: Callable[[TraitementAudio], None]):
@@ -69,12 +87,14 @@ class Microphone:
         Returns:
             TraitementAudio: The recording ready to be manipulated.
         """
+        Microphone.__listening_in_progress = True
         with self.mic as source:
             _debug("Écoute d'une phrase")
             start_time = datetime.now()
             self.r.pause_threshold = 1
             recording = self.r.listen(source)
             _debug("Écoute terminée...")
+            Microphone.__listening_in_progress = False
             return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
 
     def une_phrase(self) -> "TraitementAudio":
@@ -120,10 +140,12 @@ class Microphone:
 
         with SrMicrophone() as source:
             # TODO humanize date
+            Microphone.__listening_in_progress = True
             _debug(f"J'écoute pendant {duree} secondes...")
             start_time = datetime.now()
             recording = self.r.listen(source, timeout=duree)
             _debug("Écoute terminée...")
+            Microphone.__listening_in_progress = False
             return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
 
     def pendant(
