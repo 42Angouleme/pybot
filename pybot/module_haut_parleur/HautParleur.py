@@ -1,16 +1,16 @@
-import numpy as np
+from ..alsa_err_remover import noalsaerr
+from piper import PiperVoice
+from functools import wraps
 from typing import Literal
-import wave
-import os
-import sys
-import pyaudio
 from ctypes import *
 import contextlib
-
-from piper import PiperVoice
-
 import threading
-from functools import wraps
+import pyaudio
+import wave
+import sys
+import os
+
+
 
 
 def warn(msg: str):
@@ -96,13 +96,14 @@ class HautParleur:
         -------
             None
         """
-        # print(f"Chargement de la voix '{voix}'...")
-        voice_path, loaded_event, _voice = self._voices[voice]
-        # if voice is not None:
-        #     print(f"La voix '{voix}' était déjà chargée...")
-        self._voices[voice][2] = PiperVoice.load(voice_path)
-        loaded_event.set()
-        # print(f"Voix {voix} chargée.")
+        with noalsaerr():
+            # print(f"Chargement de la voix '{voix}'...")
+            voice_path, loaded_event, _voice = self._voices[voice]
+            # if voice is not None:
+            #     print(f"La voix '{voix}' était déjà chargée...")
+            self._voices[voice][2] = PiperVoice.load(voice_path)
+            loaded_event.set()
+            # print(f"Voix {voix} chargée.")
 
     @thread
     def charger_voix(self, voix: VoiceKey = default_voice_key):
@@ -172,7 +173,7 @@ class HautParleur:
         wav_file = wave.open(path, 'rb')
         chunk = 8192
 
-        with silence():
+        with noalsaerr():
             # create an audio object
             p = pyaudio.PyAudio()
 
@@ -350,15 +351,15 @@ class HautParleur:
         self.say(texte, thread=False)
 
 # ... Another trick to have a clean console (This silence pyaudio trying to connect to Jack server and some bad configuration from /usr/share/alsa/alsa.conf)    
-@contextlib.contextmanager
-def silence():
-    devnull = os.open(os.devnull, os.O_WRONLY)
-    old_stderr = os.dup(2)
-    sys.stderr.flush()
-    os.dup2(devnull, 2)
-    os.close(devnull)
-    try:
-        yield
-    finally:
-        os.dup2(old_stderr, 2)
-        os.close(old_stderr)
+# @contextlib.contextmanager
+# def silence():
+#     devnull = os.open(os.devnull, os.O_WRONLY)
+#     old_stderr = os.dup(2)
+#     sys.stderr.flush()
+#     os.dup2(devnull, 2)
+#     os.close(devnull)
+#     try:
+#         yield
+#     finally:
+#         os.dup2(old_stderr, 2)
+#         os.close(old_stderr)
