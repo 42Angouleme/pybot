@@ -177,27 +177,27 @@ class HautParleur:
             # create an audio object
             p = pyaudio.PyAudio()
 
-        # open stream based on the wave object which has been input.
-        stream = p.open(format =
-                    p.get_format_from_width(wav_file.getsampwidth()),
-                    channels = wav_file.getnchannels(),
-                    rate = wav_file.getframerate(),
-                    output = True)
+            # open stream based on the wave object which has been input.
+            stream = p.open(format =
+                        p.get_format_from_width(wav_file.getsampwidth()),
+                        channels = wav_file.getnchannels(),
+                        rate = wav_file.getframerate(),
+                        output = True)
 
-        # read data (based on the chunk size)
-        data = wav_file.readframes(chunk)
-
-        # play stream (looping from beginning of file to the end)
-        while data:
-            # writing to the stream is what *actually* plays the sound.
-            stream.write(data)
+            # read data (based on the chunk size)
             data = wav_file.readframes(chunk)
 
-        # cleanup
-        wav_file.close()
-        stream.close()    
-        p.terminate()
-        print(f"Fin de lecture...")
+            # play stream (looping from beginning of file to the end)
+            while data:
+                # writing to the stream is what *actually* plays the sound.
+                stream.write(data)
+                data = wav_file.readframes(chunk)
+
+            # cleanup
+            wav_file.close()
+            stream.close()    
+            p.terminate()
+            print(f"Fin de lecture...")
 
         HautParleur.__playing_audio_file = False
 
@@ -237,22 +237,23 @@ class HautParleur:
         --------
             `False` if a problem occurred, otherwise `True`
         """
-        timeout = 10
-        loaded_event = self._voices[voice][1]
-        # If voice is not loaded after a few seconds, abort
-        loaded = loaded_event.wait(timeout)
-        if not loaded:
-            warn(
-                f"The chosen voice ({voice}) was not loaded, I cannot prepare the reading."
-            )
-            return False
+        with noalsaerr():
+            timeout = 10
+            loaded_event = self._voices[voice][1]
+            # If voice is not loaded after a few seconds, abort
+            loaded = loaded_event.wait(timeout)
+            if not loaded:
+                warn(
+                    f"The chosen voice ({voice}) was not loaded, I cannot prepare the reading."
+                )
+                return False
 
-        voice = self._voices[voice][2]
+            voice = self._voices[voice][2]
 
-        # Open file for writing
-        with wave.open(path, "wb") as wav_file:
-            # Generate voice from text
-            voice.synthesize(text, wav_file)
+            # Open file for writing
+            with wave.open(path, "wb") as wav_file:
+                # Generate voice from text
+                voice.synthesize(text, wav_file)
 
         return True
 
