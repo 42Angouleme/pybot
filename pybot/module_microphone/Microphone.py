@@ -16,8 +16,9 @@ def _get_default_recognizer() -> Recognizer:
     """
     Get a configured recognizer that should be able to recognize voice in a loud environment. `Energy_threshold` will adjust itself over time.
     """
-    r = Recognizer()
-    r.energy_threshold = 4000
+    with noalsaerr():
+        r = Recognizer()
+        r.energy_threshold = 4000
     return r
 
 
