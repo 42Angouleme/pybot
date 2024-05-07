@@ -48,6 +48,10 @@ def initialiser_boutons():
         170, 60, 15, 300, Couleur.ROUGE)
     boutons.suppression.ajouter_texte("Supprimer utilisateur", 5, 20, 14)
 
+    boutons.quitter = robot.fenetre.creer_bouton(
+        65, 60, 920, 580, Couleur.ROUGE)
+    boutons.quitter.ajouter_texte("Quitter", 5, 20, 14)
+
 
 def initialiser_session():
     robot.attributs.session_ouverte = False
@@ -85,8 +89,6 @@ def boucle_evenements():
         zones_de_texte.nom.effacer_texte()
         zones_de_texte.prenom.effacer_texte()
         robot.attributs.derniere_carte_detectee = None
-        # affichage d'un message de succès dans la fenêtre
-        # ou affichage d'un message de succès dans le terminal
         robot.attributs.mettre_a_jour_affichage = True
     if "plein_ecran" in events:
         robot.attributs.plein_ecran = not robot.attributs.plein_ecran
@@ -109,6 +111,7 @@ def boucle_d_affichage():
     robot.camera.afficher_camera(200, 10)
     if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
+        bouttons.quitter.afficher()
         if robot.attributs.manque_information:
             robot.attributs.manque_information = False
             robot.fenetre.afficher_texte(
@@ -150,6 +153,9 @@ def boucle_session():
 def boucle_boutons():
     bouttons = robot.attributs.boutons
     zones_de_texte = robot.attributs.zones_de_texte
+
+    if bouttons.quitter.est_actif():
+        robot.desactiver()
 
     if robot.utilisateur.verifier_session() != robot.attributs.session_ouverte:
         robot.attributs.session_ouverte = robot.utilisateur.verifier_session()
