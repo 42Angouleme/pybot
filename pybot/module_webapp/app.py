@@ -17,14 +17,19 @@ def create_app(root_dir: str = os.path.dirname(os.path.abspath(__file__))):
     """Create the flask application.
 
     Attributes:
-        root_dir: The directory containing the `static` directory and the `database.db` file. Defaults to the current Python file.
+        root_dir: The directory containing the `database` directory and the `users.db` file. Defaults to the current Python file.
     """
 
-    STATIC_DIR = os.path.join(root_dir, "static")
-    DATABASE_PATH = os.path.join(root_dir, "database.db")
+    STATIC_DIR = os.path.join(root_dir, "database")
+    DATABASE_PATH = os.path.join(root_dir, "database/users.db")
+
+    try:
+        os.mkdir(STATIC_DIR)
+    except :
+        pass
 
     # Flask
-    app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="/static")
+    app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="/database")
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DATABASE_PATH}"
 
     # Login hardcoded password
@@ -34,7 +39,7 @@ def create_app(root_dir: str = os.path.dirname(os.path.abspath(__file__))):
     # Static media storage with sqlalchemy_media
     StoreManager.register(
         "fs",
-        functools.partial(FileSystemStore, STATIC_DIR, "/static"),
+        functools.partial(FileSystemStore, STATIC_DIR, "/database"),
         default=True,
     )
 
