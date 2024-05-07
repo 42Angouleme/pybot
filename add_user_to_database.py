@@ -9,11 +9,9 @@ robot.demarrer_webapp()
 largeur_fenetre = 1050
 hauteur_fenetre = 650
 
-robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.manque_information = False
 
 ## INITIALISATION ##
-
 
 def initialiser_module():
     robot.initialiser_module_fenetre()
@@ -23,13 +21,17 @@ def initialiser_module():
 
 
 def parametrer_fenetre():
+    robot.fenetre.plein_ecran(True)
     robot.fenetre.changer_couleur_fond(Couleur.NOIR)
     robot.fenetre.changer_titre("Ajouter un utilisateur")
+    robot.attributs.mettre_a_jour_affichage = True
+    robot.attributs.plein_ecran = True
 
 
 def initialiser_evenements():
     robot.ajouter_evenement("echap", "stop")
     robot.ajouter_evenement("espace", "photo")
+    robot.ajouter_evenement("p", "plein_ecran")
 
 
 def initialiser_boutons():
@@ -86,7 +88,11 @@ def boucle_evenements():
         # affichage d'un message de succès dans la fenêtre
         # ou affichage d'un message de succès dans le terminal
         robot.attributs.mettre_a_jour_affichage = True
-
+    if "plein_ecran" in events:
+        robot.attributs.plein_ecran = not robot.attributs.plein_ecran
+        robot.fenetre.plein_ecran(robot.attributs.plein_ecran)
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.fenetre.actualiser_affichage()
 
 def boucle_zone_de_texte():
     zones_de_texte = robot.attributs.zones_de_texte
@@ -182,6 +188,7 @@ if __name__ == "__main__":
     initialiser_evenements()
     initialiser_boutons()
     initialiser_zone_de_texte()
+    robot.fenetre.actualiser_affichage()
 
     while robot.est_actif():
         boucle_zone_de_texte()
