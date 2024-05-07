@@ -7,9 +7,9 @@ venv
 # Ignore Jupyter notebook backup files
 *-checkpoint.ipynb
 .DS_Store
-module_webapp/static/images/
-module_webapp/static/thumbnails/
+module_webapp/database/images/
+module_webapp/database/thumbnails/
 
-module_webapp/database.db
+module_webapp/database/users.db
 !pybot/module_haut_parleur/fichiers_audio/derniere_lecture.wav
 .env
