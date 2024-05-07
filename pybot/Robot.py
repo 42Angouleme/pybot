@@ -1,5 +1,5 @@
-from .module_haut_parleur.HautParleur import HautParleur
-from .module_microphone.Microphone import Microphone
+# from .module_haut_parleur.HautParleur import HautParleur
+# from .module_microphone.Microphone import Microphone
 from .module_fenetre.Fenetre import Fenetre
 from .module_user.User import User_manager
 from .module_camera.Camera import Camera
@@ -22,16 +22,16 @@ class Robot:
     # English Module #
     AI: ChatBot | None = None
     camera: Camera | None = None
-    microphone: Microphone | None = None
     window: Fenetre | None = None
     user: User_manager | None = None
-    speaker: HautParleur | None = None
+    # microphone: Microphone | None = None
+    # speaker: HautParleur | None = None
 
     # Module Francais #
     IA: ChatBot | None = None
     fenetre: Fenetre | None = None
     utilisateur: User_manager | None = None
-    haut_parleur: HautParleur | None = None
+    # haut_parleur: HautParleur | None = None
 
     # Robot Attributs #
     events = []
@@ -64,7 +64,7 @@ class Robot:
         self.IA: ChatBot = self.AI
         self.fenetre: Fenetre = self.window
         self.utilisateur: User_manager = self.user
-        self.haut_parleur: HautParleur = self.speaker
+        # self.haut_parleur: HautParleur = self.speaker
 
         env_file = find_dotenv(".env")
         load_dotenv(env_file)
@@ -234,70 +234,70 @@ class Robot:
         """
         self.init_user_module()
 
-    def start_microphone_module(self):
-        """
-        Initialize the microphone module.
+    # def start_microphone_module(self):
+    #     """
+    #     Initialize the microphone module.
 
-        This method initializes the microphone module if it has not already been started.
+    #     This method initializes the microphone module if it has not already been started.
 
-        Parameters:
-        -----------
-            None
+    #     Parameters:
+    #     -----------
+    #         None
 
-        Returns:
-        --------
-            None
-        """
-        self.microphone = Microphone()
+    #     Returns:
+    #     --------
+    #         None
+    #     """
+    #     self.microphone = Microphone()
 
-    def initialiser_module_microphone(self):
-        """
-        Initialise le module microphone.
+    # def initialiser_module_microphone(self):
+    #     """
+    #     Initialise le module microphone.
 
-        Cette méthode initialise le module microphone s'il n'a pas déjà été démarré.
+    #     Cette méthode initialise le module microphone s'il n'a pas déjà été démarré.
 
-        Paramètres:
-        -----------
-            Aucun
+    #     Paramètres:
+    #     -----------
+    #         Aucun
 
-        Retour:
-        -------
-            Aucun
-        """
-        self.init_microphone_module()
+    #     Retour:
+    #     -------
+    #         Aucun
+    #     """
+    #     self.init_microphone_module()
 
-    def init_speaker_module(self):
-        """
-        Initialize the speaker module.
+    # def init_speaker_module(self):
+    #     """
+    #     Initialize the speaker module.
 
-        This method initializes the speaker module if it has not already been started.
+    #     This method initializes the speaker module if it has not already been started.
 
-        Parameters:
-        -----------
-            None
+    #     Parameters:
+    #     -----------
+    #         None
 
-        Returns:
-        --------
-            None
-        """
-        self.speaker = HautParleur()
-        self.haut_parleur = self.speaker
+    #     Returns:
+    #     --------
+    #         None
+    #     """
+    #     self.speaker = HautParleur()
+    #     self.haut_parleur = self.speaker
 
-    def initialiser_module_haut_parleur(self):
-        """
-        Initialise le module haut_parleur.
+    # def initialiser_module_haut_parleur(self):
+    #     """
+    #     Initialise le module haut_parleur.
 
-        Cette méthode initialise le module haut_parleur s'il n'a pas déjà été démarré.
+    #     Cette méthode initialise le module haut_parleur s'il n'a pas déjà été démarré.
 
-        Paramètres:
-        -----------
-            Aucun
+    #     Paramètres:
+    #     -----------
+    #         Aucun
 
-        Retour:
-        -------
-            Aucun
-        """
-        self.init_speaker_module()
+    #     Retour:
+    #     -------
+    #         Aucun
+    #     """
+    #     self.init_speaker_module()
 
     ### Robot Module Methode ###
 
