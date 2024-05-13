@@ -2,30 +2,28 @@ from pybot import Robot, Couleur
 
 
 # --- GENERAL ---
+
 robot = Robot()
 robot.demarrer_webapp()
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.discussion_commencee = False
 largeur_fenetre = 1900
 hauteur_fenetre = 1000
-# L 1900 /  H 1000
 
 # --- FENETRE ---
-
 
 def initialiser_fenetre():
     robot.initialiser_module_fenetre()
     robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
     robot.fenetre.changer_couleur_fond(Couleur.NOIR)
+    robot.fenetre.changer_titre("Demo Pybot")
 
 # --- EVENEMENTS ---
-
 
 def initialiser_evenements():
     robot.ajouter_evenement("echap", "stop")
 
 # --- SESSION ---
-
 
 def initialiser_session():
     robot.initialiser_module_camera()
@@ -34,8 +32,8 @@ def initialiser_session():
     robot.attributs.derniere_carte_detectee = None
     robot.attributs.session_ouverte = False
 
-
 # --- BOUTONS ---
+
 def initialiser_boutons():
     boutons = robot.attributs.boutons
     boutons.deconnexion = robot.fenetre.creer_bouton(
