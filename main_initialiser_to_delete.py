@@ -8,6 +8,7 @@ robot.demarrer_webapp()
 
 # --- ATTRIBUTS ---
 robot.attributs.mettre_a_jour_affichage = True
+robot.attributs.discussion_commencee = False
 robot.attributs.plein_ecran = True
 robot.attributs.page = 0
 

@@ -502,6 +502,37 @@ class Fenetre:
         """
         return self.get_emotion_image(emotion)
 
+    def get_text_width(self, text, font_size: int) -> tuple[int, int]:
+        """
+        Returns the width and height of the text with the specified font size.
+
+        Args:
+        -----
+            text (str): The text for which to calculate the size.
+            font_size (int): The font size of the text.
+        
+        Returns:
+        --------
+            tuple[int, int]: The width and height of the text.
+        """
+        font = pg.font.Font(os.getcwd() + "/pybot/assets/chicago.ttf", font_size)
+        return font.size(text)
+
+    def obtenir_taille_texte(self, texte : str, taille_police: int) -> tuple[int, int]:
+        """
+        Renvoie la largeur et la hauteur du texte avec la taille de police spécifiée.
+
+        Paramètres:
+        -----------
+            texte (str): Le texte pour lequel calculer la taille.
+            taille_police (int): La taille de police du texte.
+        
+        Retour:
+        -------
+            tuple[int, int]: La largeur et la hauteur du texte.
+        """
+        return self.get_text_width(texte, taille_police)
+
     ### Private Methode ###
             
     def _stop(self) :

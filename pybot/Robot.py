@@ -234,7 +234,7 @@ class Robot:
         """
         self.init_user_module()
 
-    def start_microphone_module(self):
+    def init_microphone_module(self):
         """
         Initialize the microphone module.
 
@@ -513,7 +513,7 @@ class Robot:
     def desactiver(self):
         """
         Désactive le robot en arrêtant la caméra et la fenêtre et définit l'attribut actif à False.
-        Un robot qui a été désactivé ne pourra pas effectuer d'action.
+        Un robot qui a été désactivé ne pourra plus effectuer d'action.
 
         Paramètres:
         ------------
