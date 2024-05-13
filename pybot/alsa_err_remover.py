@@ -18,7 +18,7 @@ from contextlib import contextmanager
 #     asound.snd_lib_error_set_handler(None)
 
 # ... Another trick to have a clean console (This silence pyaudio trying to connect to Jack server and some bad configuration from /usr/share/alsa/alsa.conf)    
-# @contextmanager
+@contextmanager
 def noalsaerr():
     devnull = os.open(os.devnull, os.O_WRONLY)
     old_stderr = os.dup(2)
