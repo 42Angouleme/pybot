@@ -1,5 +1,5 @@
 from pybot import Couleur
-from main_initialiser import robot
+from main_initialiser_to_delete import robot
 
 # --- FENETRE ---
 
