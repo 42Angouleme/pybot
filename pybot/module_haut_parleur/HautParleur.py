@@ -10,9 +10,6 @@ import wave
 import sys
 import os
 
-
-
-
 def warn(msg: str):
     print(f"\033[33mAttention: {msg}\033[00m", file=sys.stderr)
 

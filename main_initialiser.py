@@ -6,8 +6,9 @@ robot = Robot()
 robot.demarrer_webapp()
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.discussion_commencee = False
-largeur_fenetre = 1200
-hauteur_fenetre = 500
+largeur_fenetre = 1900
+hauteur_fenetre = 1000
+# L 1900 /  H 1000
 
 # --- FENETRE ---
 
