@@ -30,6 +30,39 @@ def boucle_affichage_fenetre_titre():
         robot.fenetre.afficher_image("/images/College_Val_de_Charente.png", (largeur_fenetre // 2) + 5, (hauteur_fenetre - 80) // 2)
 
         robot.attributs.mettre_a_jour_affichage = False
+    
+def boucle_affichage_fenetre_creation():
+
+    mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
+    boutons = robot.attributs.boutons
+
+    if mettre_a_jour_affichage:
+        robot.fenetre.afficher_fond()
+
+        texte = "Création Utilisateur"
+        x, y = aligner_texte(texte, 30)
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+
+        boutons.retour.afficher()
+        
+        robot.attributs.mettre_a_jour_affichage = False
+
+def boucle_affichage_fenetre_connexion():
+
+    mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
+    boutons = robot.attributs.boutons
+
+    if mettre_a_jour_affichage:
+        robot.fenetre.afficher_fond()
+
+        texte = "Connexion Utilisateur"
+        x, y = aligner_texte(texte, 30)
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+
+        boutons.retour.afficher()
+        
+        robot.attributs.mettre_a_jour_affichage = False
+
 
 # --- EVENEMENTS ---
 def boucle_evenements():
@@ -52,9 +85,30 @@ def boucle_boutons_fenetre_titre():
     
     if boutons.connexion.est_actif():
         robot.attributs.page = 1
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.dort(0.15)
 
     if boutons.creation.est_actif():
         robot.attributs.page = 2
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.dort(0.15)
+
+def boucle_boutons_fenetre_creation():
+    boutons = robot.attributs.boutons
+
+    if boutons.retour.est_actif():
+        robot.attributs.page = 0
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.dort(0.15)
+
+def boucle_boutons_fenetre_connexion():
+    boutons = robot.attributs.boutons
+
+    if boutons.retour.est_actif():
+        robot.attributs.page = 0
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.dort(0.15)
+
 
 # --- UTILITAIRE ---
 def aligner_texte(texte, taille_police, alignement="centre_haut"):

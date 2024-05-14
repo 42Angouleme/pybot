@@ -7,6 +7,7 @@ robot.demarrer_webapp()
 
 # --- ATTRIBUTS ---
 robot.attributs.mettre_a_jour_affichage = True
+robot.attributs.manque_information = False
 robot.attributs.plein_ecran = False
 robot.attributs.page = 0
 
@@ -42,9 +43,13 @@ def initialiser_evenements():
 def initialiser_boutons():
     boutons = robot.attributs.boutons
 
+    # --- FENETRE TITRE ---
     boutons.quitter = creation_bouton("Quitter", Couleur.ROUGE, 200, 60, 20, "bas_droit")
     boutons.connexion = creation_bouton("Connexion", Couleur.VERT, 200, 60, 20, "centre_droit")
     boutons.creation = creation_bouton("Créer utilisateur", Couleur.BLEU_CIEL, 200, 60, 20, "centre_gauche")
+
+    # --- FENETRE CONNEXION ---
+    boutons.retour = creation_bouton("Retour", Couleur.ORANGE, 200, 60, 20, "bas_droit")
 
 # --- UTILITAIRE ---
 
