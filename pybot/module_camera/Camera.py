@@ -156,6 +156,69 @@ class Camera :
         """
         self.apply_filter(chemin_fichier, nom_filtre)
     
+    def stop_image_capture(self) :
+        """
+        Stop the image capture of the camera.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
+        """
+        if systeme == 1 :
+            self.__camera.release()
+        if systeme == 2 :
+            self.__camera.stop()
+
+    def arreter_la_capture_d_image(self) :
+        """
+        Arrête la capture d'image de la caméra.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
+        """
+        self.stop_image_capture()
+    
+    def start_image_capture(self) :
+        """
+        Start the image capture of the camera.
+
+        Args:
+        -----
+            None
+
+        Returns:
+        --------
+            None
+        """
+        if systeme == 1 :
+            if not self.__camera.isOpened():
+                self.__camera.open(0)
+        if systeme == 2 :
+            self.__camera.start()
+
+    def demarrer_la_capture_d_image(self) :
+        """
+        Démarre la capture d'image de la caméra.
+
+        Paramètres:
+        -----------
+            Aucun
+
+        Retour:
+        -------
+            Aucun
+        """
+        self.start_image_capture()
+    
     ### Private Methode ###
 
     def _stop(self) :

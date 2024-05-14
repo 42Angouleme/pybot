@@ -1,7 +1,6 @@
 from pybot import Couleur
 from main_initialisation import robot, largeur_fenetre, hauteur_fenetre
 
-
 # --- AFFICHAGE ---
 
 def boucle_affichage_fenetre_titre():
@@ -32,6 +31,7 @@ def boucle_affichage_fenetre_titre():
         robot.attributs.mettre_a_jour_affichage = False
     
 def boucle_affichage_fenetre_creation():
+    robot.fenetre.actualiser_affichage()
 
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
     boutons = robot.attributs.boutons
@@ -48,6 +48,37 @@ def boucle_affichage_fenetre_creation():
         robot.attributs.mettre_a_jour_affichage = False
 
 def boucle_affichage_fenetre_connexion():
+    robot.fenetre.actualiser_affichage()
+
+    mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
+    boutons = robot.attributs.boutons
+
+    robot.camera.afficher_camera((largeur_fenetre - 640) // 2, (hauteur_fenetre - 480) // 2)
+    if mettre_a_jour_affichage:
+        robot.fenetre.afficher_fond()
+    
+        texte = "Connexion Utilisateur"
+        x, y = aligner_texte(texte, 30)
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+
+        texte = "Veuillez présenter"
+        taille_texte = robot.fenetre.obtenir_taille_texte(texte, 30)
+        x = ((largeur_fenetre - 640) // 2 - taille_texte[0]) // 2
+        y = (hauteur_fenetre - taille_texte[1]) // 2
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+
+        texte = "votre carte"
+        taille_texte = robot.fenetre.obtenir_taille_texte(texte, 30)
+        x = ((largeur_fenetre - 640) // 2 - taille_texte[0]) // 2
+        y = (hauteur_fenetre - taille_texte[1]) // 2 + 45
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+
+        boutons.retour.afficher()
+        
+        robot.attributs.mettre_a_jour_affichage = False
+
+def boucle_affichage_fenetre_session():
+    robot.fenetre.actualiser_affichage()
 
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
     boutons = robot.attributs.boutons
@@ -55,14 +86,13 @@ def boucle_affichage_fenetre_connexion():
     if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
 
-        texte = "Connexion Utilisateur"
+        texte = "Session Utilisateur"
         x, y = aligner_texte(texte, 30)
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
-        boutons.retour.afficher()
-        
-        robot.attributs.mettre_a_jour_affichage = False
+        boutons.deconnexion.afficher()
 
+        robot.attributs.mettre_a_jour_affichage = False
 
 # --- EVENEMENTS ---
 def boucle_evenements():
@@ -86,6 +116,7 @@ def boucle_boutons_fenetre_titre():
     if boutons.connexion.est_actif():
         robot.attributs.page = 1
         robot.attributs.mettre_a_jour_affichage = True
+        robot.camera.demarrer_la_capture_d_image()
         robot.dort(0.15)
 
     if boutons.creation.est_actif():
@@ -107,16 +138,58 @@ def boucle_boutons_fenetre_connexion():
     if boutons.retour.est_actif():
         robot.attributs.page = 0
         robot.attributs.mettre_a_jour_affichage = True
+        robot.camera.arreter_la_capture_d_image()
         robot.dort(0.15)
 
+def boucle_boutons_fenetre_session():
+    boutons = robot.attributs.boutons
+
+    if boutons.deconnexion.est_actif():
+        robot.utilisateur.deconnecter()
+        robot.attributs.page = 0
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.dort(0.15)
+
+# --- CONNEXION ---
+
+def boucle_connexion():
+    # if not robot.attributs.session_ouverte:
+    # Essai de connexion
+    robot.utilisateur.connecter()
+    if robot.utilisateur.verifier_session():
+        user = robot.utilisateur.obtenir_utilisateur_connecte()
+        robot.attributs.page = 3
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.camera.arreter_la_capture_d_image()
+    else:
+        carte_detectee = robot.utilisateur.detecter_carte()
+        if carte_detectee:
+            robot.fenetre.afficher_carte_detectee(carte_detectee, 5, 150)
+            robot.attributs.derniere_carte_detectee = carte_detectee
 
 # --- UTILITAIRE ---
+
 def aligner_texte(texte, taille_police, alignement="centre_haut"):
     taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)
     taille_lettre = robot.fenetre.obtenir_taille_texte(" ", taille_police)
     if alignement == "centre_haut" :
         x = (largeur_fenetre - taille_texte[0] + taille_lettre[0]) // 2
         y = 20
+    elif alignement == "centre_bas":
+        x = (largeur_fenetre - taille_texte[0] + taille_lettre[0]) // 2
+        y = hauteur_fenetre - taille_texte[1] - 20
+    elif alignement == "centre":
+        x = (largeur_fenetre - taille_texte[0] + taille_lettre[0]) // 2
+        y = (hauteur_fenetre - taille_texte[1]) // 2
+    elif alignement == "centre_gauche":
+        x = 20
+        y = (hauteur_fenetre - taille_texte[1]) // 2
+    elif alignement == "centre_droit":
+        x = largeur_fenetre - taille_texte[0] - 20
+        y = (hauteur_fenetre - taille_texte[1]) // 2
+    elif alignement == "gauche_centre":
+        x = (largeur_fenetre // 2 - taille_texte[0]) // 2
+        y = (hauteur_fenetre - taille_texte[1] + taille_lettre[1]) // 2
     else:
         x = 0
         y = 0
