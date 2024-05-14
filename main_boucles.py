@@ -137,6 +137,7 @@ def boucle_boutons_fenetre_titre():
     if boutons.creation.est_actif():
         robot.attributs.page = 2
         robot.attributs.mettre_a_jour_affichage = True
+        robot.camera.demarrer_la_capture_d_image()
         robot.dort(0.15)
 
 def boucle_boutons_fenetre_creation():
@@ -145,6 +146,8 @@ def boucle_boutons_fenetre_creation():
     if boutons.retour.est_actif():
         robot.attributs.page = 0
         robot.attributs.mettre_a_jour_affichage = True
+        robot.attributs.derniere_carte_detectee = None
+        robot.camera.arreter_la_capture_d_image()
         robot.dort(0.15)
 
 def boucle_boutons_fenetre_connexion():
@@ -153,6 +156,7 @@ def boucle_boutons_fenetre_connexion():
     if boutons.retour.est_actif():
         robot.attributs.page = 0
         robot.attributs.mettre_a_jour_affichage = True
+        robot.attributs.derniere_carte_detectee = None
         robot.camera.arreter_la_capture_d_image()
         robot.dort(0.15)
 
@@ -190,7 +194,18 @@ def boucle_connexion():
     else:
         carte_detectee = robot.utilisateur.detecter_carte()
         if carte_detectee:
-            robot.fenetre.afficher_carte_detectee(carte_detectee, 5, 150)
+            robot.fenetre.afficher_carte_detectee(carte_detectee, (largeur_fenetre - 200) // 2 + 640, (hauteur_fenetre - 200) // 2)
+            robot.attributs.derniere_carte_detectee = carte_detectee
+
+def boucle_test_connexion():
+    robot.utilisateur.connecter()
+    if robot.utilisateur.verifier_session():
+        user = robot.utilisateur.obtenir_utilisateur_connecte()
+        print(f"Hello \033[96;1m{user.prenom} {user.nom}\033[0;0m !")
+    else:
+        carte_detectee = robot.utilisateur.detecter_carte()
+        if carte_detectee:
+            robot.fenetre.afficher_carte_detectee(carte_detectee, ((largeur_fenetre - 640) // 2 - 200) // 2, (hauteur_fenetre - 200) // 2)
             robot.attributs.derniere_carte_detectee = carte_detectee
 
 # --- UTILITAIRE ---
