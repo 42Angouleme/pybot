@@ -56,6 +56,7 @@ def boucle_affichage_fenetre_creation():
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
         boutons.retour.afficher()
+        boutons.creer.afficher()
 
         zones_de_texte.nom.afficher()
         zones_de_texte.prenom.afficher()

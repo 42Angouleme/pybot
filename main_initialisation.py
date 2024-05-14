@@ -46,7 +46,7 @@ def initialiser_boutons():
 
     # --- FENETRE TITRE ---
     boutons.quitter = creation_bouton("Quitter", Couleur.ROUGE, 200, 60, 20, "bas_droit")
-    boutons.connexion = creation_bouton("Connexion", Couleur.VERT, 200, 60, 20, "centre_droit")
+    boutons.connexion = creation_bouton("Connexion", Couleur.VERT_SAPIN, 200, 60, 20, "centre_droit")
     boutons.creation = creation_bouton("Créer utilisateur", Couleur.BLEU_CIEL, 200, 60, 20, "centre_gauche")
 
     # --- BOUTON RETOUR ---
@@ -55,27 +55,26 @@ def initialiser_boutons():
     # --- BOUTON DECONNEXION ---
     boutons.deconnexion = creation_bouton("Deconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
 
+    # --- FENETRE CREATION ---
+    boutons.creer = creation_bouton("Créer Utilisateur", Couleur.VERT_SAPIN, 200, 60, 20, "centre_bas", 0, -130)
+
 # --- ZONES DE TEXTE ---
 
 def initialiser_zones_de_texte():
     zones_de_texte = robot.attributs.zones_de_texte
 
-    x, y = aligner_elements(350, 60, "droit_centre")
-    x -= 30
-    y -= 130
-    zones_de_texte.nom = robot.fenetre.creer_zone_de_texte(350, 60, x, y, Couleur.GRIS)
+    zones_de_texte.nom = creation_zone_de_texte(350, 60, Couleur.GRIS, "droit_centre", -30, -130)
     zones_de_texte.nom.modifier_taille_police(30)
     
-    x, y = aligner_elements(350, 60, "droit_centre")
-    x -= 30
-    y += 70
-    zones_de_texte.prenom = robot.fenetre.creer_zone_de_texte(350, 60, x, y, Couleur.GRIS)
+    zones_de_texte.prenom = creation_zone_de_texte(350, 60, Couleur.GRIS, "droit_centre", -30, 70)
     zones_de_texte.prenom.modifier_taille_police(30)
 
 # --- UTILITAIRE ---
 
-def creation_bouton(texte, couleur, longueur, hauteur, taille_texte, alignement="centre_haut"):
+def creation_bouton(texte, couleur, longueur, hauteur, taille_texte, alignement="centre_haut", modifier_x=0, modifier_y=0):
     x, y = aligner_elements(longueur, hauteur, alignement)
+    x += modifier_x
+    y += modifier_y
     bouton = robot.fenetre.creer_bouton(
         longueur, hauteur, x, y, couleur)
     x, y = centrer_texte_dans_bouton(texte, taille_texte, longueur, hauteur)
@@ -118,7 +117,9 @@ def centrer_texte_dans_bouton(texte, taille_police, longueur_bouton, hauteur_bou
     y = (hauteur_bouton - taille_texte[1]) // 2
     return x, y
 
-def creation_zone_de_texte(longueur, hauteur, couleur, alignement="centre_haut"):
+def creation_zone_de_texte(longueur, hauteur, couleur, alignement="centre_haut", modifier_x=0, modifier_y=0):
     x, y = aligner_elements(longueur, hauteur, alignement)
+    x += modifier_x
+    y += modifier_y
     zone_de_texte = robot.fenetre.creer_zone_de_texte(longueur, hauteur, x, y, couleur)
     return zone_de_texte
