@@ -34,8 +34,10 @@ def boucle_affichage_fenetre_creation():
     robot.fenetre.actualiser_affichage()
 
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
+    zones_de_texte = robot.attributs.zones_de_texte
     boutons = robot.attributs.boutons
 
+    robot.camera.afficher_camera((largeur_fenetre - 640) // 2, (hauteur_fenetre - 480) // 2)
     if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
 
@@ -43,7 +45,20 @@ def boucle_affichage_fenetre_creation():
         x, y = aligner_texte(texte, 30)
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
+        texte = "Nom :"
+        x, y = aligner_texte(texte, 30, "droite_centre")
+        y -= 150
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+
+        texte = "Prénom :"
+        x, y = aligner_texte(texte, 30, "droite_centre")
+        y += 50
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+
         boutons.retour.afficher()
+
+        zones_de_texte.nom.afficher()
+        zones_de_texte.prenom.afficher()
         
         robot.attributs.mettre_a_jour_affichage = False
 
@@ -150,6 +165,17 @@ def boucle_boutons_fenetre_session():
         robot.attributs.mettre_a_jour_affichage = True
         robot.dort(0.15)
 
+# --- ZONES DE TEXTE ---
+
+def boucle_zone_de_texte():
+    zones_de_texte = robot.attributs.zones_de_texte
+
+    if zones_de_texte.nom.est_actif():
+        zones_de_texte.nom.ecrire(robot)
+
+    if zones_de_texte.prenom.est_actif():
+        zones_de_texte.prenom.ecrire(robot)
+
 # --- CONNEXION ---
 
 def boucle_connexion():
@@ -189,6 +215,9 @@ def aligner_texte(texte, taille_police, alignement="centre_haut"):
         y = (hauteur_fenetre - taille_texte[1]) // 2
     elif alignement == "gauche_centre":
         x = (largeur_fenetre // 2 - taille_texte[0]) // 2
+        y = (hauteur_fenetre - taille_texte[1] + taille_lettre[1]) // 2
+    elif alignement == "droite_centre":
+        x = (largeur_fenetre // 2 - taille_texte[0]) // 2 + largeur_fenetre // 2
         y = (hauteur_fenetre - taille_texte[1] + taille_lettre[1]) // 2
     else:
         x = 0
