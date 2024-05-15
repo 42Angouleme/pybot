@@ -14,12 +14,12 @@ def boucle_affichage_fenetre_titre():
 
         texte = "Démo Pybot made by"
         x, y = aligner_texte(texte, 30)
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.NOIR)
 
         texte = "42Angoulême & Collège Val de Charente"
         x, y = aligner_texte(texte, 30)
         y += 45
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.NOIR)
 
         boutons.quitter.afficher()
         boutons.connexion.afficher()
@@ -55,11 +55,32 @@ def boucle_affichage_fenetre_creation():
         y += 50
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
-        boutons.retour.afficher()
-        boutons.creer.afficher()
+        if robot.attributs.manque_information:
+            x, y = aligner_texte(texte, 30, "centre_haut")
+            y += 120
+            x -= 200
+            robot.fenetre.afficher_texte("Veuillez remplir tous les champs", x, y, 30, Couleur.ROUGE)
 
-        zones_de_texte.nom.afficher()
-        zones_de_texte.prenom.afficher()
+        boutons.retour.afficher()
+
+        if robot.user.verifier_session():
+            boutons.deconnexion_creation.afficher()
+            boutons.suppression.afficher()
+            user = robot.user.obtenir_utilisateur_connecte()
+
+            x, y = aligner_texte(user.nom, 30, "droite_centre")
+            y -= 150
+            x += 200
+            robot.fenetre.afficher_texte(user.nom, x, y, 30, Couleur.BLANC)
+
+            x, y = aligner_texte(user.prenom, 30, "droite_centre")
+            y += 50
+            x += 200
+            robot.fenetre.afficher_texte(user.prenom, x, y, 30, Couleur.BLANC)
+        else :
+            boutons.creer.afficher()
+            zones_de_texte.nom.afficher()
+            zones_de_texte.prenom.afficher()
         
         robot.attributs.mettre_a_jour_affichage = False
 
@@ -133,12 +154,14 @@ def boucle_boutons_fenetre_titre():
         robot.attributs.page = 1
         robot.attributs.mettre_a_jour_affichage = True
         robot.camera.demarrer_la_capture_d_image()
+        robot.fenetre.changer_couleur_fond(Couleur.NOIR)
         robot.dort(0.15)
 
     if boutons.creation.est_actif():
         robot.attributs.page = 2
         robot.attributs.mettre_a_jour_affichage = True
         robot.camera.demarrer_la_capture_d_image()
+        robot.fenetre.changer_couleur_fond(Couleur.NOIR)
         robot.dort(0.15)
 
 def boucle_boutons_fenetre_creation():
@@ -148,9 +171,29 @@ def boucle_boutons_fenetre_creation():
         robot.attributs.page = 0
         robot.attributs.mettre_a_jour_affichage = True
         robot.attributs.derniere_carte_detectee = None
+        robot.attributs.manque_information = False
         robot.camera.arreter_la_capture_d_image()
+        robot.fenetre.changer_couleur_fond(Couleur.BLANC)
+        if robot.user.verifier_session():
+            robot.user.deconnecter()
         robot.dort(0.15)
 
+    if robot.user.verifier_session():
+        if boutons.deconnexion_creation.est_actif():
+            robot.user.deconnecter()
+            robot.attributs.mettre_a_jour_affichage = True
+            robot.attributs.derniere_carte_detectee = None
+            robot.dort(0.15)
+        
+        if boutons.suppression.est_actif():
+            robot.user.supprimer()
+            robot.attributs.mettre_a_jour_affichage = True
+            robot.attributs.derniere_carte_detectee = None
+            robot.dort(0.15)
+    else:
+        if boutons.creer.est_actif():
+            cree_utilisateur()
+                
 def boucle_boutons_fenetre_connexion():
     boutons = robot.attributs.boutons
 
@@ -159,6 +202,7 @@ def boucle_boutons_fenetre_connexion():
         robot.attributs.mettre_a_jour_affichage = True
         robot.attributs.derniere_carte_detectee = None
         robot.camera.arreter_la_capture_d_image()
+        robot.fenetre.changer_couleur_fond(Couleur.BLANC)
         robot.dort(0.15)
 
 def boucle_boutons_fenetre_session():
@@ -168,6 +212,7 @@ def boucle_boutons_fenetre_session():
         robot.utilisateur.deconnecter()
         robot.attributs.page = 0
         robot.attributs.mettre_a_jour_affichage = True
+        robot.fenetre.changer_couleur_fond(Couleur.BLANC)
         robot.dort(0.15)
 
 # --- ZONES DE TEXTE ---
@@ -184,32 +229,45 @@ def boucle_zone_de_texte():
 # --- CONNEXION ---
 
 def boucle_connexion():
-    # if not robot.attributs.session_ouverte:
-    # Essai de connexion
-    robot.utilisateur.connecter()
-    if robot.utilisateur.verifier_session():
-        user = robot.utilisateur.obtenir_utilisateur_connecte()
-        robot.attributs.page = 3
-        robot.attributs.mettre_a_jour_affichage = True
-        robot.camera.arreter_la_capture_d_image()
-    else:
-        carte_detectee = robot.utilisateur.detecter_carte()
-        if carte_detectee:
-            robot.fenetre.afficher_carte_detectee(carte_detectee, (largeur_fenetre - 200) // 2 + 640, (hauteur_fenetre - 200) // 2)
-            robot.attributs.derniere_carte_detectee = carte_detectee
+    if not robot.utilisateur.verifier_session():
+        robot.utilisateur.connecter()
+        if robot.utilisateur.verifier_session():
+            robot.camera.arreter_la_capture_d_image()
+            robot.attributs.mettre_a_jour_affichage = True
+            robot.attributs.page = 3
+        else:
+            carte_detectee = robot.utilisateur.detecter_carte()
+            if carte_detectee:
+                robot.fenetre.afficher_carte_detectee(carte_detectee, (largeur_fenetre - 200) // 2 + 640, (hauteur_fenetre - 200) // 2)
+                robot.attributs.derniere_carte_detectee = carte_detectee
 
 def boucle_test_connexion():
-    robot.utilisateur.connecter()
-    if robot.utilisateur.verifier_session():
-        user = robot.utilisateur.obtenir_utilisateur_connecte()
-        print(f"Hello \033[96;1m{user.prenom} {user.nom}\033[0;0m !")
-    else:
-        carte_detectee = robot.utilisateur.detecter_carte()
-        if carte_detectee:
-            robot.fenetre.afficher_carte_detectee(carte_detectee, ((largeur_fenetre - 640) // 2 - 200) // 2, (hauteur_fenetre - 200) // 2)
-            robot.attributs.derniere_carte_detectee = carte_detectee
+    if not robot.utilisateur.verifier_session():
+        robot.utilisateur.connecter()
+        if robot.utilisateur.verifier_session():
+            robot.attributs.mettre_a_jour_affichage = True
+            robot.attributs.utisateur_connecte = True
+        else:
+            carte_detectee = robot.utilisateur.detecter_carte()
+            if carte_detectee:
+                robot.fenetre.afficher_carte_detectee(carte_detectee, ((largeur_fenetre - 640) // 2 - 200) // 2, (hauteur_fenetre - 200) // 2)
+                robot.attributs.derniere_carte_detectee = carte_detectee
 
 # --- UTILITAIRE ---
+
+def cree_utilisateur():
+    nom = robot.attributs.zones_de_texte.nom.obtenir_texte()
+    prenom = robot.attributs.zones_de_texte.prenom.obtenir_texte()
+    if not nom or not prenom or robot.attributs.derniere_carte_detectee is None:
+        robot.attributs.manque_information = True
+        robot.attributs.mettre_a_jour_affichage = True
+    else:
+        robot.user.creer(nom, prenom, robot.attributs.derniere_carte_detectee)
+        robot.attributs.derniere_carte_detectee = None
+        robot.attributs.mettre_a_jour_affichage = True
+        robot.attributs.manque_information = False
+        robot.attributs.zones_de_texte.nom.effacer_texte()
+        robot.attributs.zones_de_texte.prenom.effacer_texte()
 
 def aligner_texte(texte, taille_police, alignement="centre_haut"):
     taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)

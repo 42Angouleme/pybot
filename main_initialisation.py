@@ -20,7 +20,7 @@ hauteur_fenetre = 1000
 def initialiser_fenetre():
     robot.initialiser_module_fenetre()
     robot.fenetre.ouvrir_fenetre(largeur_fenetre, hauteur_fenetre)
-    robot.fenetre.changer_couleur_fond(Couleur.NOIR)
+    robot.fenetre.changer_couleur_fond(Couleur.BLANC)
     robot.fenetre.changer_titre("Demo Pybot")
     robot.fenetre.plein_ecran(robot.attributs.plein_ecran)
 
@@ -47,7 +47,7 @@ def initialiser_boutons():
     # --- FENETRE TITRE ---
     boutons.quitter = creation_bouton("Quitter", Couleur.ROUGE, 200, 60, 20, "bas_droit")
     boutons.connexion = creation_bouton("Connexion", Couleur.VERT_SAPIN, 200, 60, 20, "centre_droit")
-    boutons.creation = creation_bouton("Créer utilisateur", Couleur.BLEU_CIEL, 200, 60, 20, "centre_gauche")
+    boutons.creation = creation_bouton("Créer utilisateur", Couleur.VIOLET, 200, 60, 20, "centre_gauche")
 
     # --- BOUTON RETOUR ---
     boutons.retour = creation_bouton("Retour", Couleur.ORANGE, 200, 60, 20, "bas_droit")
@@ -57,6 +57,8 @@ def initialiser_boutons():
 
     # --- FENETRE CREATION ---
     boutons.creer = creation_bouton("Créer Utilisateur", Couleur.VERT_SAPIN, 200, 60, 20, "centre_bas", 0, -130)
+    boutons.deconnexion_creation = creation_bouton("Deconnexion", Couleur.ORANGE, 300, 60, 20, "centre_haut", -170, 100)
+    boutons.suppression = creation_bouton("Supprimer Utilisateur", Couleur.ROUGE, 300, 60, 20, "centre_haut", 170, 100)
 
 # --- ZONES DE TEXTE ---
 
