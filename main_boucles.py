@@ -118,6 +118,7 @@ def boucle_affichage_fenetre_session():
     robot.fenetre.actualiser_affichage()
 
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
+    zones_de_texte = robot.attributs.zones_de_texte
     boutons = robot.attributs.boutons
 
     if mettre_a_jour_affichage:
@@ -131,6 +132,25 @@ def boucle_affichage_fenetre_session():
         robot.fenetre.afficher_image(image, (largeur_fenetre - 108) // 2, (hauteur_fenetre - 108) // 2)
 
         boutons.deconnexion.afficher()
+        boutons.posez_question_orale.afficher()
+        boutons.posez_question_ecrite.afficher()
+
+        if robot.attributs.question:
+            texte = robot.attributs.question
+            texte = robot.utilisateur.obtenir_utilisateur_connecte().prenom + " : " + texte
+            x, y = aligner_texte(texte, 20, "droite_centre")
+            x = (largeur_fenetre // 4) * 3
+            y -= 125
+            afficher_long_texte(texte, 20, x, y, Couleur.MAGENTA)
+
+        if robot.attributs.reponse:
+            texte = robot.attributs.reponse
+            x, y = aligner_texte(texte, 20, "droite_centre")
+            x = (largeur_fenetre // 4) * 3
+            y += 70
+            afficher_long_texte(texte, 20, x, y, Couleur.BLEU_CIEL)
+
+        zones_de_texte.question.afficher()
 
         robot.attributs.mettre_a_jour_affichage = False
 
@@ -210,6 +230,7 @@ def boucle_boutons_fenetre_connexion():
 
 def boucle_boutons_fenetre_session():
     boutons = robot.attributs.boutons
+    zone_de_textes = robot.attributs.zones_de_texte
 
     if boutons.deconnexion.est_actif():
         historique = robot.IA.obtenir_historique_conversation()
@@ -218,14 +239,38 @@ def boucle_boutons_fenetre_session():
         robot.IA.arreter_discussion()
         robot.utilisateur.deconnecter()
         robot.attributs.page = 0
+        robot.attributs.reponse = ""
+        robot.attributs.question = ""
         robot.attributs.emotion = "neutre"
         robot.attributs.mettre_a_jour_affichage = True
         robot.fenetre.changer_couleur_fond(Couleur.BLANC)
         # robot.dort(0.15)
 
+    if not robot.microphone.ecoute_en_cours:
+        if boutons.posez_question_orale.est_actif():
+            question = robot.microphone.une_phrase().transcrire()
+            print("Utilisateur : ", question)
+            texte = "Fin de l'écoute"
+            x, y = aligner_texte(texte, 30, "centre_bas")
+            robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROSE)
+            réponse = robot.IA.poser_question(question)
+            print("IA : ", réponse)
+
+    if boutons.posez_question_ecrite.est_actif():
+        question = zone_de_textes.question.obtenir_texte()
+        if question:
+            zone_de_textes.question.effacer_texte()
+            print("Utilisateur : ", question)
+            robot.attributs.question = question
+            réponse = robot.IA.poser_question(question)
+            robot.attributs.reponse = réponse
+            print("IA : ", réponse)
+            robot.attributs.mettre_a_jour_affichage = True
+
+
 # --- ZONES DE TEXTE ---
 
-def boucle_zone_de_texte():
+def boucle_zone_de_texte_creation():
     zones_de_texte = robot.attributs.zones_de_texte
 
     if zones_de_texte.nom.est_actif():
@@ -233,6 +278,12 @@ def boucle_zone_de_texte():
 
     if zones_de_texte.prenom.est_actif():
         zones_de_texte.prenom.ecrire(robot)
+
+def boucle_zone_de_texte_fenetre_session():
+    zones_de_texte = robot.attributs.zones_de_texte
+
+    if zones_de_texte.question.est_actif():
+        zones_de_texte.question.ecrire(robot)
 
 # --- CONNEXION ---
 
@@ -279,6 +330,26 @@ def cree_utilisateur():
         robot.attributs.manque_information = False
         robot.attributs.zones_de_texte.nom.effacer_texte()
         robot.attributs.zones_de_texte.prenom.effacer_texte()
+
+def afficher_long_texte(texte, taille_police, x, y, couleur):
+    taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)
+    if taille_texte[0] > (largeur_fenetre - x - 30):
+        mots = texte.split(" ")
+        texte = ""
+        for mot in mots:
+            texte += mot + " "
+            taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)
+            if taille_texte[0] > (largeur_fenetre - x - 30):
+                x_final = aligner_texte(texte, taille_police, "droite_centre")[0]
+                robot.fenetre.afficher_texte(texte, x_final, y, taille_police, couleur)
+                y += taille_texte[1] + 5
+                texte = ""
+        x_final = aligner_texte(texte, taille_police, "droite_centre")[0]
+        robot.fenetre.afficher_texte(texte, x_final, y, taille_police, couleur)
+    else:
+        x_final = aligner_texte(texte, taille_police, "droite_centre")[0]
+        robot.fenetre.afficher_texte(texte, x_final, y, taille_police, couleur)
+
 
 def aligner_texte(texte, taille_police, alignement="centre_haut"):
     taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)

@@ -38,14 +38,14 @@ class Microphone:
     @property
     def is_listening(self) -> bool:
         """
-        `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`.
+        `True` if the robot is currently listening to something. Otherwise `False`.
         """
         return Microphone.__listening_in_progress
 
     @property
     def ecoute_en_cours(self) -> bool:
         """
-        `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`.
+        `True` si le robot est accuellement en train d'ecouter quelque chose. Sinon `False`.
         """
         return Microphone.__listening_in_progress
 
@@ -89,8 +89,8 @@ class Microphone:
             TraitementAudio: The recording ready to be manipulated.
         """
         with noalsaerr():
-            Microphone.__listening_in_progress = True
             with self.mic as source:
+                Microphone.__listening_in_progress = True
                 _debug("Écoute d'une phrase")
                 start_time = datetime.now()
                 self.r.pause_threshold = 1

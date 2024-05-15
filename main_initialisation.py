@@ -11,6 +11,8 @@ robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.manque_information = False
 robot.attributs.plein_ecran = False
 robot.attributs.emotion = "neutre"
+robot.attributs.question = ""
+robot.attributs.reponse = ""
 robot.attributs.page = 0
 
 largeur_fenetre = 1900
@@ -53,13 +55,15 @@ def initialiser_boutons():
     # --- BOUTON RETOUR ---
     boutons.retour = creation_bouton("Retour", Couleur.ORANGE, 200, 60, 20, "bas_droit")
 
-    # --- BOUTON DECONNEXION ---
-    boutons.deconnexion = creation_bouton("Deconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
-
     # --- FENETRE CREATION ---
     boutons.creer = creation_bouton("Créer Utilisateur", Couleur.VERT_SAPIN, 200, 60, 20, "centre_bas", 0, -130)
     boutons.deconnexion_creation = creation_bouton("Deconnexion", Couleur.ORANGE, 300, 60, 20, "centre_haut", -170, 100)
     boutons.suppression = creation_bouton("Supprimer Utilisateur", Couleur.ROUGE, 300, 60, 20, "centre_haut", 170, 100)
+
+    # --- FENETRE SESSION ---
+    boutons.deconnexion = creation_bouton("Deconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
+    boutons.posez_question_orale = creation_bouton("Poser une question à l'orale", Couleur.ROSE, 350, 60, 20, "centre_gauche", 150, -50)
+    boutons.posez_question_ecrite = creation_bouton("Poser une question à l'ecrit", Couleur.VIOLET, 350, 60, 20, "centre_gauche", 150, 50)
 
 # --- ZONES DE TEXTE ---
 
@@ -71,6 +75,9 @@ def initialiser_zones_de_texte():
     
     zones_de_texte.prenom = creation_zone_de_texte(350, 60, Couleur.GRIS, "droit_centre", -30, 70)
     zones_de_texte.prenom.modifier_taille_police(30)
+
+    zones_de_texte.question = creation_zone_de_texte(500, 60, Couleur.GRIS, "centre_gauche", 150, 125)
+    zones_de_texte.question.modifier_taille_police(18)
 
 # --- UTILITAIRE ---
 
