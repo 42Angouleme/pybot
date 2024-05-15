@@ -127,6 +127,9 @@ def boucle_affichage_fenetre_session():
         x, y = aligner_texte(texte, 30)
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
+        image = robot.fenetre.obtenir_image_emotion(robot.attributs.emotion)
+        robot.fenetre.afficher_image(image, (largeur_fenetre - 108) // 2, (hauteur_fenetre - 108) // 2)
+
         boutons.deconnexion.afficher()
 
         robot.attributs.mettre_a_jour_affichage = False
@@ -209,11 +212,16 @@ def boucle_boutons_fenetre_session():
     boutons = robot.attributs.boutons
 
     if boutons.deconnexion.est_actif():
+        historique = robot.IA.obtenir_historique_conversation()
+        robot.utilisateur.sauvegarder_historique_conversation(historique)
+        robot.IA.effacer_historique_conversation()
+        robot.IA.arreter_discussion()
         robot.utilisateur.deconnecter()
         robot.attributs.page = 0
+        robot.attributs.emotion = "neutre"
         robot.attributs.mettre_a_jour_affichage = True
         robot.fenetre.changer_couleur_fond(Couleur.BLANC)
-        robot.dort(0.15)
+        # robot.dort(0.15)
 
 # --- ZONES DE TEXTE ---
 
@@ -233,6 +241,9 @@ def boucle_connexion():
         robot.utilisateur.connecter()
         if robot.utilisateur.verifier_session():
             robot.camera.arreter_la_capture_d_image()
+            robot.IA.demarrer_discussion()
+            historique = robot.utilisateur.obtenir_historique_conversation()
+            robot.IA.charger_historique_conversation(historique)
             robot.attributs.mettre_a_jour_affichage = True
             robot.attributs.page = 3
         else:

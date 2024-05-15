@@ -186,7 +186,7 @@ def boucle_boutons():
             robot.attributs.mettre_a_jour_affichage = True
 
         if bouttons.charger.est_actif():
-            historique = robot.utilisateur.obtenir_historique_conversation_utilisateur()
+            historique = robot.utilisateur.obtenir_historique_conversation()
             robot.IA.charger_historique_conversation(historique)
             print("Historique chargé")
 

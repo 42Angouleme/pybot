@@ -10,6 +10,7 @@ robot.attributs.derniere_carte_detectee = None
 robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.manque_information = False
 robot.attributs.plein_ecran = False
+robot.attributs.emotion = "neutre"
 robot.attributs.page = 0
 
 largeur_fenetre = 1900

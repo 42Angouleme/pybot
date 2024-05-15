@@ -40,7 +40,6 @@ class UserDAO(object):
         """
         user = User.query.get(id)
         raise_NoResultFound_if_none(user, id)
-        print(user)
         return user
 
     def create(self, user: UserCreate) -> UserResponse:
