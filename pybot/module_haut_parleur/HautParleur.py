@@ -165,7 +165,7 @@ class HautParleur:
         HautParleur.__playing_audio_file = True
 
 
-        print(f"Début de la lecture...")
+        # print(f"Début de la lecture...")
         wav_file = wave.open(path, 'rb')
         chunk = 8192
 
@@ -193,7 +193,7 @@ class HautParleur:
         wav_file.close()
         stream.close()    
         p.terminate()
-        print(f"Fin de lecture...")
+        # print(f"Fin de lecture...")
 
         HautParleur.__playing_audio_file = False
 
