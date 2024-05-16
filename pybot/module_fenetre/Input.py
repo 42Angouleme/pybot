@@ -79,7 +79,7 @@ class Input:
                         robot.attributs.click = True
                         robot.attributs.click_pos = event.pos
 
-                elif event.type == pg.FINGERDOWN:
+                elif event.type == pg.FINGERDOWN or event.type == pg.FINGERUP:
                     if event.button == 1:
                         robot.attributs.click = False
                         robot.attributs.click_pos = event.pos
