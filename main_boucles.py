@@ -180,17 +180,17 @@ def boucle_evenements():
 def boucle_boutons_fenetre_titre():
     boutons = robot.attributs.boutons
 
-    if boutons.quitter.est_actif(robot):
+    if boutons.quitter.est_actif():
         robot.desactiver()
     
-    if boutons.connexion.est_actif(robot):
+    if boutons.connexion.est_actif():
         robot.attributs.page = 1
         robot.attributs.mettre_a_jour_affichage = True
         robot.camera.demarrer_la_capture_d_image()
         robot.fenetre.changer_couleur_fond(Couleur.NOIR)
         robot.dort(0.15)
 
-    if boutons.creation.est_actif(robot):
+    if boutons.creation.est_actif():
         robot.attributs.page = 2
         robot.attributs.mettre_a_jour_affichage = True
         robot.camera.demarrer_la_capture_d_image()
@@ -200,7 +200,7 @@ def boucle_boutons_fenetre_titre():
 def boucle_boutons_fenetre_creation():
     boutons = robot.attributs.boutons
 
-    if boutons.retour.est_actif(robot):
+    if boutons.retour.est_actif():
         robot.attributs.page = 0
         robot.attributs.mettre_a_jour_affichage = True
         robot.attributs.derniere_carte_detectee = None
@@ -212,25 +212,25 @@ def boucle_boutons_fenetre_creation():
         robot.dort(0.15)
 
     if robot.user.verifier_session():
-        if boutons.deconnexion_creation.est_actif(robot):
+        if boutons.deconnexion_creation.est_actif():
             robot.user.deconnecter()
             robot.attributs.mettre_a_jour_affichage = True
             robot.attributs.derniere_carte_detectee = None
             robot.dort(0.15)
         
-        if boutons.suppression.est_actif(robot):
+        if boutons.suppression.est_actif():
             robot.user.supprimer()
             robot.attributs.mettre_a_jour_affichage = True
             robot.attributs.derniere_carte_detectee = None
             robot.dort(0.15)
     else:
-        if boutons.creer.est_actif(robot):
+        if boutons.creer.est_actif():
             cree_utilisateur()
                 
 def boucle_boutons_fenetre_connexion():
     boutons = robot.attributs.boutons
 
-    if boutons.retour.est_actif(robot):
+    if boutons.retour.est_actif():
         robot.attributs.page = 0
         robot.attributs.mettre_a_jour_affichage = True
         robot.attributs.derniere_carte_detectee = None
@@ -242,7 +242,7 @@ def boucle_boutons_fenetre_session():
     boutons = robot.attributs.boutons
     zone_de_textes = robot.attributs.zones_de_texte
 
-    if boutons.deconnexion.est_actif(robot):
+    if boutons.deconnexion.est_actif():
         historique = robot.IA.obtenir_historique_conversation()
         robot.utilisateur.sauvegarder_historique_conversation(historique)
         robot.IA.effacer_historique_conversation()
@@ -257,7 +257,7 @@ def boucle_boutons_fenetre_session():
         # robot.dort(0.15)
 
     if not robot.microphone.ecoute_en_cours:
-        if boutons.posez_question_orale.est_actif(robot):
+        if boutons.posez_question_orale.est_actif():
             question = robot.microphone.une_phrase().transcrire()
             robot.attributs.question = question
             texte = "Fin de l'écoute"
@@ -268,7 +268,7 @@ def boucle_boutons_fenetre_session():
             robot.haut_parleur.dire(réponse)
             robot.attributs.mettre_a_jour_affichage = True
 
-    if boutons.posez_question_ecrite.est_actif(robot):
+    if boutons.posez_question_ecrite.est_actif():
         question = zone_de_textes.question.obtenir_texte()
         if question:
             zone_de_textes.question.effacer_texte()
@@ -278,19 +278,19 @@ def boucle_boutons_fenetre_session():
             robot.haut_parleur.dire(réponse)
             robot.attributs.mettre_a_jour_affichage = True
 
-    if boutons.supprimer_historique.est_actif(robot):
+    if boutons.supprimer_historique.est_actif():
         robot.attributs.reponse = ""
         robot.attributs.question = ""
         robot.IA.effacer_historique_conversation()
         robot.attributs.mettre_a_jour_affichage = True
 
-    if boutons.charger_voix_homme.est_actif(robot):
+    if boutons.charger_voix_homme.est_actif():
         robot.haut_parleur.utiliser_voix("homme")
 
-    if boutons.charger_voix_femme.est_actif(robot):
+    if boutons.charger_voix_femme.est_actif():
         robot.haut_parleur.utiliser_voix("femme")
 
-    if boutons.charger_voix_quebecoise.est_actif(robot):
+    if boutons.charger_voix_quebecoise.est_actif():
         robot.haut_parleur.utiliser_voix("homme_quebec")
 
 # --- ZONES DE TEXTE ---
@@ -298,16 +298,16 @@ def boucle_boutons_fenetre_session():
 def boucle_zone_de_texte_creation():
     zones_de_texte = robot.attributs.zones_de_texte
 
-    if zones_de_texte.nom.est_actif(robot):
+    if zones_de_texte.nom.est_actif():
         zones_de_texte.nom.ecrire(robot)
 
-    if zones_de_texte.prenom.est_actif(robot):
+    if zones_de_texte.prenom.est_actif():
         zones_de_texte.prenom.ecrire(robot)
 
 def boucle_zone_de_texte_fenetre_session():
     zones_de_texte = robot.attributs.zones_de_texte
 
-    if zones_de_texte.question.est_actif(robot):
+    if zones_de_texte.question.est_actif():
         zones_de_texte.question.ecrire(robot)
 
 # --- CONNEXION ---

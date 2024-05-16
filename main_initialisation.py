@@ -66,7 +66,7 @@ def initialiser_boutons():
 
     # --- FENETRE SESSION ---
     boutons.deconnexion = creation_bouton("Déconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
-    boutons.posez_question_orale = creation_bouton("Poser une question à l'orale", Couleur.ROSE, 350, 60, 20, "centre_gauche", 150, -50)
+    boutons.posez_question_orale = creation_bouton("Poser une question à l'oral", Couleur.ROSE, 350, 60, 20, "centre_gauche", 150, -50)
     boutons.posez_question_ecrite = creation_bouton("Poser une question à l'écrit", Couleur.VIOLET, 350, 60, 20, "centre_gauche", 150, 50)
     boutons.supprimer_historique = creation_bouton("Supprimer Historique", Couleur.ROUGE, 350, 60, 20, "bas_gauche")
 

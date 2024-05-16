@@ -73,20 +73,6 @@ class Input:
                         k = keys[e[0]]
                         if event.key == k:
                             result.append(e[1])
-
-                if event.type == pg.MOUSEBUTTONDOWN:
-                    if event.button == 1 :
-                        robot.attributs.click = True
-                        robot.attributs.click_pos = event.pos
-
-                elif event.type == pg.FINGERDOWN or event.type == pg.FINGERUP:
-                    if event.button == 1:
-                        robot.attributs.click = False
-                        robot.attributs.click_pos = event.pos
-
-                else:
-                    robot.attributs.click = False
-
         return result
 
     @staticmethod

@@ -58,7 +58,7 @@ class Robot:
     }
 
     attributs: AttributeDict = AttributeDict(
-        {"boutons": AttributeDict(), "zones_de_texte": AttributeDict(), "click_pos": tuple[int, int], "click": False})
+        {"boutons": AttributeDict(), "zones_de_texte": AttributeDict()})
 
     def __init__(self):
         self.IA: ChatBot = self.AI

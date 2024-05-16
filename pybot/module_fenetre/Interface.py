@@ -83,7 +83,7 @@ class Button:
         """
         self.add_text(texte, position_x, position_y, taille, couleur)
 
-    def is_active(self, robot: Robot):
+    def is_active(self):
         """
         Check if the button is click.
 
@@ -96,10 +96,8 @@ class Button:
             bool: True if the button is click, False otherwise.
         """
         try:
-            # if self._rect.collidepoint(pg.mouse.get_pos()):
-            if self._rect.collidepoint(robot.attributs.click_pos):
-                # if pg.mouse.get_pressed()[0] and not self._pressed:
-                if robot.attributs.click and not self._pressed:
+            if self._rect.collidepoint(pg.mouse.get_pos()):
+                if pg.mouse.get_pressed()[0] and not self._pressed:
                     self._pressed = True
                     return True
             if pg.mouse.get_pressed() == (0, 0, 0):
@@ -108,7 +106,7 @@ class Button:
             pass
         return False
 
-    def est_actif(self, robot: Robot):
+    def est_actif(self):
         """
         Vérifie si le bouton est cliqué.
 
@@ -120,7 +118,7 @@ class Button:
         -------
             bool: True si le bouton est cliqué, False sinon.
         """
-        return self.is_active(robot)
+        return self.is_active()
 
     def display(self):
         """
