@@ -345,17 +345,3 @@ class HautParleur:
             return False
 
         self.say(texte, thread=False)
-
-# ... Another trick to have a clean console (This silence pyaudio trying to connect to Jack server and some bad configuration from /usr/share/alsa/alsa.conf)    
-# @contextlib.contextmanager
-# def silence():
-#     devnull = os.open(os.devnull, os.O_WRONLY)
-#     old_stderr = os.dup(2)
-#     sys.stderr.flush()
-#     os.dup2(devnull, 2)
-#     os.close(devnull)
-#     try:
-#         yield
-#     finally:
-#         os.dup2(old_stderr, 2)
-#         os.close(old_stderr)
