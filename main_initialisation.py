@@ -36,6 +36,10 @@ def initialiser_modules():
     robot.initialiser_module_haut_parleur()
     robot.initialiser_module_microphone()
 
+    robot.haut_parleur.charger_voix("homme")
+    robot.haut_parleur.charger_voix("femme")
+    robot.haut_parleur.charger_voix("homme_quebec")
+
 # --- EVENEMENTS ---
 
 def initialiser_evenements():
@@ -57,13 +61,19 @@ def initialiser_boutons():
 
     # --- FENETRE CREATION ---
     boutons.creer = creation_bouton("Créer Utilisateur", Couleur.VERT_SAPIN, 200, 60, 20, "centre_bas", 0, -130)
-    boutons.deconnexion_creation = creation_bouton("Deconnexion", Couleur.ORANGE, 300, 60, 20, "centre_haut", -170, 100)
+    boutons.deconnexion_creation = creation_bouton("Déconnexion", Couleur.ORANGE, 300, 60, 20, "centre_haut", -170, 100)
     boutons.suppression = creation_bouton("Supprimer Utilisateur", Couleur.ROUGE, 300, 60, 20, "centre_haut", 170, 100)
 
     # --- FENETRE SESSION ---
-    boutons.deconnexion = creation_bouton("Deconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
+    boutons.deconnexion = creation_bouton("Déconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
     boutons.posez_question_orale = creation_bouton("Poser une question à l'orale", Couleur.ROSE, 350, 60, 20, "centre_gauche", 150, -50)
-    boutons.posez_question_ecrite = creation_bouton("Poser une question à l'ecrit", Couleur.VIOLET, 350, 60, 20, "centre_gauche", 150, 50)
+    boutons.posez_question_ecrite = creation_bouton("Poser une question à l'écrit", Couleur.VIOLET, 350, 60, 20, "centre_gauche", 150, 50)
+    boutons.supprimer_historique = creation_bouton("Supprimer Historique", Couleur.ROUGE, 350, 60, 20, "bas_gauche")
+
+    boutons.charger_voix_homme = creation_bouton("Voix Homme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", -225, -75)
+    boutons.charger_voix_femme = creation_bouton("Voix Femme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", 0, -75)
+    boutons.charger_voix_quebecoise = creation_bouton("Voix Québécoise", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", 225, -75)
+
 
 # --- ZONES DE TEXTE ---
 
@@ -76,7 +86,7 @@ def initialiser_zones_de_texte():
     zones_de_texte.prenom = creation_zone_de_texte(350, 60, Couleur.GRIS, "droit_centre", -30, 70)
     zones_de_texte.prenom.modifier_taille_police(30)
 
-    zones_de_texte.question = creation_zone_de_texte(500, 60, Couleur.GRIS, "centre_gauche", 150, 125)
+    zones_de_texte.question = creation_zone_de_texte(500, 120, Couleur.GRIS, "centre_gauche", 150, 150)
     zones_de_texte.question.modifier_taille_police(18)
 
 # --- UTILITAIRE ---

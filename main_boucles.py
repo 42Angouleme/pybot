@@ -128,26 +128,36 @@ def boucle_affichage_fenetre_session():
         x, y = aligner_texte(texte, 30)
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
+        if robot.attributs.reponse:
+            robot.attributs.emotion = robot.IA.donner_emotion(robot.attributs.reponse)
+        else :
+            robot.attributs.emotion = "neutre"
+
         image = robot.fenetre.obtenir_image_emotion(robot.attributs.emotion)
         robot.fenetre.afficher_image(image, (largeur_fenetre - 108) // 2, (hauteur_fenetre - 108) // 2)
 
         boutons.deconnexion.afficher()
         boutons.posez_question_orale.afficher()
         boutons.posez_question_ecrite.afficher()
+        boutons.supprimer_historique.afficher()
+
+        boutons.charger_voix_homme.afficher()
+        boutons.charger_voix_femme.afficher()
+        boutons.charger_voix_quebecoise.afficher()
 
         if robot.attributs.question:
             texte = robot.attributs.question
             texte = robot.utilisateur.obtenir_utilisateur_connecte().prenom + " : " + texte
             x, y = aligner_texte(texte, 20, "droite_centre")
             x = (largeur_fenetre // 4) * 3
-            y -= 125
+            y -= 165
             afficher_long_texte(texte, 20, x, y, Couleur.MAGENTA)
 
         if robot.attributs.reponse:
             texte = robot.attributs.reponse
             x, y = aligner_texte(texte, 20, "droite_centre")
             x = (largeur_fenetre // 4) * 3
-            y += 70
+            y += 15
             afficher_long_texte(texte, 20, x, y, Couleur.BLEU_CIEL)
 
         zones_de_texte.question.afficher()
@@ -249,24 +259,39 @@ def boucle_boutons_fenetre_session():
     if not robot.microphone.ecoute_en_cours:
         if boutons.posez_question_orale.est_actif():
             question = robot.microphone.une_phrase().transcrire()
-            print("Utilisateur : ", question)
+            robot.attributs.question = question
             texte = "Fin de l'écoute"
             x, y = aligner_texte(texte, 30, "centre_bas")
             robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROSE)
             réponse = robot.IA.poser_question(question)
-            print("IA : ", réponse)
+            robot.attributs.reponse = réponse
+            robot.haut_parleur.dire(réponse)
+            robot.attributs.mettre_a_jour_affichage = True
 
     if boutons.posez_question_ecrite.est_actif():
         question = zone_de_textes.question.obtenir_texte()
         if question:
             zone_de_textes.question.effacer_texte()
-            print("Utilisateur : ", question)
             robot.attributs.question = question
             réponse = robot.IA.poser_question(question)
             robot.attributs.reponse = réponse
-            print("IA : ", réponse)
+            robot.haut_parleur.dire(réponse)
             robot.attributs.mettre_a_jour_affichage = True
 
+    if boutons.supprimer_historique.est_actif():
+        robot.attributs.reponse = ""
+        robot.attributs.question = ""
+        robot.IA.effacer_historique_conversation()
+        robot.attributs.mettre_a_jour_affichage = True
+
+    if boutons.charger_voix_homme.est_actif():
+        robot.haut_parleur.utiliser_voix("homme")
+
+    if boutons.charger_voix_femme.est_actif():
+        robot.haut_parleur.utiliser_voix("femme")
+
+    if boutons.charger_voix_quebecoise.est_actif():
+        robot.haut_parleur.utiliser_voix("homme_quebec")
 
 # --- ZONES DE TEXTE ---
 
@@ -293,6 +318,7 @@ def boucle_connexion():
         if robot.utilisateur.verifier_session():
             robot.camera.arreter_la_capture_d_image()
             robot.IA.demarrer_discussion()
+            robot.haut_parleur.utiliser_voix("homme")
             historique = robot.utilisateur.obtenir_historique_conversation()
             robot.IA.charger_historique_conversation(historique)
             robot.attributs.mettre_a_jour_affichage = True
