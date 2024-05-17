@@ -65,10 +65,10 @@ def initialiser_boutons():
     boutons.suppression = creation_bouton("Supprimer Utilisateur", Couleur.ROUGE_PASTEL, 500, 100, 40, "centre_haut", 300, 100)
 
     # --- FENETRE SESSION ---
-    boutons.deconnexion = creation_bouton("Déconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
-    boutons.posez_question_orale = creation_bouton("Poser une question à l'oral", Couleur.ROSE, 350, 60, 20, "centre_gauche", 150, -50)
-    boutons.posez_question_ecrite = creation_bouton("Poser une question à l'écrit", Couleur.VIOLET, 350, 60, 20, "centre_gauche", 150, 50)
-    boutons.supprimer_historique = creation_bouton("Supprimer Historique", Couleur.ROUGE_PASTEL, 350, 60, 20, "bas_gauche")
+    boutons.deconnexion = creation_bouton("Déconnexion", Couleur.ORANGE, 320, 100, 40, "bas_gauche")
+    boutons.posez_question_orale = creation_bouton("Oral", Couleur.ROSE, 120, 100, 40, "centre_bas", 50, 0)
+    boutons.posez_question_ecrite = creation_bouton("Écrit", Couleur.VIOLET, 120, 100, 40, "centre_bas", 50, -125)
+    boutons.supprimer_historique = creation_bouton("Supprimer Historique", Couleur.ROUGE_PASTEL, 500, 100, 40, "bas_gauche", 350)
 
     boutons.charger_voix_homme = creation_bouton("Voix Homme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", -225, -75)
     boutons.charger_voix_femme = creation_bouton("Voix Femme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", 0, -75)
@@ -86,8 +86,8 @@ def initialiser_zones_de_texte():
     zones_de_texte.prenom = creation_zone_de_texte(350, 115, Couleur.GRIS, "droit_centre", -15, 70)
     zones_de_texte.prenom.modifier_taille_police(40)
 
-    zones_de_texte.question = creation_zone_de_texte(500, 120, Couleur.GRIS, "centre_gauche", 150, 150)
-    zones_de_texte.question.modifier_taille_police(18)
+    zones_de_texte.question = creation_zone_de_texte(750, 225, Couleur.GRIS, "bas_droit", -30, 0)
+    zones_de_texte.question.modifier_taille_police(24)
 
 # --- UTILITAIRE ---
 
@@ -125,6 +125,9 @@ def aligner_elements(longueur_bouton, hauteur_bouton, alignement="centre_haut"):
         y = hauteur_fenetre - hauteur_bouton - 20
     elif alignement == "droit_centre":
         x = largeur_fenetre - longueur_bouton
+        y = (hauteur_fenetre - hauteur_bouton) // 2
+    elif alignement == "gauche_centre":
+        x = (largeur_fenetre // 2 - longueur_bouton) // 2
         y = (hauteur_fenetre - hauteur_bouton) // 2
     else:
         x = 0

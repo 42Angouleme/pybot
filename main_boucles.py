@@ -1,5 +1,5 @@
 from pybot import Couleur
-from main_initialisation import robot, largeur_fenetre, hauteur_fenetre
+from main_initialisation import robot, largeur_fenetre, hauteur_fenetre, aligner_elements
 
 # --- AFFICHAGE ---
 
@@ -125,33 +125,33 @@ def boucle_affichage_fenetre_session():
         else :
             robot.attributs.emotion = "neutre"
 
+        x, y = aligner_elements(700, 700, "centre_gauche")
+        x += 100
+        y -= 150
+        robot.fenetre.dessiner_rectangle(700, 700, x, x, Couleur.BLANC)
         image = robot.fenetre.obtenir_image_emotion(robot.attributs.emotion)
-        robot.fenetre.afficher_image(image, (largeur_fenetre - 108) // 2, (hauteur_fenetre - 108) // 2)
+        x, y = aligner_elements(108, 108, "gauche_centre")
+        robot.fenetre.afficher_image(image, x, y)
 
         boutons.deconnexion.afficher()
         boutons.posez_question_orale.afficher()
         boutons.posez_question_ecrite.afficher()
         boutons.supprimer_historique.afficher()
 
-        boutons.charger_voix_homme.afficher()
-        boutons.charger_voix_femme.afficher()
-        boutons.charger_voix_quebecoise.afficher()
+        # boutons.charger_voix_homme.afficher()
+        # boutons.charger_voix_femme.afficher()
+        # boutons.charger_voix_quebecoise.afficher()
 
-        if robot.attributs.question:
-            texte = robot.attributs.question
-            texte = robot.utilisateur.obtenir_utilisateur_connecte().prenom + " : " + texte
-            x, y = aligner_texte(texte, 20, "droite_centre")
-            x = (largeur_fenetre // 4) * 3
-            y -= 165
-            afficher_long_texte(texte, 20, x, y, Couleur.MAGENTA)
+        # if robot.attributs.question:
+        # texte = robot.attributs.question
+        texte = "Alors on va voir si je peut écrire des questions vraiment longues genre la je pense que la taille est bien. Car bon faut réussir à poser une question qui fait une taille pareil surtout lors d'une journée de démonstration"
+        texte = robot.utilisateur.obtenir_utilisateur_connecte().prenom + " : " + texte
+        afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 120, largeur_fenetre - 30, Couleur.VIOLET)
 
-        if robot.attributs.reponse:
-            texte = robot.attributs.reponse
-            x, y = aligner_texte(texte, 20, "droite_centre")
-            x = (largeur_fenetre // 4) * 3
-            y += 15
-            afficher_long_texte(texte, 20, x, y, Couleur.BLEU_CIEL)
-
+        # if robot.attributs.reponse:
+        # texte = robot.attributs.reponse
+        texte = "AI : Bojour toiti! Comment puis-j t'aider aujourd'hui? N'hésite pas à me poser des questions, même longues comme celle que tu viens de poser. Je suis là pour t'aider lors de cette journée de démonstration. N'oublie pas que ton nom est important pour moi, je le garde en mémoire. Test test bon on vas rajouter des mots ce sera plus simple pour voir ce qu'il se passe reelement deans le code car la wtf"
+        afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 480, largeur_fenetre - 30, Couleur.BLEU_CIEL)
         zones_de_texte.question.afficher()
 
         robot.attributs.mettre_a_jour_affichage = False
@@ -327,6 +327,7 @@ def boucle_test_connexion():
         if robot.utilisateur.verifier_session():
             robot.attributs.mettre_a_jour_affichage = True
             robot.attributs.utisateur_connecte = True
+            robot.attributs.manque_information = False
         else:
             carte_detectee = robot.utilisateur.detecter_carte()
             if carte_detectee:
@@ -349,24 +350,18 @@ def cree_utilisateur():
         robot.attributs.zones_de_texte.nom.effacer_texte()
         robot.attributs.zones_de_texte.prenom.effacer_texte()
 
-def afficher_long_texte(texte, taille_police, x, y, couleur):
-    taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)
-    if taille_texte[0] > (largeur_fenetre - x - 30):
-        mots = texte.split(" ")
-        texte = ""
-        for mot in mots:
-            texte += mot + " "
-            taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)
-            if taille_texte[0] > (largeur_fenetre - x - 30):
-                x_final = aligner_texte(texte, taille_police, "droite_centre")[0]
-                robot.fenetre.afficher_texte(texte, x_final, y, taille_police, couleur)
-                y += taille_texte[1] + 5
-                texte = ""
-        x_final = aligner_texte(texte, taille_police, "droite_centre")[0]
-        robot.fenetre.afficher_texte(texte, x_final, y, taille_police, couleur)
-    else:
-        x_final = aligner_texte(texte, taille_police, "droite_centre")[0]
-        robot.fenetre.afficher_texte(texte, x_final, y, taille_police, couleur)
+def afficher_long_texte(texte, taille_police, x, y, end_x, couleur):
+    mots = texte.split(" ")
+    ligne = ""
+    for mot in mots:
+        if robot.fenetre.obtenir_taille_texte(ligne + mot, taille_police)[0] > end_x - x:
+            robot.fenetre.afficher_texte(ligne, x, y, taille_police, couleur)
+            y += robot.fenetre.obtenir_taille_texte(ligne, taille_police)[1] + 7
+            ligne = mot + " "
+        else:
+            ligne += mot + " "
+    if robot.fenetre.obtenir_taille_texte(ligne, taille_police)[0] < end_x - x:
+        robot.fenetre.afficher_texte(ligne, x, y, taille_police, couleur)
 
 
 def aligner_texte(texte, taille_police, alignement="centre_haut", modifier_x=0, modifier_y=0):
