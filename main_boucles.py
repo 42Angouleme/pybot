@@ -149,7 +149,7 @@ def boucle_affichage_fenetre_session():
 
         if robot.attributs.reponse:
             texte = robot.attributs.reponse
-            afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 480, largeur_fenetre - 30, Couleur.BLEU_CIEL)
+            afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 460, largeur_fenetre - 30, Couleur.BLEU_CIEL)
         
         if robot.attributs.etat_ecrit == 1:
             zones_de_texte.question.afficher()
