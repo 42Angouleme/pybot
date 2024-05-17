@@ -127,8 +127,8 @@ def boucle_affichage_fenetre_session():
 
         x, y = aligner_elements(700, 700, "centre_gauche")
         x += 100
-        y -= 150
-        robot.fenetre.dessiner_rectangle(700, 700, x, x, Couleur.BLANC)
+        y = x
+        robot.fenetre.dessiner_rectangle(670, 670, x, x, Couleur.BLANC)
         image = robot.fenetre.obtenir_image_emotion(robot.attributs.emotion)
         x, y = aligner_elements(108, 108, "gauche_centre")
         robot.fenetre.afficher_image(image, x, y)
@@ -138,21 +138,21 @@ def boucle_affichage_fenetre_session():
         boutons.posez_question_ecrite.afficher()
         boutons.supprimer_historique.afficher()
 
-        # boutons.charger_voix_homme.afficher()
-        # boutons.charger_voix_femme.afficher()
-        # boutons.charger_voix_quebecoise.afficher()
+        boutons.charger_voix_homme.afficher()
+        boutons.charger_voix_femme.afficher()
+        boutons.charger_voix_quebecoise.afficher()
 
-        # if robot.attributs.question:
-        # texte = robot.attributs.question
-        texte = "Alors on va voir si je peut écrire des questions vraiment longues genre la je pense que la taille est bien. Car bon faut réussir à poser une question qui fait une taille pareil surtout lors d'une journée de démonstration"
-        texte = robot.utilisateur.obtenir_utilisateur_connecte().prenom + " : " + texte
-        afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 120, largeur_fenetre - 30, Couleur.VIOLET)
+        if robot.attributs.question:
+            texte = robot.attributs.question
+            texte = robot.utilisateur.obtenir_utilisateur_connecte().prenom + " : " + texte
+            afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 120, largeur_fenetre - 30, Couleur.VIOLET)
 
-        # if robot.attributs.reponse:
-        # texte = robot.attributs.reponse
-        texte = "AI : Bojour toiti! Comment puis-j t'aider aujourd'hui? N'hésite pas à me poser des questions, même longues comme celle que tu viens de poser. Je suis là pour t'aider lors de cette journée de démonstration. N'oublie pas que ton nom est important pour moi, je le garde en mémoire. Test test bon on vas rajouter des mots ce sera plus simple pour voir ce qu'il se passe reelement deans le code car la wtf"
-        afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 480, largeur_fenetre - 30, Couleur.BLEU_CIEL)
-        zones_de_texte.question.afficher()
+        if robot.attributs.reponse:
+            texte = robot.attributs.reponse
+            afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 480, largeur_fenetre - 30, Couleur.BLEU_CIEL)
+        
+        if robot.attributs.etat_ecrit == 1:
+            zones_de_texte.question.afficher()
 
         robot.attributs.mettre_a_jour_affichage = False
 
@@ -261,14 +261,19 @@ def boucle_boutons_fenetre_session():
             robot.attributs.mettre_a_jour_affichage = True
 
     if boutons.posez_question_ecrite.est_actif():
-        question = zone_de_textes.question.obtenir_texte()
-        if question:
-            zone_de_textes.question.effacer_texte()
-            robot.attributs.question = question
-            réponse = robot.IA.poser_question(question)
-            robot.attributs.reponse = réponse
-            robot.haut_parleur.dire(réponse)
+        if robot.attributs.etat_ecrit == 0:
+            robot.attributs.etat_ecrit = 1
             robot.attributs.mettre_a_jour_affichage = True
+        else:
+            robot.attributs.mettre_a_jour_affichage = True
+            question = zone_de_textes.question.obtenir_texte()
+            robot.attributs.etat_ecrit = 0
+            if question:
+                zone_de_textes.question.effacer_texte()
+                robot.attributs.question = question
+                réponse = robot.IA.poser_question(question)
+                robot.attributs.reponse = réponse
+                robot.haut_parleur.dire(réponse)
 
     if boutons.supprimer_historique.est_actif():
         robot.attributs.reponse = ""

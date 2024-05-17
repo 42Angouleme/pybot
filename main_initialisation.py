@@ -11,6 +11,7 @@ robot.attributs.mettre_a_jour_affichage = True
 robot.attributs.manque_information = False
 robot.attributs.plein_ecran = False
 robot.attributs.emotion = "neutre"
+robot.attributs.etat_ecrit = 0
 robot.attributs.question = ""
 robot.attributs.reponse = ""
 robot.attributs.page = 0
@@ -70,9 +71,9 @@ def initialiser_boutons():
     boutons.posez_question_ecrite = creation_bouton("Écrit", Couleur.VIOLET, 120, 100, 40, "centre_bas", 50, -125)
     boutons.supprimer_historique = creation_bouton("Supprimer Historique", Couleur.ROUGE_PASTEL, 500, 100, 40, "bas_gauche", 350)
 
-    boutons.charger_voix_homme = creation_bouton("Voix Homme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", -225, -75)
-    boutons.charger_voix_femme = creation_bouton("Voix Femme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", 0, -75)
-    boutons.charger_voix_quebecoise = creation_bouton("Voix Québécoise", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", 225, -75)
+    boutons.charger_voix_homme = creation_bouton("Voix Homme", Couleur.BLEU_CIEL, 200, 60, 27, "bas_gauche", 0, -115)
+    boutons.charger_voix_femme = creation_bouton("Voix Femme", Couleur.BLEU_CIEL,  200, 60, 27, "bas_gauche", 250, -115)
+    boutons.charger_voix_quebecoise = creation_bouton("Voix Québécoise", Couleur.BLEU_CIEL, 270, 60, 27, "bas_gauche", 500, -115)
 
 
 # --- ZONES DE TEXTE ---
