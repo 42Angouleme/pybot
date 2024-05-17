@@ -87,20 +87,20 @@ def boucle_affichage_fenetre_connexion():
         robot.fenetre.afficher_fond()
     
         texte = "Connexion Utilisateur"
-        x, y = aligner_texte(texte, 30)
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        x, y = aligner_texte(texte, 50)
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.BLANC)
 
         texte = "Veuillez présenter"
-        taille_texte = robot.fenetre.obtenir_taille_texte(texte, 30)
+        taille_texte = robot.fenetre.obtenir_taille_texte(texte, 50)
         x = ((largeur_fenetre - 640) // 2 - taille_texte[0]) // 2
         y = (hauteur_fenetre - taille_texte[1]) // 2
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.BLANC)
 
         texte = "votre carte"
-        taille_texte = robot.fenetre.obtenir_taille_texte(texte, 30)
+        taille_texte = robot.fenetre.obtenir_taille_texte(texte, 50)
         x = ((largeur_fenetre - 640) // 2 - taille_texte[0]) // 2
-        y = (hauteur_fenetre - taille_texte[1]) // 2 + 45
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        y = (hauteur_fenetre - taille_texte[1]) // 2 + 65
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.BLANC)
 
         boutons.retour.afficher()
         
