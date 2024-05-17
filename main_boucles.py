@@ -13,13 +13,12 @@ def boucle_affichage_fenetre_titre():
         robot.fenetre.afficher_fond()
 
         texte = "Démo Pybot made by"
-        x, y = aligner_texte(texte, 30)
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.NOIR)
+        x, y = aligner_texte(texte, 50)
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.NOIR)
 
         texte = "42Angoulême & Collège Val de Charente"
-        x, y = aligner_texte(texte, 30)
-        y += 45
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.NOIR)
+        x, y = aligner_texte(texte, 50, "centre_haut", 0, 65)
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.NOIR)
 
         boutons.quitter.afficher()
         boutons.connexion.afficher()
@@ -42,24 +41,20 @@ def boucle_affichage_fenetre_creation():
         robot.fenetre.afficher_fond()
 
         texte = "Création Utilisateur"
-        x, y = aligner_texte(texte, 30)
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        x, y = aligner_texte(texte, 50, "centre_haut", 20)
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.BLANC)
 
         texte = "Nom :"
-        x, y = aligner_texte(texte, 30, "droite_centre")
-        y -= 150
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        x, y = aligner_texte(texte, 50, "droite_centre", -20, -150)
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.BLANC)
 
         texte = "Prénom :"
-        x, y = aligner_texte(texte, 30, "droite_centre")
-        y += 50
-        robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
+        x, y = aligner_texte(texte, 50, "droite_centre", -20, 50)
+        robot.fenetre.afficher_texte(texte, x, y, 50, Couleur.BLANC)
 
         if robot.attributs.manque_information:
-            x, y = aligner_texte(texte, 30, "centre_haut")
-            y += 120
-            x -= 200
-            robot.fenetre.afficher_texte("Veuillez remplir tous les champs", x, y, 30, Couleur.ROUGE)
+            x, y = aligner_texte(texte, 40, "centre_haut", -270, 120)
+            robot.fenetre.afficher_texte("Veuillez remplir tous les champs", x, y, 40, Couleur.ROUGE_PASTEL)
 
         boutons.retour.afficher()
 
@@ -68,15 +63,12 @@ def boucle_affichage_fenetre_creation():
             boutons.suppression.afficher()
             user = robot.user.obtenir_utilisateur_connecte()
 
-            x, y = aligner_texte(user.nom, 30, "droite_centre")
-            y -= 150
-            x += 200
-            robot.fenetre.afficher_texte(user.nom, x, y, 30, Couleur.BLANC)
+            x, y = aligner_texte(user.nom, 40, "droite_centre", 270, -140)
+            robot.fenetre.afficher_texte(user.nom, x, y, 40, Couleur.BLANC)
 
-            x, y = aligner_texte(user.prenom, 30, "droite_centre")
-            y += 50
-            x += 200
-            robot.fenetre.afficher_texte(user.prenom, x, y, 30, Couleur.BLANC)
+            x, y = aligner_texte(user.prenom, 40, "droite_centre", 270, 60)
+            robot.fenetre.afficher_texte(user.prenom, x, y, 40, Couleur.BLANC)
+
         else :
             boutons.creer.afficher()
             zones_de_texte.nom.afficher()
@@ -350,7 +342,7 @@ def cree_utilisateur():
         robot.attributs.manque_information = True
         robot.attributs.mettre_a_jour_affichage = True
     else:
-        robot.user.creer(nom, prenom, robot.attributs.derniere_carte_detectee)
+        robot.user.creer(prenom, nom, robot.attributs.derniere_carte_detectee)
         robot.attributs.derniere_carte_detectee = None
         robot.attributs.mettre_a_jour_affichage = True
         robot.attributs.manque_information = False
@@ -377,7 +369,7 @@ def afficher_long_texte(texte, taille_police, x, y, couleur):
         robot.fenetre.afficher_texte(texte, x_final, y, taille_police, couleur)
 
 
-def aligner_texte(texte, taille_police, alignement="centre_haut"):
+def aligner_texte(texte, taille_police, alignement="centre_haut", modifier_x=0, modifier_y=0):
     taille_texte = robot.fenetre.obtenir_taille_texte(texte, taille_police)
     taille_lettre = robot.fenetre.obtenir_taille_texte(" ", taille_police)
     if alignement == "centre_haut" :
@@ -404,4 +396,6 @@ def aligner_texte(texte, taille_police, alignement="centre_haut"):
     else:
         x = 0
         y = 0
+    x += modifier_x
+    y += modifier_y
     return x, y

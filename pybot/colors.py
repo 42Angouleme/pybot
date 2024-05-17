@@ -2,6 +2,7 @@ from enum import Enum
 
 class Couleur(Enum):
     ROUGE = (255, 0, 0)
+    ROUGE_PASTEL = (239, 75, 75)
     VERT = (0, 255, 0)
     BLEU = (0, 0, 255)
     JAUNE = (255, 255, 0)
@@ -10,11 +11,12 @@ class Couleur(Enum):
     BLANC = (255, 255, 255)
     GRIS = (205, 205, 205)
     NOIR = (0, 0, 0)
-    ORANGE = (255, 165, 0)
+    ORANGE = (230, 161, 87)
     ROSE = (255, 192, 203)
-    VIOLET = (148, 0, 211)
+    VIOLET = (166, 133, 226)
     BLEU_CIEL = (135, 206, 235)
     VERT_SAPIN = (35, 139, 34)
+    VERT_FONCE = (155, 182, 124)
 
     def __get__(self, instance, owner):
         return self.value

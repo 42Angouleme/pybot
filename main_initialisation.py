@@ -52,23 +52,23 @@ def initialiser_boutons():
     boutons = robot.attributs.boutons
 
     # --- FENETRE TITRE ---
-    boutons.quitter = creation_bouton("Quitter", Couleur.ROUGE, 200, 60, 20, "bas_droit")
-    boutons.connexion = creation_bouton("Connexion", Couleur.VERT_SAPIN, 200, 60, 20, "centre_droit")
-    boutons.creation = creation_bouton("Créer utilisateur", Couleur.VIOLET, 200, 60, 20, "centre_gauche")
+    boutons.quitter = creation_bouton("Quitter", Couleur.ROUGE_PASTEL, 300, 100, 50, "bas_droit")
+    boutons.connexion = creation_bouton("Connexion", Couleur.VERT_FONCE, 300, 100, 40, "centre_droit")
+    boutons.creation = creation_bouton("Créer utilisateur", Couleur.VIOLET, 450, 100, 40, "centre_gauche")
 
     # --- BOUTON RETOUR ---
-    boutons.retour = creation_bouton("Retour", Couleur.ORANGE, 200, 60, 20, "bas_droit")
+    boutons.retour = creation_bouton("Retour", Couleur.ORANGE, 300, 100, 50, "bas_droit")
 
     # --- FENETRE CREATION ---
-    boutons.creer = creation_bouton("Créer Utilisateur", Couleur.VERT_SAPIN, 200, 60, 20, "centre_bas", 0, -130)
-    boutons.deconnexion_creation = creation_bouton("Déconnexion", Couleur.ORANGE, 300, 60, 20, "centre_haut", -170, 100)
-    boutons.suppression = creation_bouton("Supprimer Utilisateur", Couleur.ROUGE, 300, 60, 20, "centre_haut", 170, 100)
+    boutons.creer = creation_bouton("Créer Utilisateur", Couleur.VERT_FONCE, 500, 100, 40, "centre_bas", 0, -30)
+    boutons.deconnexion_creation = creation_bouton("Déconnexion", Couleur.ORANGE, 500, 100, 40, "centre_haut", -300, 100)
+    boutons.suppression = creation_bouton("Supprimer Utilisateur", Couleur.ROUGE_PASTEL, 500, 100, 40, "centre_haut", 300, 100)
 
     # --- FENETRE SESSION ---
     boutons.deconnexion = creation_bouton("Déconnexion", Couleur.ORANGE, 200, 60, 20, "bas_droit")
     boutons.posez_question_orale = creation_bouton("Poser une question à l'oral", Couleur.ROSE, 350, 60, 20, "centre_gauche", 150, -50)
     boutons.posez_question_ecrite = creation_bouton("Poser une question à l'écrit", Couleur.VIOLET, 350, 60, 20, "centre_gauche", 150, 50)
-    boutons.supprimer_historique = creation_bouton("Supprimer Historique", Couleur.ROUGE, 350, 60, 20, "bas_gauche")
+    boutons.supprimer_historique = creation_bouton("Supprimer Historique", Couleur.ROUGE_PASTEL, 350, 60, 20, "bas_gauche")
 
     boutons.charger_voix_homme = creation_bouton("Voix Homme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", -225, -75)
     boutons.charger_voix_femme = creation_bouton("Voix Femme", Couleur.BLEU_CIEL, 200, 60, 20, "centre_bas", 0, -75)
@@ -80,11 +80,11 @@ def initialiser_boutons():
 def initialiser_zones_de_texte():
     zones_de_texte = robot.attributs.zones_de_texte
 
-    zones_de_texte.nom = creation_zone_de_texte(350, 60, Couleur.GRIS, "droit_centre", -30, -130)
-    zones_de_texte.nom.modifier_taille_police(30)
+    zones_de_texte.nom = creation_zone_de_texte(350, 115, Couleur.GRIS, "droit_centre", -15, -130)
+    zones_de_texte.nom.modifier_taille_police(40)
     
-    zones_de_texte.prenom = creation_zone_de_texte(350, 60, Couleur.GRIS, "droit_centre", -30, 70)
-    zones_de_texte.prenom.modifier_taille_police(30)
+    zones_de_texte.prenom = creation_zone_de_texte(350, 115, Couleur.GRIS, "droit_centre", -15, 70)
+    zones_de_texte.prenom.modifier_taille_police(40)
 
     zones_de_texte.question = creation_zone_de_texte(500, 120, Couleur.GRIS, "centre_gauche", 150, 150)
     zones_de_texte.question.modifier_taille_police(18)
