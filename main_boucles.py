@@ -107,7 +107,7 @@ def boucle_affichage_fenetre_connexion():
         robot.attributs.mettre_a_jour_affichage = False
 
 def boucle_affichage_fenetre_session():
-    robot.fenetre.actualiser_affichage()
+    # robot.fenetre.actualiser_affichage()
 
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
     zones_de_texte = robot.attributs.zones_de_texte
@@ -120,10 +120,12 @@ def boucle_affichage_fenetre_session():
         x, y = aligner_texte(texte, 30)
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
-        if robot.attributs.reponse:
+        if robot.attributs.reponse and robot.attributs.etat_question == 4:
             robot.attributs.emotion = robot.IA.donner_emotion(robot.attributs.reponse)
-        else :
+            robot.attributs.etat_question = 0
+        elif not robot.attributs.reponse and robot.attributs.etat_question == 4:
             robot.attributs.emotion = "neutre"
+            robot.attributs.etat_question = 0
 
         x, y = aligner_elements(700, 700, "centre_gauche")
         x += 100
@@ -151,10 +153,21 @@ def boucle_affichage_fenetre_session():
             texte = robot.attributs.reponse
             afficher_long_texte(texte, 25, largeur_fenetre // 2 - 85, 460, largeur_fenetre - 30, Couleur.BLEU_CIEL)
         
-        if robot.attributs.etat_ecrit == 1:
+        if robot.attributs.etat_question == 1:
             zones_de_texte.question.afficher()
 
+        if robot.attributs.etat_question == 2:
+            texte = "Ecoute en cours"
+            x, y = aligner_texte(texte, 30, "bas_droit")
+            robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROSE)
+        
+        if robot.attributs.etat_question == 3:
+            texte = "Ecoute terminée"
+            x, y = aligner_texte(texte, 30, "bas_droit")
+            robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROUGE_PASTEL)
+
         robot.attributs.mettre_a_jour_affichage = False
+        robot.fenetre.actualiser_affichage()
 
 # --- EVENEMENTS ---
 def boucle_evenements():
@@ -250,30 +263,40 @@ def boucle_boutons_fenetre_session():
 
     if not robot.microphone.ecoute_en_cours:
         if boutons.posez_question_orale.est_actif():
+            robot.attributs.mettre_a_jour_affichage = True
+            robot.attributs.etat_question = 2
+            boucle_affichage_fenetre_session()
             question = robot.microphone.une_phrase().transcrire()
+            robot.attributs.mettre_a_jour_affichage = True
+            robot.attributs.etat_question = 3
+            boucle_affichage_fenetre_session()
             robot.attributs.question = question
-            texte = "Fin de l'écoute"
-            x, y = aligner_texte(texte, 30, "centre_bas")
-            robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROSE)
-            réponse = robot.IA.poser_question(question)
-            robot.attributs.reponse = réponse
-            robot.haut_parleur.dire(réponse)
+            if question:
+                réponse = robot.IA.poser_question(question)
+                robot.attributs.reponse = réponse
+                robot.haut_parleur.dire(réponse)
+            else:
+                robot.attributs.reponse = ""
+            robot.attributs.etat_question = 4
             robot.attributs.mettre_a_jour_affichage = True
 
     if boutons.posez_question_ecrite.est_actif():
-        if robot.attributs.etat_ecrit == 0:
-            robot.attributs.etat_ecrit = 1
+        if robot.attributs.etat_question == 0:
+            robot.attributs.etat_question = 1
             robot.attributs.mettre_a_jour_affichage = True
         else:
             robot.attributs.mettre_a_jour_affichage = True
             question = zone_de_textes.question.obtenir_texte()
-            robot.attributs.etat_ecrit = 0
+            robot.attributs.etat_question = 4
             if question:
                 zone_de_textes.question.effacer_texte()
                 robot.attributs.question = question
                 réponse = robot.IA.poser_question(question)
                 robot.attributs.reponse = réponse
                 robot.haut_parleur.dire(réponse)
+            else:
+                robot.attributs.question = ""
+                robot.attributs.reponse = ""
 
     if boutons.supprimer_historique.est_actif():
         robot.attributs.reponse = ""
@@ -393,6 +416,9 @@ def aligner_texte(texte, taille_police, alignement="centre_haut", modifier_x=0, 
     elif alignement == "droite_centre":
         x = (largeur_fenetre // 2 - taille_texte[0]) // 2 + largeur_fenetre // 2
         y = (hauteur_fenetre - taille_texte[1] + taille_lettre[1]) // 2
+    elif alignement == "bas_droit":
+        x = largeur_fenetre - taille_texte[0] - 20
+        y = hauteur_fenetre - taille_texte[1] - 20
     else:
         x = 0
         y = 0
