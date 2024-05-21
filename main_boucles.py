@@ -107,7 +107,7 @@ def boucle_affichage_fenetre_connexion():
         robot.attributs.mettre_a_jour_affichage = False
 
 def boucle_affichage_fenetre_session():
-    # robot.fenetre.actualiser_affichage()
+    robot.fenetre.actualiser_affichage()
 
     mettre_a_jour_affichage = robot.attributs.mettre_a_jour_affichage
     zones_de_texte = robot.attributs.zones_de_texte
