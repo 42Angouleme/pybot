@@ -20,7 +20,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.FINGERDOWN:
+        if event.type == pygame.FINGERDOWN or event.type == pygame.FINGERMOTION:
             x = event.x * window.get_height()
             y = event.y * window.get_width()
             fingers[event.finger_id] = x, y
