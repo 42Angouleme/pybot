@@ -103,6 +103,7 @@ class Microphone:
                     # _error(
                     #     f"L'enregistrement n'a pas pu commencer. Erreur dans la fonction 'une_phrase': {e}"
                     # )
+                    Microphone.__listening_in_progress = False
                     return TraitementAudio()
 
     def une_phrase(self) -> "TraitementAudio":
@@ -161,6 +162,7 @@ class Microphone:
                     # _error(
                     #     f"L'enregistrement n'a pas pu commencer. Erreur dans la fonction 'during': {e}"
                     # )
+                    Microphone.__listening_in_progress = False
                     return TraitementAudio()
 
     def pendant(
