@@ -34,7 +34,7 @@ class Robot:
     haut_parleur: HautParleur | None = None
 
     # Robot Attributs #
-    events = []
+    __events: list[tuple[str, str]] = []
     __active: bool = True
     __webapp: Flask | None = None
     _isWriting: bool = False
@@ -411,8 +411,8 @@ class Robot:
             None
         """
         new = (key.lower(), name)
-        if new not in self.events:
-            self.events.append(new)
+        if new not in self.__events:
+            self.__events.append(new)
 
     def ajouter_evenement(self, touche: str, nom: str):
         """
@@ -442,9 +442,9 @@ class Robot:
         --------
             None
         """
-        for e in self.events:
+        for e in self.__events:
             if e[1] == name:
-                self.events.remove(e)
+                self.__events.remove(e)
 
     def supprimer_evenement(self, nom: str):
         """
@@ -472,7 +472,7 @@ class Robot:
         --------
             A list of strings representing the events.
         """
-        return Input.check(self.events, self)
+        return Input.check(self, self.__events)
 
     def verifier_evenements(self) -> List[str]:
         """
@@ -525,7 +525,7 @@ class Robot:
         """
         self.deactivate()
 
-    ### Private Methode ###
+    ### Private Method ###
 
     def _get_user_entry(self, texte, text_area):
         """

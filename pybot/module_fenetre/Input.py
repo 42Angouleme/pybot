@@ -1,4 +1,6 @@
 import pygame as pg
+from typing import Callable
+from pybot import Robot
 
 keys = {
 "echap":pg.K_ESCAPE,
@@ -56,40 +58,54 @@ keys = {
 "F15":pg.K_F15
 }
 
+MousePos = tuple[int, int]
+_input_catches: list[tuple[int, MousePos]] = []
+
 class Input:
     def __init__(self):
         pass
 
     @staticmethod
-    def check(events, robot):
+    def check(robot: Robot, events: list[tuple[str, str]]) -> list[str]:
         result = []
-        if (robot._isWriting == False):
+        if not robot._isWriting:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     robot.deactivate()
                     exit()
-                if event.type == pg.KEYDOWN:
+                elif event.type == pg.KEYDOWN:
                     for e in events:
                         k = keys[e[0]]
                         if event.key == k:
                             result.append(e[1])
+                elif event.type == pg.MOUSEBUTTONDOWN:
+                    _input_catches.append((event.button, event.pos))
         return result
 
     @staticmethod
-    def get_user_entry(robot, text_area) :
-        user_texte = ""
-        if (robot._isWriting) :
+    def get_user_entry(robot: Robot, text_area) -> str:
+        user_text = ""
+        if robot._isWriting:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     robot.deactivate()
                     exit()
                     #return "stop"
                 if event.type == pg.KEYDOWN:
-                    user_texte += event.unicode
+                    user_text += event.unicode
                 if event.type == pg.MOUSEBUTTONDOWN :
                     if event.button == 1 :
                         text_area._check_is_outside(event.pos) 
-        if (user_texte == "") :
+        if user_text == "":
             return None
-        else :
-            return user_texte
+        return user_text
+
+    @staticmethod
+    def was_clicked(collider: Callable[[MousePos], bool]) -> bool:
+        clicked = False
+        for click in _input_catches:
+            if collider(click[1]):
+                clicked = True
+        if clicked:
+            _input_catches.clear()
+        return clicked
