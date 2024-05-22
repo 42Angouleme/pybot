@@ -30,8 +30,10 @@ class Microphone:
     is_recording: bool = False
     __listening_in_progress : bool = False
 
-    def __init__(self, recognizer: Recognizer = _get_default_recognizer()) -> None:
+    def __init__(self, recognizer: Recognizer = None) -> None:
         with noalsaerr():
+            if recognizer is None:
+                recognizer = _get_default_recognizer()
             self.r = recognizer
             self.mic = SrMicrophone()
     
