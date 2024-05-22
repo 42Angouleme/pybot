@@ -58,7 +58,6 @@ pycparser==2.21
 pydantic==2.5.2
 pydantic_core==2.14.5
 pygame-ce==2.4.1
-#pygame==2.5.2
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.0
 python-magic==0.4.27
