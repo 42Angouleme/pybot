@@ -46,7 +46,6 @@ class TraitementAudio(FilepathSchema):
         Retour:
             str: Le texte reconnu dans l'enregistrement.
         """
-        return ""
         if self.recording is None:
             return ""
         client = OpenAI()
@@ -54,10 +53,12 @@ class TraitementAudio(FilepathSchema):
         audio_file = open("test.wav", "rb")
         transcription = client.audio.transcriptions.create(
             model="whisper-1",
-            file=audio_file
+            file=audio_file,
+            language= "fr",
+            response_format= "text"
         )
-        print(transcription.text)
-        return transcription.text
+        print(transcription)
+        return transcription
         # try:
         #     return self.r.recognize_whisper_api(self.recording)
         # except speech_recognition.exceptions.SetupError as e:
