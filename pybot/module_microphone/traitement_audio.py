@@ -3,7 +3,7 @@ from .filepath_schema import FilepathSchema
 
 from speech_recognition import Recognizer, AudioData
 from datetime import datetime
-import openai
+from openai import OpenAI
 
 import logging
 
@@ -28,7 +28,7 @@ class TraitementAudio(FilepathSchema):
 
     def __init__(
         self,
-        recording: AudioData | None = None,
+        recording: AudioData | str | None = None,
         chemin: str = "/tmp/recording_%Y-%m-%d_%Hh%Mm%Ss.wav",
         start_time: datetime | None = None,
         recognizer: Recognizer = Recognizer(),
@@ -37,7 +37,7 @@ class TraitementAudio(FilepathSchema):
             allowed_extensions=[".wav"], chemin=chemin, timestamp=start_time
         )
         self.recording = recording
-        self.r : Recognizer = recognizer
+        self.r: Recognizer = recognizer
 
     def transcrire(self) -> str:
         """
@@ -46,20 +46,30 @@ class TraitementAudio(FilepathSchema):
         Retour:
             str: Le texte reconnu dans l'enregistrement.
         """
+        return ""
         if self.recording is None:
             return ""
-        try:
-            return self.r.recognize_whisper_api(self.recording)
-        except speech_recognition.exceptions.SetupError as e:
-            _error(
-                f"Une erreur est survenue, le texte n'a pas pu êre transcrit. Indication: {e}"
-            )
-            return ""
-        except openai.AuthenticationError as e:
-            _error(
-                f"Une erreur est survenue, le texte n'a pas pu êre transcrit. Indication: {e}"
-            )
-            return ""
+        client = OpenAI()
+
+        audio_file = open("test.wav", "rb")
+        transcription = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_file
+        )
+        print(transcription.text)
+        return transcription.text
+        # try:
+        #     return self.r.recognize_whisper_api(self.recording)
+        # except speech_recognition.exceptions.SetupError as e:
+        #     _error(
+        #         f"Une erreur est survenue, le texte n'a pas pu êre transcrit. Indication: {e}"
+        #     )
+        #     return ""
+        # except openai.AuthenticationError as e:
+        #     _error(
+        #         f"Une erreur est survenue, le texte n'a pas pu êre transcrit. Indication: {e}"
+        #     )
+        #     return ""
 
     def enregistrer_sous(self, filepath: str | None = None) -> "TraitementAudio":
         """

@@ -6,6 +6,11 @@ from .traitement_audio import TraitementAudio
 from .utils import textual_duration_to_seconds
 from ..alsa_err_remover import noalsaerr
 
+import sounddevice as sd
+from scipy.io.wavfile import write
+import openai
+import whisper
+
 _debug = logging.getLogger("Microphone").debug
 _error = logging.getLogger("Microphone").error
 
@@ -28,7 +33,7 @@ class Microphone:
     """
 
     is_recording: bool = False
-    __listening_in_progress : bool = False
+    __listening_in_progress: bool = False
 
     def __init__(self, recognizer: Recognizer = None) -> None:
         with noalsaerr():
@@ -36,7 +41,7 @@ class Microphone:
                 recognizer = _get_default_recognizer()
             self.r = recognizer
             self.mic = SrMicrophone()
-    
+
     @property
     def is_listening(self) -> bool:
         """
@@ -94,19 +99,39 @@ class Microphone:
             with self.mic as source:
                 try:
                     Microphone.__listening_in_progress = True
-                    _debug("Écoute d'une phrase")
                     start_time = datetime.now()
-                    self.r.pause_threshold = 1
-                    recording = self.r.listen(source, timeout=5, phrase_time_limit=20)
-                    _debug("Écoute terminée...")
+                    recording = sd.rec(
+                        int(9 * 44100), samplerate=44100, channels=2)
+                    sd.wait()
+                    write("test.wav", 44100, recording)
                     Microphone.__listening_in_progress = False
-                    return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
+                    return TraitementAudio("test.wav", start_time=start_time, recognizer=self.r)
                 except Exception as e:
                     # _error(
                     #     f"L'enregistrement n'a pas pu commencer. Erreur dans la fonction 'une_phrase': {e}"
                     # )
+                    print(f"{e}")
                     Microphone.__listening_in_progress = False
                     return TraitementAudio()
+        # with noalsaerr():
+        #     with self.mic as source:
+        #         try:
+        #             Microphone.__listening_in_progress = True
+        #             _debug("Écoute d'une phrase")
+        #             start_time = datetime.now()
+        #             self.r.pause_threshold = 1
+        #             recording = self.r.listen(source, timeout=2,
+        #                                       phrase_time_limit=9)
+        #             _debug("Écoute terminée...")
+        #             Microphone.__listening_in_progress = False
+        #             return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
+        #         except Exception as e:
+        #             # _error(
+        #             #     f"L'enregistrement n'a pas pu commencer. Erreur dans la fonction 'une_phrase': {e}"
+        #             # )
+        #             print(f"{e}")
+        #             Microphone.__listening_in_progress = False
+        #             return TraitementAudio()
 
     def une_phrase(self) -> "TraitementAudio":
         """
