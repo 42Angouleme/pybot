@@ -219,6 +219,13 @@ class TextArea(Button):
             if not self._pressed:
                 robot._isWriting = False
             new_text = robot._get_user_entry(text, self)
+            if isinstance(new_text, tuple):
+                if (not robot.is_active()):
+                    return ""
+                robot._isWriting = False
+                self._pressed = False
+                robot.attributs.etat_question = 5
+                break
             if (not robot.is_active()):
                 return ""
             if (new_text != text):

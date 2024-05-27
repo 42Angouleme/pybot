@@ -532,6 +532,13 @@ class Robot:
             Allow to get the user_entry, use in texte_area and in fuction ecrire
         """
         letter = Input.get_user_entry(self, text_area)
+        if isinstance(letter, tuple):
+            if letter[0] is not None:
+                if letter[0] == "\b":
+                    texte = texte[:-1]
+                else:
+                    texte += letter[0]
+            return (texte, 0)
         if (letter is not None):
             if letter == "\b":
                 texte = texte[:-1]
