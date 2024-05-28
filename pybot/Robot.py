@@ -40,21 +40,10 @@ class Robot:
     _isWriting: bool = False
 
     __emotion_dict: dict[str, str] = {
-        "Neutre": "/images/emotions/neutre.png",
-        "Amuser": "/images/emotions/amuser.png",
-        "Celebration": "/images/emotions/celebration.png",
-        "Colere": "/images/emotions/colere.png",
-        "Contrariete": "/images/emotions/contrariete.png",
-        "Degout": "/images/emotions/degout.png",
-        "Fatigue": "/images/emotions/fatigue.png",
-        "Incomprehension": "/images/emotions/incomprehension.png",
-        "Inquietude": "/images/emotions/inquietude.png",
-        "Joie": "/images/emotions/joie.png",
-        "Peur": "/images/emotions/peur.png",
-        "Reflexion": "/images/emotions/reflexion.png",
-        "Soulagement": "/images/emotions/soulagement.png",
-        "Surprise": "/images/emotions/surprise.png",
-        "Tristesse": "/images/emotions/tristesse.png",
+        "neutre": "/images/emotions/neutre.png",
+        "joie": "/images/emotions/joie.png",
+        "tristesse": "/images/emotions/tristesse.png",
+        "reflexion": "/images/emotions/reflexion.png",
     }
 
     attributs: AttributeDict = AttributeDict(

@@ -175,7 +175,7 @@ def boucle_affichage_fenetre_session():
             robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROSE)
             # 165 = largeur de l'image, 282 = hauteur de l'image
             x, y = aligner_elements(165, 282, "gauche_centre")
-            robot.fenetre.afficher_image("/images/micro_unmute.jpg", x, y)
+            robot.fenetre.afficher_image("/images/enregistre.png", x, y)
 
         if robot.attributs.etat_question == 3:
             texte = "Ecoute terminée"
@@ -183,7 +183,7 @@ def boucle_affichage_fenetre_session():
             robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROUGE_PASTEL)
             # 232 = largeur de l'image, 290 = hauteur de l'image
             x, y = aligner_elements(232, 290, "gauche_centre")
-            robot.fenetre.afficher_image("/images/micro_mute.jpg", x, y)
+            # robot.fenetre.afficher_image("/images/micro_mute.jpg", x, y)
 
         robot.attributs.mettre_a_jour_affichage = False
         robot.fenetre.actualiser_affichage()

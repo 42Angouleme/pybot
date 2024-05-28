@@ -7,4 +7,4 @@ venv
 *-checkpoint.ipynb
 .DS_Store
 database
-./pybot/module_haut_parleur/fichiers_audio/derniere_lecture.wav
+pybot/module_haut_parleur/fichiers_audio/derniere_lecture.wav

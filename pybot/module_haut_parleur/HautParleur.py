@@ -167,10 +167,7 @@ class HautParleur:
 
         # print(f"Début de la lecture...")
         wav_file = wave.open(path, 'rb')
-        wav_file.setsampwidth(4)
-        wav_file.setnchannels(1)
-        wav_file.setframerate(44.1e3)
-        chunk = 8192
+        chunk = 1024
 
         with noalsaerr():
             # create an audio object
@@ -316,10 +313,10 @@ class HautParleur:
             warn(f"No voice has been chosen, I cannot prepare the reading.")
             return False
 
-        if self.text_to_audio_file(
+        self.text_to_audio_file(
             self.voix_choisie, text, self._last_tts_filepath, thread=False
-        ):
-            self.play_audio_file(self._last_tts_filepath, thread=False)
+        )
+        self.play_audio_file(self._last_tts_filepath, thread=False)
 
         HautParleur.__reading_in_progress = False
 

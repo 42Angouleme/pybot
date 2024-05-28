@@ -1,6 +1,6 @@
 import os
 from openai import OpenAI
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openaidatabase import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain.prompts.prompt import PromptTemplate
@@ -294,8 +294,8 @@ class ChatBot:
         # openai.organization = os.getenv("OPENAI_API_ORG_ID")
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"),
                         organization=os.getenv("OPENAI_API_ORG_ID"))
-        preprompt = f"""Pick the word from [ {choices_str} ] that fits the best the following sentence: {sentence}.
-        Answer only one word. Answer 'Neutre' if you really can't find any match"""
+        preprompt = f"""Pick the word from [ {choices_str} ] that fits the best the emotion would have when reading the following sentence: {sentence}.
+        Answer only one word. Answer 'reflexion' if you really can't find any match"""
         # reponse =  openai.ChatCompletion.create(
         reponse = client.chat.completions.create(
             model="gpt-3.5-turbo",
