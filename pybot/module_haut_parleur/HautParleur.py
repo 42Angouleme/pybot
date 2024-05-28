@@ -167,6 +167,9 @@ class HautParleur:
 
         # print(f"Début de la lecture...")
         wav_file = wave.open(path, 'rb')
+        wav_file.setsampwidth(4)
+        wav_file.setnchannels(1)
+        wav_file.setframerate(44.1e3)
         chunk = 8192
 
         with noalsaerr():
@@ -175,10 +178,10 @@ class HautParleur:
 
         # open stream based on the wave object which has been input.
         stream = p.open(format =
-                    p.get_format_from_width(wav_file.getsampwidth()),
-                    channels = wav_file.getnchannels(),
-                    rate = wav_file.getframerate(),
-                    output = True)
+            p.get_format_from_width(wav_file.getsampwidth()),
+            channels = wav_file.getnchannels(),
+            rate = wav_file.getframerate(),
+            output = True)
 
         # read data (based on the chunk size)
         data = wav_file.readframes(chunk)
@@ -219,7 +222,7 @@ class HautParleur:
         self.play_audio_file(chemin, thread=False)
 
     @thread
-    def record_audio_to_file(self, voice: VoiceKey, text: str, path: str) -> bool:
+    def text_to_audio_file(self, voice: VoiceKey, text: str, path: str) -> bool:
         """
         Transform the text into an audio file and save it at the specified path. You must have called the `load_voice` function with the same voice as a parameter before.
 
@@ -233,7 +236,7 @@ class HautParleur:
         --------
             `False` if a problem occurred, otherwise `True`
         """
-        timeout = 10
+        timeout = 5
         loaded_event = self._voices[voice][1]
         # If voice is not loaded after a few seconds, abort
         loaded = loaded_event.wait(timeout)
@@ -247,13 +250,16 @@ class HautParleur:
 
         # Open file for writing
         with wave.open(path, "wb") as wav_file:
+            wav_file.setnchannels(1)
+            wav_file.setsampwidth(4)
+            wav_file.setframerate(44.1e3)
             # Generate voice from text
             voice.synthesize(text, wav_file)
 
         return True
 
     @thread
-    def enregistrer_audio_dans_fichier(self, voix: VoiceKey, texte: str, chemin: str) -> bool:
+    def enregistrer_texte_dans_fichier_audio(self, voix: VoiceKey, texte: str, chemin: str) -> bool:
         """
         Transforme le texte en fichier audio et l'enregistre au chemin spécifié.
 
@@ -269,17 +275,17 @@ class HautParleur:
         -------
             `False` si un problème est survenu, sinon `True`
         """
-        timeout = 10
+        timeout = 5
         loaded_event = self._voices[voix][1]
         # If voice is not loaded after a few seconds, abort
         loaded = loaded_event.wait(timeout)
         if not loaded:
             warn(
-                f"La voix choisie ({voix}) n'a pas été charger, je ne peux pas préparer la lecture."
+                f"La voix choisie ({voix}) n'a pas été chargée, je ne peux pas préparer la lecture."
             )
             return False
 
-        return self.record_audio_to_file(voix, texte, chemin, thread=False)
+        return self.text_to_audio_file(voix, texte, chemin, thread=False)
 
     @thread
     def say(self, text: str) -> bool:
@@ -310,10 +316,10 @@ class HautParleur:
             warn(f"No voice has been chosen, I cannot prepare the reading.")
             return False
 
-        self.record_audio_to_file(
+        if self.text_to_audio_file(
             self.voix_choisie, text, self._last_tts_filepath, thread=False
-        )
-        self.play_audio_file(self._last_tts_filepath, thread=False)
+        ):
+            self.play_audio_file(self._last_tts_filepath, thread=False)
 
         HautParleur.__reading_in_progress = False
 

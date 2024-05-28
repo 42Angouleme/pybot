@@ -3,13 +3,8 @@
 __pycache__
 venv
 .venv
-# .env
-# Ignore Jupyter notebook backup files
+.env
 *-checkpoint.ipynb
 .DS_Store
-module_webapp/database/images/
-module_webapp/database/thumbnails/
-
-module_webapp/database/users.db
+database
 ./pybot/module_haut_parleur/fichiers_audio/derniere_lecture.wav
-.env
