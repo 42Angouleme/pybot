@@ -132,7 +132,7 @@ def boucle_affichage_fenetre_session():
 
         if robot.attributs.reponse and robot.attributs.etat_question == 4:
             robot.attributs.emotion = robot.IA.donner_emotion(
-                robot.attributs.reponse)
+                robot.attributs.question)
             robot.attributs.etat_question = 0
         elif not robot.attributs.reponse and robot.attributs.etat_question == 4:
             robot.attributs.emotion = "neutre"
@@ -152,7 +152,7 @@ def boucle_affichage_fenetre_session():
 
         if robot.attributs.question:
             texte = robot.attributs.question
-            texte = robot.utilisateur.obtenir_utilisateur_connecte().prenom + " : " + texte
+            texte = robot.utilisateur.obtenir_utilisateur_connecte().nom + " : " + texte
             afficher_long_texte(texte, 25, largeur_fenetre //
                                 2 - 85, 120, largeur_fenetre - 30, Couleur.VIOLET)
 

@@ -284,7 +284,7 @@ class ChatBot:
 
         Returns:
         --------
-            str: The emotion associated with the sentence. Returns 'Neutre' if no match is found.
+            str: The emotion associated with the sentence. Returns 'neutre' if no match is found.
         """
         if (sentence is None):
             ensure.msg['en']["is_empty"]("sentence")
@@ -294,7 +294,7 @@ class ChatBot:
         # openai.organization = os.getenv("OPENAI_API_ORG_ID")
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"),
                         organization=os.getenv("OPENAI_API_ORG_ID"))
-        preprompt = f"""Pick the word from [ {choices_str} ] that fits the best the emotion would have when reading the following sentence: {sentence}.
+        preprompt = f"""Pick the word from [ {choices_str} ] that fits the best the emotion a human would have when reading the following sentence: {sentence}.
         Answer only one word. Answer 'reflexion' if you really can't find any match"""
         # reponse =  openai.ChatCompletion.create(
         reponse = client.chat.completions.create(
@@ -307,7 +307,7 @@ class ChatBot:
 
         emotion = reponse.choices[0].message.content
         if emotion not in self.__emotion_list:
-            return "Neutre"
+            return "neutre"
 
         return emotion
 
@@ -321,7 +321,7 @@ class ChatBot:
 
         Retour:
         -------
-            str: L'émotion associée à la phrase. Renvoie 'Neutre' si aucune correspondance n'est trouvée.
+            str: L'émotion associée à la phrase. Renvoie 'neutre' si aucune correspondance n'est trouvée.
         """
         if (phrase is None):
             ensure.msg['fr']["is_empty"]('La phrase')
@@ -337,10 +337,9 @@ class ChatBot:
             :param new_preprompt : (str)
         """
         new_preprompt += """
-            Current conversation:
+            Here is Current conversation history:
             {history}
-            Human: {input}
-            AI Assistant:
+            Here is the input must respond to: {input}
         """
         if (self.__chatGPT == None):
             print("No API connection started")
