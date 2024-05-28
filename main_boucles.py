@@ -125,7 +125,8 @@ def boucle_affichage_fenetre_session():
     if mettre_a_jour_affichage:
         robot.fenetre.afficher_fond()
 
-        texte = "Session Utilisateur"
+        user = robot.user.obtenir_utilisateur_connecte()
+        texte = "Bonjour {} {}".format(user.nom, user.prenom)
         x, y = aligner_texte(texte, 30)
         robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.BLANC)
 
@@ -137,14 +138,8 @@ def boucle_affichage_fenetre_session():
             robot.attributs.emotion = "neutre"
             robot.attributs.etat_question = 0
 
-        x, y = aligner_elements(700, 700, "centre_gauche")
-        x += 100
-        y = x
-        robot.fenetre.dessiner_rectangle(670, 670, x, x, Couleur.BLANC)
         image = robot.fenetre.obtenir_image_emotion(robot.attributs.emotion)
-        # 108 = taille de l'image
-        x, y = aligner_elements(108, 108, "gauche_centre")
-        robot.fenetre.afficher_image(image, x, y)
+        robot.fenetre.afficher_image(image, 100, 100)
 
         boutons.deconnexion.afficher()
         boutons.posez_question_orale.afficher()
@@ -173,17 +168,12 @@ def boucle_affichage_fenetre_session():
             texte = "Ecoute en cours"
             x, y = aligner_texte(texte, 30, "bas_droit")
             robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROSE)
-            # 165 = largeur de l'image, 282 = hauteur de l'image
-            x, y = aligner_elements(165, 282, "gauche_centre")
-            robot.fenetre.afficher_image("/images/enregistre.png", x, y)
+            robot.fenetre.afficher_image("/images/enregistre.png", 100, 100)
 
         if robot.attributs.etat_question == 3:
             texte = "Ecoute terminée"
             x, y = aligner_texte(texte, 30, "bas_droit")
             robot.fenetre.afficher_texte(texte, x, y, 30, Couleur.ROUGE_PASTEL)
-            # 232 = largeur de l'image, 290 = hauteur de l'image
-            x, y = aligner_elements(232, 290, "gauche_centre")
-            # robot.fenetre.afficher_image("/images/micro_mute.jpg", x, y)
 
         robot.attributs.mettre_a_jour_affichage = False
         robot.fenetre.actualiser_affichage()
