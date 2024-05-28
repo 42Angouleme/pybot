@@ -1,6 +1,6 @@
 import os
 from openai import OpenAI
-from langchain_openaidatabase import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain.prompts.prompt import PromptTemplate
