@@ -37,7 +37,7 @@ class TraitementAudio(FilepathSchema):
             allowed_extensions=[".wav"], chemin=chemin, timestamp=start_time
         )
         self.recording = recording
-        self.r = recognizer
+        self.r : Recognizer = recognizer
 
     def transcrire(self) -> str:
         """
@@ -55,7 +55,7 @@ class TraitementAudio(FilepathSchema):
                 f"Une erreur est survenue, le texte n'a pas pu êre transcrit. Indication: {e}"
             )
             return ""
-        except openai.error.AuthenticationError as e:
+        except openai.AuthenticationError as e:
             _error(
                 f"Une erreur est survenue, le texte n'a pas pu êre transcrit. Indication: {e}"
             )

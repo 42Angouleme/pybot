@@ -1,6 +1,5 @@
 import os
 from openai import OpenAI
-from dotenv import load_dotenv, find_dotenv
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationSummaryBufferMemory
@@ -16,8 +15,6 @@ class ChatBot:
             Set connection with AI API (ChatGpt 3.5 turbo)
             Do not forget to add .env with OPENAI_API_KEY and OPENAI_API_ORG_ID
         """
-        env_file = find_dotenv(".env")
-        load_dotenv(env_file)
         if (os.getenv("OPENAI_API_KEY") == None or os.getenv("OPENAI_API_ORG_ID") == None):
             ensure.err(
                 "OPENAI_API_KEY or OPENAI_API_ORG_ID are missing from the environment.", "en")

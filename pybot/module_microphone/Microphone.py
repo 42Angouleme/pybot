@@ -4,7 +4,7 @@ from typing import Callable
 from speech_recognition import Microphone as SrMicrophone, Recognizer, AudioData
 from .traitement_audio import TraitementAudio
 from .utils import textual_duration_to_seconds
-
+from ..alsa_err_remover import noalsaerr
 
 _debug = logging.getLogger("Microphone").debug
 _error = logging.getLogger("Microphone").error
@@ -16,8 +16,9 @@ def _get_default_recognizer() -> Recognizer:
     """
     Get a configured recognizer that should be able to recognize voice in a loud environment. `Energy_threshold` will adjust itself over time.
     """
-    r = Recognizer()
-    r.energy_threshold = 4000
+    with noalsaerr():
+        r = Recognizer()
+        r.energy_threshold = 4000
     return r
 
 
@@ -27,10 +28,26 @@ class Microphone:
     """
 
     is_recording: bool = False
+    __listening_in_progress : bool = False
 
     def __init__(self, recognizer: Recognizer = _get_default_recognizer()) -> None:
-        self.r = recognizer
-        self.mic = SrMicrophone()
+        with noalsaerr():
+            self.r = recognizer
+            self.mic = SrMicrophone()
+    
+    @property
+    def is_listening(self) -> bool:
+        """
+        `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`.
+        """
+        return Microphone.__listening_in_progress
+
+    @property
+    def ecoute_en_cours(self) -> bool:
+        """
+        `True` si le robot est accuellement en train de dire quelque chose. Sinon `False`.
+        """
+        return Microphone.__listening_in_progress
 
     def for_each_sentence(self, callback: Callable[[TraitementAudio], None]):
         """
@@ -44,15 +61,17 @@ class Microphone:
         _debug(
             "Je m'ajuste au bruit ambiant pour pouvoir détecter les silences, celà prend quelques secondes..."
         )
+        with noalsaerr():
+            with self.mic as source:
+                self.r.adjust_for_ambient_noise(source)
 
-        with self.mic as source:
-            self.r.adjust_for_ambient_noise(source)
+            _debug("J'écoute la parole en arrière plan...")
 
-        _debug("J'écoute la parole en arrière plan...")
-
-        # TODO add attribute is_recording for when recording is running
-        self.stop = self.r.listen_in_background(self.mic, cb)
-        return self.stop
+            # TODO add attribute is_recording for when recording is running
+            Microphone.__listening_in_progress = True
+            self.stop = self.r.listen_in_background(self.mic, cb)
+            Microphone.__listening_in_progress = False
+            return self.stop
 
     def pour_chaque_phrase(self, callback: Callable[[TraitementAudio], None]):
         """
@@ -69,13 +88,16 @@ class Microphone:
         Returns:
             TraitementAudio: The recording ready to be manipulated.
         """
-        with self.mic as source:
-            _debug("Écoute d'une phrase")
-            start_time = datetime.now()
-            self.r.pause_threshold = 1
-            recording = self.r.listen(source)
-            _debug("Écoute terminée...")
-            return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
+        with noalsaerr():
+            Microphone.__listening_in_progress = True
+            with self.mic as source:
+                _debug("Écoute d'une phrase")
+                start_time = datetime.now()
+                self.r.pause_threshold = 1
+                recording = self.r.listen(source)
+                _debug("Écoute terminée...")
+                Microphone.__listening_in_progress = False
+                return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
 
     def une_phrase(self) -> "TraitementAudio":
         """
@@ -100,31 +122,34 @@ class Microphone:
         Returns:
             TraitementAudio: The recording ready to be manipulated.
         """
-        if isinstance(duree, str):
-            try:
-                duree = textual_duration_to_seconds(duree)
-            except ValueError as e:
-                _error(
-                    f'L\'enregistrement n\'a pas pu commencer. Erreur dans la fonction "pendant", argument "duree" invalide: {e}',
-                )  # TODO humanize date
-                return TraitementAudio()
+        with noalsaerr():
+            if isinstance(duree, str):
+                try:
+                    duree = textual_duration_to_seconds(duree)
+                except ValueError as e:
+                    _error(
+                        f'L\'enregistrement n\'a pas pu commencer. Erreur dans la fonction "pendant", argument "duree" invalide: {e}',
+                    )  # TODO humanize date
+                    return TraitementAudio()
 
-        if isinstance(delai, str):
-            try:
-                delai = textual_duration_to_seconds(delai)
-            except ValueError as e:
-                _error(
-                    f'L\'enregistrement n\'a pas pu commencer. Erreur dans la fonction "pendant", argument "delai" invalide: {e}',
-                )  # TODO humanize date
-                return TraitementAudio()
+            if isinstance(delai, str):
+                try:
+                    delai = textual_duration_to_seconds(delai)
+                except ValueError as e:
+                    _error(
+                        f'L\'enregistrement n\'a pas pu commencer. Erreur dans la fonction "pendant", argument "delai" invalide: {e}',
+                    )  # TODO humanize date
+                    return TraitementAudio()
 
-        with SrMicrophone() as source:
-            # TODO humanize date
-            _debug(f"J'écoute pendant {duree} secondes...")
-            start_time = datetime.now()
-            recording = self.r.listen(source, timeout=duree)
-            _debug("Écoute terminée...")
-            return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
+            with SrMicrophone() as source:
+                # TODO humanize date
+                Microphone.__listening_in_progress = True
+                _debug(f"J'écoute pendant {duree} secondes...")
+                start_time = datetime.now()
+                recording = self.r.listen(source, timeout=duree)
+                _debug("Écoute terminée...")
+                Microphone.__listening_in_progress = False
+                return TraitementAudio(recording, start_time=start_time, recognizer=self.r)
 
     def pendant(
         self, duree: str | float, delai: str | float | None = None

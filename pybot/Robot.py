@@ -1,11 +1,12 @@
+from .module_haut_parleur.HautParleur import HautParleur
+from .module_microphone.Microphone import Microphone
 from .module_fenetre.Fenetre import Fenetre
 from .module_user.User import User_manager
-from .module_haut_parleur.HautParleur import HautParleur
 from .module_camera.Camera import Camera
-from .module_microphone.Microphone import Microphone
 from .module_fenetre.Input import Input
 from .module_webapp import create_app
 from .module_ia.IA import ChatBot
+from dotenv import load_dotenv, find_dotenv
 from flask import Flask
 import os
 import sys
@@ -64,6 +65,9 @@ class Robot:
         self.fenetre: Fenetre = self.window
         self.utilisateur: User_manager = self.user
         self.haut_parleur: HautParleur = self.speaker
+
+        env_file = find_dotenv(".env")
+        load_dotenv(env_file)
 
     @ensure.no_window('en')
     def init_window_module(self):

@@ -1,16 +1,16 @@
-import numpy as np
+from piper import PiperVoice
+from ..alsa_err_remover import noalsaerr
+from functools import wraps
 from typing import Literal
-import wave
-import os
-import sys
-import pyaudio
 from ctypes import *
 import contextlib
-
-from piper import PiperVoice
-
 import threading
-from functools import wraps
+import pyaudio
+import wave
+import sys
+import os
+
+
 
 
 def warn(msg: str):
@@ -172,7 +172,7 @@ class HautParleur:
         wav_file = wave.open(path, 'rb')
         chunk = 8192
 
-        with silence():
+        with noalsaerr():
             # create an audio object
             p = pyaudio.PyAudio()
 
@@ -313,10 +313,10 @@ class HautParleur:
             warn(f"No voice has been chosen, I cannot prepare the reading.")
             return False
 
-        self.enregistrer_audio_dans_fichier(
+        self.record_audio_to_file(
             self.voix_choisie, text, self._last_tts_filepath, thread=False
         )
-        self.lire_fichier_audio(self._last_tts_filepath, thread=False)
+        self.play_audio_file(self._last_tts_filepath, thread=False)
 
         HautParleur.__reading_in_progress = False
 
@@ -350,15 +350,15 @@ class HautParleur:
         self.say(texte, thread=False)
 
 # ... Another trick to have a clean console (This silence pyaudio trying to connect to Jack server and some bad configuration from /usr/share/alsa/alsa.conf)    
-@contextlib.contextmanager
-def silence():
-    devnull = os.open(os.devnull, os.O_WRONLY)
-    old_stderr = os.dup(2)
-    sys.stderr.flush()
-    os.dup2(devnull, 2)
-    os.close(devnull)
-    try:
-        yield
-    finally:
-        os.dup2(old_stderr, 2)
-        os.close(old_stderr)
+# @contextlib.contextmanager
+# def silence():
+#     devnull = os.open(os.devnull, os.O_WRONLY)
+#     old_stderr = os.dup(2)
+#     sys.stderr.flush()
+#     os.dup2(devnull, 2)
+#     os.close(devnull)
+#     try:
+#         yield
+#     finally:
+#         os.dup2(old_stderr, 2)
+#         os.close(old_stderr)
